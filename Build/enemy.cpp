@@ -467,7 +467,6 @@ void UpdateEnemy(void)
 			diff.y = g_Enemy[i].pos.y - g_Enemy[i].oldpos.y;
 			diff.z = g_Enemy[i].pos.z - g_Enemy[i].oldpos.z;
 
-			XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld;
 
 
 			for (int j = 0; j < SMOKE_POP; j++)

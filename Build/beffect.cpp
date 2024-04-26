@@ -673,7 +673,7 @@ void DrawBeffect(void)
 	CAMERA* cam = GetCamera();
 
 
-	XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld, mtxView;
+	XMMATRIX mtxWorld, mtxView;
 
 	// ワールドマトリックスの初期化
 	mtxWorld = XMMatrixIdentity();
@@ -878,7 +878,6 @@ int SetBeffect(XMFLOAT3 pos, XMFLOAT3 move, XMFLOAT4 col, float fSizeX, float fS
 void SetBombEffect(XMFLOAT3 pos)
 {
 
-	XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld;
 
 	for (int i = 0; i < BOMB_POP; i++)
 	{

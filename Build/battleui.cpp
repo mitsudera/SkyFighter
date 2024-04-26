@@ -252,7 +252,7 @@ void DrawBattleui(void)
 	ENEMY* enemy = GetEnemy();
 	CAMERA* camera = GetCamera();
 
-	XMMATRIX world, view, prj,wvp,trans;
+	XMMATRIX world, view, prj,wvp;
 	view = XMLoadFloat4x4(&camera->mtxView);
 	prj = XMLoadFloat4x4(&camera->mtxProjection);
 	

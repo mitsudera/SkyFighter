@@ -267,7 +267,6 @@ void UpdateMisairu(void)
 			diff.y = g_Misairu[i].pos.y - g_Misairu[i].oldpos.y;
 			diff.z = g_Misairu[i].pos.z - g_Misairu[i].oldpos.z;
 
-			XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld;
 
 
 			for (int j = 0; j < 10; j++)
@@ -342,7 +341,7 @@ void UpdateMisairu(void)
 //=============================================================================
 void DrawMisairu(void)
 {
-	XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld;
+	XMMATRIX mtxScl, mtxTranslate, mtxWorld;
 
 	// ƒJƒŠƒ“ƒO–³Œø
 	SetCullingMode(CULL_MODE_NONE);

@@ -941,7 +941,7 @@ void CheckHit(void)
 				}
 				else
 				{
-					misairu[i].pore-1;
+					misairu[i].pore=-1;
 				}
 				break;
 
@@ -973,7 +973,7 @@ void CheckHit(void)
 				}
 				else
 				{
-					misairu[i].pore-1;
+					misairu[i].pore=-1;
 				}
 				break;
 

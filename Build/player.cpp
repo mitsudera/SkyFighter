@@ -429,15 +429,6 @@ void UpdatePlayer(void)
 			g_Player.mtxrot = XMMatrixMultiply(g_Player.mtxrot, g_Player.mtxrotx);
 
 
-			if (IsButtonPressed(0, BUTTON_R) && IsButtonPressed(0, BUTTON_L))
-			{
-				rot * 0.5f;
-			}
-
-			if (GetKeyboardPress(DIK_W) && GetKeyboardPress(DIK_S))
-			{
-				rot * 0.5f;
-			}
 
 			g_Parts[2].rot.x -= rot * 30.0f;
 			g_Parts[3].rot.x -= rot * 30.0f;
@@ -614,7 +605,7 @@ void UpdatePlayer(void)
 		g_Player.target = -1;
 		for (int i = 0; i < MAX_ENEMY; i++)
 		{
-			if (enemy[i].use == TRUE);
+			if (enemy[i].use == TRUE)
 			{
 				XMVECTOR eposv = XMLoadFloat3(&enemy[i].pos);
 				XMVECTOR pe = pposv - eposv;
@@ -633,7 +624,7 @@ void UpdatePlayer(void)
 
 		for (int i = 0; i <B36_PARTS_MAX; i++)
 		{
-			if (b36parts[i].breaked == FALSE);
+			if (b36parts[i].breaked == FALSE)
 			{
 				XMVECTOR eposv = XMLoadFloat3(&b36parts[i].wpos);
 				XMVECTOR pe = pposv - eposv;
@@ -820,7 +811,6 @@ void UpdatePlayer(void)
 			diff.y = g_Player.pos.y - g_Player.oldpos.y;
 			diff.z = g_Player.pos.z - g_Player.oldpos.z;
 
-			XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld;
 
 
 			for (int i = 0; i < SMOKE_POP; i++)

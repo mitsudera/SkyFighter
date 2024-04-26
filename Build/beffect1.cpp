@@ -673,7 +673,7 @@ void DrawBeffect1(void)
 	CAMERA* cam = GetCamera();
 
 
-	XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld, mtxView;
+	XMMATRIX  mtxWorld, mtxView;
 
 	// ワールドマトリックスの初期化
 	mtxWorld = XMMatrixIdentity();

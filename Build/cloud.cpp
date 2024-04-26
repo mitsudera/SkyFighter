@@ -170,7 +170,6 @@ HRESULT InitCloud(void)
 	}
 
 
-	float cloudstart ;
 	XMFLOAT3 clopos = XMFLOAT3(-200000.0f, 50000.0f, 0.0f);
 	InitRand(1000, FALSE);
 	SetCloud(clopos, 1.0f, 1.0f, 1.0f);
@@ -218,7 +217,7 @@ void UninitCloud(void)
 void UpdateCloud(void)
 {
 
-		XMMATRIX mtxScl, mtxTranslate, mtxWorld, mtxView;
+		XMMATRIX mtxWorld;
 
 		//mtxWorld = XMMatrixIdentity();
 		CAMERA* cam = GetCamera();
@@ -412,7 +411,7 @@ void DrawCloud(void)
 	CAMERA* cam = GetCamera();
 
 
-	XMMATRIX mtxScl, mtxRot, mtxTranslate, mtxWorld, mtxView;
+	XMMATRIX mtxWorld, mtxView;
 
 	// ワールドマトリックスの初期化
 	mtxWorld = XMMatrixIdentity();
