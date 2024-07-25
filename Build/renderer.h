@@ -1,11 +1,14 @@
 //=============================================================================
 //
-// レンダリング処理 [renderer.h]
+// レンダリング処理 [Renderer.h]
 // Author : 
 //
 //=============================================================================
 #pragma once
+#include "CoreMinimal.h"
+#include "GameEngine.h"
 
+#include "Buffer.h"
 //*********************************************************
 // マクロ定義
 //*********************************************************
@@ -61,7 +64,9 @@ struct MATERIAL
 	XMFLOAT4	Specular;
 	XMFLOAT4	Emission;
 	float		Shininess;
-	int			noTexSampling;
+	int			noDiffuseTex;
+	int			noNormalTex;
+	int			phong;				//0=lambart,1=phong
 };
 
 // ライト構造体
@@ -82,87 +87,189 @@ struct FOG {
 	XMFLOAT4	FogColor;	// フォグの色
 };
 
-struct SCAT
+// マテリアル用定数バッファ構造体
+struct MATERIAL_CBUFFER
 {
+	XMFLOAT4	Ambient;
+	XMFLOAT4	Diffuse;
+	XMFLOAT4	Specular;
+	XMFLOAT4	Emission;
+	float		Shininess;
+	int			noDiffuseTex;
+	int			noNormalTex;
+	int			phong;					//0=lambart,1=phong
+};
 
-	XMFLOAT3 Camera;			//カメラのポジション
-	float  CameraHeight;		//カメラの高さ
-	float  CameraHeight2;		//カメラの高さの2乗
-	XMFLOAT3 InvWaveLength;		//RGBの1/pow(wavelngth,4)
-	float OuterRadius;			//大気の半径
-	float OuterRadius2;			//大気の半径^2
-	float InnerRadius;			//惑星の半径
-	float InnerRadius2;			//惑星の半径^2
-	float KrESun;				//Kr*Esun
-	float KmESun;				//Km*Esun
-	float Kr4PI;				//Kr*4*PI
-	float Km4PI;				//Km*4*PI
-	float Scale;				//1/(OuterRadius-InnerRadius)
-	float ScaleOverScaleDepth;	//Scale/ScaleDepth
 
+// ライト用フラグ構造体
+struct LIGHTFLAGS
+{
+	int			Type;		//ライトタイプ（enum LIGHT_TYPE）
+	int         OnOff;		//ライトのオンorオフスイッチ
+	int			Dummy[2];
+};
+
+// ライト用定数バッファ構造体
+struct LIGHT_CBUFFER
+{
+	XMFLOAT4	Direction[LIGHT_MAX];	// ライトの方向
+	XMFLOAT4	Position[LIGHT_MAX];	// ライトの位置
+	XMFLOAT4	Diffuse[LIGHT_MAX];		// 拡散光の色
+	XMFLOAT4	Ambient[LIGHT_MAX];		// 環境光の色
+	XMFLOAT4	Attenuation[LIGHT_MAX];	// 減衰率
+	LIGHTFLAGS	Flags[LIGHT_MAX];		// ライト種別
+	int			Enable;					// ライティング有効・無効フラグ
+	int			Dummy[3];				// 16byte境界用
+};
+
+// フォグ用定数バッファ構造体
+struct FOG_CBUFFER
+{
+	XMFLOAT4	Fog;					// フォグ量
+	XMFLOAT4	FogColor;				// フォグの色
+	int			Enable;					// フォグ有効・無効フラグ
+	float		Dummy[3];				// 16byte境界用
+};
+
+// 縁取り用バッファ
+struct FUCHI
+{
+	int			fuchi;
+	int			fill[3];
+};
+
+class GameEngine;
+
+class Renderer
+{
+public:
+
+	enum ShaderBF_MODE
+	{
+		DEFAULT_BF,
+		PARTICAL_BF,
+	};
+
+	Renderer(GameEngine* gameEngine);
+	~Renderer();
+
+	ID3DBlob* CreateVSFile(const char* shaderName, char* fName , ID3D11VertexShader** VS);
+	void CreatePSFile(char* shaderName, char* fName , ID3D11PixelShader** PS);
+	void CreateCSFile(char* shaderName, char* fName , ID3D11ComputeShader** CS);
+
+	XMMATRIX GetViewMatrix(void);
+	XMMATRIX GetProjectionMatrix(void);
+
+	HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
+	void UninitRenderer(void);
+
+	void Clear(void);
+	void Present(void);
+
+	ID3D11Device *GetDevice( void );
+	ID3D11DeviceContext *GetDeviceContext( void );
+
+	void SetDepthEnable( BOOL Enable );
+	void SetBlendState(BLEND_MODE bm);
+	void SetCullingMode(CULL_MODE cm);
+	void SetAlphaTestEnable(BOOL flag);
+
+	void SetWorldViewProjection2D( void );
+	void SetWorldMatrix( XMMATRIX *WorldMatrix );
+	void SetViewMatrix( XMMATRIX *ViewMatrix );
+	void SetProjectionMatrix( XMMATRIX *ProjectionMatrix );
+
+	void SetMaterial( MATERIAL material );
+
+	void SetShaderBuffersMode(ShaderBF_MODE bfMode);
+
+	void SetLightBuffer(void); // static
+	void SetLightEnable(BOOL flag);
+	void SetLight(int index, LIGHT* light);
+
+	void SetFogBuffer(void);
+	void SetFogEnable(BOOL flag);
+	void SetFog(FOG* fog);
+
+	void DebugTextOut(char* text, int x, int y);
+
+	void SetFuchi(int flag);
+	void SetShaderCamera(XMFLOAT3 pos);
+
+	void SetClearColor(float* color4);
+
+	HRESULT ChangeRenderResolution(float width, float height);
+	HRESULT ChangeRenderResolution(XMFLOAT2 resolution);
+
+private:
+
+	GameEngine* gameEngine;
+
+	D3D_FEATURE_LEVEL       FeatureLevel;
+
+	ID3D11Device* m_D3DDevice ;
+	ID3D11DeviceContext* m_ImmediateContext;
+	IDXGISwapChain* SwapChain;
+	ID3D11RenderTargetView* RenderTargetView;
+	ID3D11DepthStencilView* DepthStencilView;
+
+	void	InitConstantBuffers(void);
+
+
+
+	ID3D11VertexShader* m_VertexShader;
+	ID3D11PixelShader* m_PixelShader;
+	ID3D11InputLayout* VertexLayout;
+
+	Buffer<XMMATRIX>			*m_WorldBuffer;
+	Buffer<XMMATRIX>			*m_ViewBuffer;
+	Buffer<XMMATRIX>			*m_ProjectionBuffer;
+	Buffer<MATERIAL_CBUFFER>	*m_MaterialBuffer;
+	Buffer<LIGHT_CBUFFER>		*m_LightBuffer;
+	Buffer<FOG_CBUFFER>			*m_FogBuffer;
+	Buffer<FUCHI>				*m_FuchiBuffer;
+	Buffer<XMFLOAT4>			*m_CameraBuffer;
+
+	//ID3D11Buffer* WorldBuffer;
+	//ID3D11Buffer* ViewBuffer;
+	//ID3D11Buffer* ProjectionBuffer;
+	//ID3D11Buffer* MaterialBuffer;
+	//ID3D11Buffer* LightBuffer;
+	//ID3D11Buffer* FogBuffer;
+	//ID3D11Buffer* FuchiBuffer;
+	//ID3D11Buffer* CameraBuffer;
+
+	ID3D11DepthStencilState* DepthStateEnable;
+	ID3D11DepthStencilState* DepthStateDisable;
+
+	ID3D11BlendState* BlendStateNone;
+	ID3D11BlendState* BlendStateAlphaBlend;
+	ID3D11BlendState* BlendStateAdd;
+	ID3D11BlendState* BlendStateSubtract;
+	BLEND_MODE				BlendStateParam;
+
+
+	ID3D11RasterizerState* RasterStateCullOff;
+	ID3D11RasterizerState* RasterStateCullCW;
+	ID3D11RasterizerState* RasterStateCullCCW;
+
+	MATERIAL_CBUFFER	Material;
+	LIGHT_CBUFFER		Light;
+	FOG_CBUFFER			Fog;
+
+	FUCHI				Fuchi;
+
+
+	float ClearColor[4] ;	// 背景色
+
+	//////////////////////////////////////////
+	// 変更しました							//
+	//////////////////////////////////////////
+	//仮
+	XMMATRIX projection;
+	XMMATRIX view;
 
 
 };
 
 
-//*****************************************************************************
-// プロトタイプ宣言
-//*****************************************************************************
-HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
-void UninitRenderer(void);
-
-void Clear(void);
-void Present(void);
-
-ID3D11Device *GetDevice( void );
-ID3D11DeviceContext *GetDeviceContext( void );
-
-void SetDepthEnable( bool Enable );
-void SetBlendState(BLEND_MODE bm);
-void SetCullingMode(CULL_MODE cm);
-void SetAlphaTestEnable(BOOL flag);
-
-void SetWorldViewProjection2D( void );
-void SetWorldMatrix( XMMATRIX *WorldMatrix );
-void SetViewMatrix( XMMATRIX *ViewMatrix );
-void SetProjectionMatrix( XMMATRIX *ProjectionMatrix );
-
-void SetMaterial( MATERIAL material );
-
-void SetLightEnable(BOOL flag);
-void SetLight(int index, LIGHT* light);
-
-void SetFogEnable(BOOL flag);
-void SetFog(FOG* fog);
-//
-//void SetShadowEnable(BOOL flag);
-//void SetShadow(SHADOW* shadow);
-
-void DebugTextOut(char* text, int x, int y);
-
-void SetFuchi(int flag);
-void SetShaderCamera(XMFLOAT3 pos);
-//void SetShaderLightPos(XMFLOAT3 pos);
-
-void SetClearColor(float* color4);
-
-HRESULT InitShadowMap(void);
-HRESULT CreateShaderShadow(void);
-void SetShadowEnable(BOOL flag);
-void SetShadowBuffer(void);
-void ICClear(void);
-
-void DrawShadowMap(void);
-void DrawShadowMap2(void);
-
-void SetViewMatrix(XMMATRIX *ViewMatrix);
-void SetProjectionMatrix(XMMATRIX *ProjectionMatrix);
-void SetScat(void);
-void SetSkyShader(void);
-void SetPolygonShader(void);
-void SetParticleShader(void);
-void SetFieldShader(void);
-
-
-void DrawShadowTex(void);
-void SetSrvYpass(void);

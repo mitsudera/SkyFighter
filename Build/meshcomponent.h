@@ -1,0 +1,69 @@
+#pragma once
+#include "primitivecomponent.h"
+class Meshcomponent :public Primitivecomponent
+{
+public:
+	Meshcomponent();
+	~Meshcomponent();
+
+
+
+	virtual void Init(void) override;
+	virtual void Uninit(void) override;
+	virtual void Update(void) override;
+	virtual void Draw(void) override;
+
+	enum class  ANIM_STATE
+	{
+		NO_ANIM,
+		DATA_ANIM,
+		BLEND_ANIM,
+	};
+
+	virtual void Init(void) override;
+	virtual void Update(void) override;
+	virtual void Uninit(void) override;
+
+	virtual void Draw(void) override;
+
+	//void SetpGameEngine(GameEngine* gameEngine);
+
+	string GetMeshFilePath(void);
+	void SetMeshFilePath(string path);
+	void SetAnimFilePath(string path);
+	void SetAnimFilePathArray(vector<string> path);
+
+
+	void SetMeshComponent(
+		string meshFilePath,		//メッシュデータのパス
+		vector<string> animFilePath,//アニメーションファイルパス
+		BOOL blend,					//モーションブレンドするか？
+		int blendN);				//モーションブレンディングのフレーム数
+	void SetMeshComponent(string meshFilePath);		//メッシュデータのパス
+
+	virtual void SetMeshDataList(void);
+	virtual void SetAnimationArray(void);
+
+	void CreatepAnimDataArray(int n);
+	void SetpKeyFrameAnimData(int n, KeyFrameAnimData* p);
+
+	void CreateMeshMtxArray(int n);
+	void SetMeshMtxArray(int n, XMMATRIX mtx);
+	void SetBlendMtxArray(void);
+	virtual void SwichAnimIndex(int n);
+
+
+
+	virtual void DrawMesh(int n);
+
+	void SetCullingMode(int cullMode);
+	int GetCullingMode(void);
+
+
+
+private:
+
+	
+
+};
+

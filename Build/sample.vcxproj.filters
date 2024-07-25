@@ -13,183 +13,303 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{06a6a4f6-6143-4568-b27f-cb07179338ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameobject">
+      <UniqueIdentifier>{5ca1ad43-3eb5-4528-abc6-509b9394d9c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="component">
+      <UniqueIdentifier>{fa49727c-ae80-4c72-a2fc-8a3066404396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{570a1ca4-084a-4369-9239-05cbd5b0440b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{17db20de-c812-44f0-8e3e-65b3732cde70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{c7d76af9-1c49-4485-bee2-982201477c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="level">
+      <UniqueIdentifier>{5e3f07c7-4857-49ac-9634-fef70d5abf26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{70da4c6b-54d9-4707-9895-07d8094c2aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{0b90fff3-36c1-46f4-baa2-63ecfb6f9a9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{638b07cc-e919-4f88-9bdc-b5be48bf9f30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="input.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="main.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="field.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="debugproc.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="biru.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sky.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="misairu.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="collision.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sound.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="cloud.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="score.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="sprite.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="result.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="fade.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="title.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="tutorial.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="tree.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="b36.h">
+      <Filter>gameobject</Filter>
     </ClInclude>
     <ClInclude Include="battleui.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="meshfield.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>gameobject</Filter>
     </ClInclude>
     <ClInclude Include="beffect.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>gameobject</Filter>
     </ClInclude>
     <ClInclude Include="beffect1.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="cloud.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="debugproc.h">
+      <Filter>debug</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="meshfield.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="misairu.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="sky.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>misc</Filter>
     </ClInclude>
     <ClInclude Include="sun.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>gameobject</Filter>
     </ClInclude>
-    <ClInclude Include="b36.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="title.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="component.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="gameobject.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="primitivecomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="transformcomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="meshcomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="level.h">
+      <Filter>level</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="math.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonAnimData.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshAnimData.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinMeshDataList.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinMeshComponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="Coreminimal.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Movementcomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="input.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="field.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="debugproc.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="biru.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sky.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="light.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="misairu.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="collision.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sound.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="cloud.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="score.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="result.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="fade.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="tutorial.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="tree.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="b36.cpp">
+      <Filter>gameobject</Filter>
     </ClCompile>
     <ClCompile Include="battleui.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="meshfield.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>gameobject</Filter>
     </ClCompile>
     <ClCompile Include="beffect.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>gameobject</Filter>
     </ClCompile>
     <ClCompile Include="beffect1.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="cloud.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="debugproc.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="meshfield.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="misairu.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="sky.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>misc</Filter>
     </ClCompile>
     <ClCompile Include="sun.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>gameobject</Filter>
     </ClCompile>
-    <ClCompile Include="b36.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="title.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="component.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="primitivecomponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="transformcomponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="meshcomponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="level.cpp">
+      <Filter>level</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="math.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetsManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshAnimData.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinMeshDataList.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonAnimData.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinMeshComponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Movementcomponent.cpp">
+      <Filter>component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
