@@ -13,9 +13,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="main">
-      <UniqueIdentifier>{06a6a4f6-6143-4568-b27f-cb07179338ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gameobject">
       <UniqueIdentifier>{5ca1ad43-3eb5-4528-abc6-509b9394d9c1}</UniqueIdentifier>
     </Filter>
@@ -40,276 +37,51 @@
     <Filter Include="core">
       <UniqueIdentifier>{0b90fff3-36c1-46f4-baa2-63ecfb6f9a9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{638b07cc-e919-4f88-9bdc-b5be48bf9f30}</UniqueIdentifier>
+    <Filter Include="Main">
+      <UniqueIdentifier>{06a6a4f6-6143-4568-b27f-cb07179338ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{6b986b38-cb3b-4544-803c-12f615aa04ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="b36.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="battleui.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="beffect.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="beffect1.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="cloud.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="debugproc.h">
-      <Filter>debug</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="fade.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="field.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="meshfield.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="misairu.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="result.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="score.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="sky.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="sound.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="sprite.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="sun.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="title.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="tutorial.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="component.h">
-      <Filter>component</Filter>
-    </ClInclude>
-    <ClInclude Include="gameobject.h">
-      <Filter>gameobject</Filter>
-    </ClInclude>
-    <ClInclude Include="primitivecomponent.h">
-      <Filter>component</Filter>
-    </ClInclude>
-    <ClInclude Include="transformcomponent.h">
-      <Filter>component</Filter>
-    </ClInclude>
-    <ClInclude Include="meshcomponent.h">
-      <Filter>component</Filter>
-    </ClInclude>
-    <ClInclude Include="level.h">
-      <Filter>level</Filter>
-    </ClInclude>
-    <ClInclude Include="particle.h">
-      <Filter>gameobject</Filter>
     </ClInclude>
     <ClInclude Include="math.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="AssetsManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshData.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SkeletonAnimData.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshAnimData.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinMeshDataList.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinMeshComponent.h">
-      <Filter>component</Filter>
-    </ClInclude>
     <ClInclude Include="Coreminimal.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Engine</Filter>
+    <ClInclude Include="Main.h">
+      <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngine.h">
-      <Filter>Engine</Filter>
+    <ClInclude Include="level.h">
+      <Filter>level</Filter>
     </ClInclude>
-    <ClInclude Include="Movementcomponent.h">
-      <Filter>component</Filter>
+    <ClInclude Include="renderer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Buffer.h">
-      <Filter>misc</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="b36.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="battleui.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="beffect.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="beffect1.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="cloud.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
     <ClCompile Include="collision.cpp">
       <Filter>math</Filter>
-    </ClCompile>
-    <ClCompile Include="debugproc.cpp">
-      <Filter>debug</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="fade.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="field.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="light.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="meshfield.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="misairu.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="result.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="score.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="sky.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="sound.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="sun.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="tutorial.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="component.cpp">
-      <Filter>component</Filter>
-    </ClCompile>
-    <ClCompile Include="gameobject.cpp">
-      <Filter>gameobject</Filter>
-    </ClCompile>
-    <ClCompile Include="primitivecomponent.cpp">
-      <Filter>component</Filter>
-    </ClCompile>
-    <ClCompile Include="transformcomponent.cpp">
-      <Filter>component</Filter>
-    </ClCompile>
-    <ClCompile Include="meshcomponent.cpp">
-      <Filter>component</Filter>
-    </ClCompile>
-    <ClCompile Include="level.cpp">
-      <Filter>level</Filter>
-    </ClCompile>
-    <ClCompile Include="particle.cpp">
-      <Filter>gameobject</Filter>
     </ClCompile>
     <ClCompile Include="math.cpp">
       <Filter>math</Filter>
     </ClCompile>
-    <ClCompile Include="AssetsManager.cpp">
-      <Filter>Manager</Filter>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="MeshData.cpp">
-      <Filter>Manager</Filter>
+    <ClCompile Include="level.cpp">
+      <Filter>level</Filter>
     </ClCompile>
-    <ClCompile Include="MeshAnimData.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinMeshDataList.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="SkeletonAnimData.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinMeshComponent.cpp">
-      <Filter>component</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngine.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Movementcomponent.cpp">
-      <Filter>component</Filter>
+    <ClCompile Include="renderer.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

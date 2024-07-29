@@ -6,8 +6,7 @@
 //=============================================================================
 #pragma once
 #include "CoreMinimal.h"
-#include "GameEngine.h"
-
+#include "Main.h"
 #include "Buffer.h"
 //*********************************************************
 // É}ÉNÉçíËã`
@@ -138,7 +137,7 @@ struct FUCHI
 	int			fill[3];
 };
 
-class GameEngine;
+class Main;
 
 class Renderer
 {
@@ -150,7 +149,7 @@ public:
 		PARTICAL_BF,
 	};
 
-	Renderer(GameEngine* gameEngine);
+	Renderer(Main*main);
 	~Renderer();
 
 	ID3DBlob* CreateVSFile(const char* shaderName, char* fName , ID3D11VertexShader** VS);
@@ -198,12 +197,10 @@ public:
 
 	void SetClearColor(float* color4);
 
-	HRESULT ChangeRenderResolution(float width, float height);
-	HRESULT ChangeRenderResolution(XMFLOAT2 resolution);
 
 private:
 
-	GameEngine* gameEngine;
+	Main* main;
 
 	D3D_FEATURE_LEVEL       FeatureLevel;
 

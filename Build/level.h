@@ -1,12 +1,14 @@
 #pragma once
-#include "main.h"
-#include "gameobject.h"
+#include "Coreminimal.h"
+
+class Main;
+class GameObject;
 
 class Level
 {
 public:
 
-	Level();
+	Level(Main* main);
 	~Level();
 
 	void Init(void);
@@ -15,7 +17,9 @@ public:
 	void Draw(void);
 
 protected:
-	vector<Gameobject*> gameObject;
+
+	Main* pMain;
+	vector<GameObject*> gameObject;
 	
 	
 

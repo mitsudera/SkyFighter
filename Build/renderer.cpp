@@ -5,16 +5,15 @@
 //
 //=============================================================================
 #include "Renderer.h"
-#include "GameEngine.h"
 
 //デバッグ用画面テキスト出力を有効にする
 #define DEBUG_DISP_TEXTOUT
 //シェーダーデバッグ設定を有効にする
 //#define DEBUG_SHADER
 
-Renderer::Renderer(GameEngine* gameEngine)
+Renderer::Renderer(Main*main)
 {
-	this->gameEngine = gameEngine;
+	this->main = main;
 
 
 	FeatureLevel = D3D_FEATURE_LEVEL_11_0;
@@ -255,7 +254,7 @@ void Renderer::SetWorldViewProjection2D( void )
 	m_ViewBuffer->SetToBuffer(m_ImmediateContext, &view);
 	//GetDeviceContext()->UpdateSubresource(ViewBuffer, 0, NULL, &view, 0, 0);
 
-	XMFLOAT2 screen = gameEngine->GetWindowSize();
+	XMFLOAT2 screen = XMFLOAT2(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	XMMATRIX worldViewProjection;
 	worldViewProjection = XMMatrixOrthographicOffCenterLH(0.0f, screen.x, screen.y, 0.0f, 0.0f, 1.0f);
@@ -365,7 +364,7 @@ void Renderer::SetShaderCamera(XMFLOAT3 pos)
 HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 {
 	HRESULT hr = S_OK;
-	XMFLOAT2 screen = gameEngine->GetWindowSize();
+	XMFLOAT2 screen = XMFLOAT2(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// デバイス、スワップチェーン、コンテキスト生成
 	DWORD deviceFlags = 0;
@@ -795,7 +794,7 @@ void Renderer::DebugTextOut(char* text, int x, int y)
 			//背景を透明に変更
 			SetBkMode(hdc, TRANSPARENT);
 
-			XMFLOAT2 screen = gameEngine->GetWindowSize();
+			XMFLOAT2 screen = XMFLOAT2(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 			RECT rect;
 			rect.left = 0;
@@ -820,89 +819,7 @@ void Renderer::DebugTextOut(char* text, int x, int y)
 
 
 
-HRESULT Renderer::ChangeRenderResolution(float width, float height)
-{
-	return ChangeRenderResolution(XMFLOAT2(width, height));
-}
 
-//=============================================================================
-// 描画解像度の変更
-//=============================================================================
-HRESULT Renderer::ChangeRenderResolution(XMFLOAT2 resolution)
-{
-	HRESULT hr;
-
-	gameEngine->SetWindowSize(resolution.x, resolution.y);
-
-
-	this->m_ImmediateContext->OMSetRenderTargets(0, NULL, NULL); // 現在のレンダーターゲットビューを解放
-
-	DXGI_MODE_DESC desc;
-	desc.Width = (UINT)resolution.x;
-	desc.Height = (UINT)resolution.y;
-	desc.RefreshRate = { 60,1 };
-	desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	desc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	desc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
-	this->RenderTargetView->Release(); // 古いレンダーターゲットビューを解放
-
-	hr = this->SwapChain->ResizeTarget(&desc);// スワップチェーンの解像度を変更
-	if (FAILED(hr)) return hr;// 変更に失敗したら終了
-
-
-	hr = this->SwapChain->ResizeBuffers(0, desc.Width, desc.Height, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE); // N.B. the GDI compatible flag
-	if (FAILED(hr))
-		return hr;
-
-	// レンダーターゲットビュー生成、設定
-	ID3D11Texture2D* pBackBuffer = NULL;
-	this->SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-	this->m_D3DDevice->CreateRenderTargetView(pBackBuffer, NULL, &this->RenderTargetView);
-	pBackBuffer->Release();
-
-	//ステンシル用テクスチャー作成
-	ID3D11Texture2D* depthTexture = NULL;
-	D3D11_TEXTURE2D_DESC td;
-	ZeroMemory(&td, sizeof(td));
-	td.Width = desc.Width;
-	td.Height = desc.Height;
-	td.MipLevels = 1;
-	td.ArraySize = 1;
-	td.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	td.SampleDesc.Count = 1;
-	td.SampleDesc.Quality = 0;
-	td.Usage = D3D11_USAGE_DEFAULT;
-	td.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	td.CPUAccessFlags = 0;
-	td.MiscFlags = 0;
-	this->m_D3DDevice->CreateTexture2D(&td, NULL, &depthTexture);
-
-	//ステンシルターゲット作成
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
-	ZeroMemory(&dsvd, sizeof(dsvd));
-	dsvd.Format = td.Format;
-	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	dsvd.Flags = 0;
-	this->m_D3DDevice->CreateDepthStencilView(depthTexture, &dsvd, &this->DepthStencilView);
-
-	this->m_ImmediateContext->OMSetRenderTargets(1, &this->RenderTargetView, this->DepthStencilView);
-
-	// ビューポート設定
-	D3D11_VIEWPORT vp;
-	vp.Width = (FLOAT)resolution.x;
-	vp.Height = (FLOAT)resolution.y;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	this->m_ImmediateContext->RSSetViewports(1, &vp);
-
-	// バックバッファとフロントバッファを入れ替える
-	Present();
-
-	return 0;
-}
 
 
 //Create Vertex Shader ファイル
