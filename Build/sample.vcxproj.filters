@@ -66,6 +66,18 @@
     <ClInclude Include="Buffer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="gameobject.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="component.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="transformcomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -82,6 +94,18 @@
     </ClCompile>
     <ClCompile Include="renderer.cpp">
       <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="gameobject.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="component.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="transformcomponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>gameobject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

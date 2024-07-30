@@ -149,18 +149,26 @@
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="component.h" />
     <ClInclude Include="Coreminimal.h" />
+    <ClInclude Include="gameobject.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="math.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="transformcomponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="component.cpp" />
+    <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="math.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="transformcomponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

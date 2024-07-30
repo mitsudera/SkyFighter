@@ -1,19 +1,20 @@
 #pragma once
 #include"transformcomponent.h"
 #include"main.h"
-class Gameobject
+class GameObject
 {
 public:
-	Gameobject();
-	~Gameobject();
+	GameObject();
+	GameObject(Level* level);
+	~GameObject();
 
-	virtual void Init(void);
-	virtual void Uninit(void);
-	virtual void Update(void);
-	virtual void Draw(void);
+	virtual void Init(void)=0;
+	virtual void Uninit(void)=0;
+	virtual void Update(void)=0;
+	virtual void Draw(void)=0;
 
 protected:
-	
+	Level* pLevel;
 	Transformcomponent* transformComponent;
 	
 	

@@ -1,26 +1,34 @@
 #include "gameobject.h"
 
 
-Gameobject::Gameobject()
+GameObject::GameObject()
+{
+	this->transformComponent = new Transformcomponent;
+}
+
+GameObject::GameObject(Level* level)
+{
+	this->pLevel = level;
+	
+}
+
+GameObject::~GameObject()
+{
+	delete this->transformComponent;
+}
+
+void GameObject::Init(void)
 {
 }
 
-Gameobject::~Gameobject()
+void GameObject::Uninit(void)
 {
 }
 
-void Gameobject::Init(void)
+void GameObject::Update(void)
 {
 }
 
-void Gameobject::Uninit(void)
-{
-}
-
-void Gameobject::Update(void)
-{
-}
-
-void Gameobject::Draw(void)
+void GameObject::Draw(void)
 {
 }

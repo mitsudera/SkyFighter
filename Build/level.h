@@ -11,10 +11,10 @@ public:
 	Level(Main* main);
 	~Level();
 
-	void Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	virtual void Init(void);
+	virtual void Uninit(void);
+	virtual void Update(void);
+	virtual void Draw(void);
 
 protected:
 
