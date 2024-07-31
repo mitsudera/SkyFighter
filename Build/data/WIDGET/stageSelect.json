@@ -1,0 +1,16 @@
+[
+    {
+        "angle": 0.0,
+        "name": "Image",
+        "position": [
+            642.0,
+            361.0
+        ],
+        "size": [
+            1295.0,
+            737.0
+        ],
+        "texturePath": "data/TEXTURE/scene_select.png",
+        "type": "class ImageWidget"
+    }
+]

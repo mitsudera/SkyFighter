@@ -22,9 +22,6 @@
     <Filter Include="math">
       <UniqueIdentifier>{570a1ca4-084a-4369-9239-05cbd5b0440b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="debug">
-      <UniqueIdentifier>{17db20de-c812-44f0-8e3e-65b3732cde70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="misc">
       <UniqueIdentifier>{c7d76af9-1c49-4485-bee2-982201477c30}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="Manger">
       <UniqueIdentifier>{050ddd03-4604-4d07-a199-659043612c60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameobject\debug">
+      <UniqueIdentifier>{17db20de-c812-44f0-8e3e-65b3732cde70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +114,9 @@
     <ClInclude Include="Title.h">
       <Filter>level</Filter>
     </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="Title.cpp">
       <Filter>level</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,48 +1,32 @@
 #include "Title.h"
-#include "gameobject.h"
+#include "player.h"
+
 Title::Title(Main* main)
 {
 	this->pMain = main;
+	player = new Player(this);
 }
 
 Title::~Title()
 {
-
 }
 
 void Title::Init(void)
 {
-	for (int i = 0; i < gameObject.size(); i++)
-	{
-		gameObject[i]->Init();
-	}
-
+	player->Init();
 }
 
 void Title::Uninit(void)
 {
-	for (int i = 0; i < gameObject.size(); i++)
-	{
-		gameObject[i]->Uninit();
-	}
-
+	player->Uninit();
 }
 
 void Title::Update(void)
 {
-	for (int i = 0; i < gameObject.size(); i++)
-	{
-		gameObject[i]->Update();
-	}
-
+	player->Update();
 }
 
 void Title::Draw(void)
 {
-
-	for (int i = 0; i < gameObject.size(); i++)
-	{
-		gameObject[i]->Draw();
-	}
-
+	player->Draw();
 }

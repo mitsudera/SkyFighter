@@ -1,5 +1,7 @@
 #include "transformcomponent.h"
 #include "math.h"
+#include"gameobject.h"
+
 TransformComponent::TransformComponent()
 {
 	this->pos = { 0.0f,0.0f,0.0f };
@@ -28,6 +30,28 @@ TransformComponent::TransformComponent()
 
 TransformComponent::TransformComponent(GameObject* gameObject)
 {
+	this->pos = { 0.0f,0.0f,0.0f };
+	this->oldPos = { 0.0f, 0.0f, 0.0f };
+	this->rot = { 0.0f,0.0f,0.0f };
+	this->oldRot = { 0.0f,0.0f,0.0f };
+	this->scl = { 1.0f,1.0f,1.0f };
+	this->dir = { 0.0f,0.0f,-1.0f };
+	this->axisX = xonevec();
+	this->axisY = yonevec();
+	this->axisZ = zonevec();
+	this->qtonX = XMQuaternionRotationAxis(axisX, 0.0f);
+	this->qtonY = XMQuaternionRotationAxis(axisY, XM_PI);
+	this->qtonZ = XMQuaternionRotationAxis(axisZ, XM_PI);
+
+	this->mtxpos = XMMatrixIdentity();
+	this->mtxscl = XMMatrixIdentity();
+	this->mtxrot = XMMatrixIdentity();
+	this->mtxrotx = XMMatrixRotationQuaternion(qtonX);
+	this->mtxroty = XMMatrixRotationQuaternion(qtonY);
+	this->mtxrotz = XMMatrixRotationQuaternion(qtonZ);
+	this->mtxWorld = XMMatrixIdentity();
+
+
 	this->pGameObject = gameObject;
 }
 
@@ -146,6 +170,16 @@ XMMATRIX TransformComponent::GetWorldMtx(void)
 	return this->mtxWorld;
 }
 
+XMMATRIX TransformComponent::GetWorldMtxWithParent(void)
+{
+	XMMATRIX pMtx = this->GetGameObject()->GetTransFormComponent()->GetWorldMtx();
+	XMMATRIX lMtx = this->GetWorldMtx();
+
+	lMtx = XMMatrixMultiply(lMtx, pMtx);
+	
+	return lMtx;
+}
+
 void TransformComponent::SetPosition(XMFLOAT3 pos)
 {
 	this->pos = pos;
@@ -223,6 +257,29 @@ void TransformComponent::SetWorldMtx(XMMATRIX mtx)
 {
 	this->mtxWorld = mtx;
 }
+
+void TransformComponent::SetTransForm(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scl)
+{
+	this->SetPosition(pos);
+	this->SetRotation(rot);
+	this->SetScale(scl);
+}
+
+XMFLOAT3 TransformComponent::GetWorldPos(void)
+{
+	XMMATRIX pMtx = this->GetGameObject()->GetTransFormComponent()->GetWorldMtx();
+	XMFLOAT3 lPos = this->pos;
+
+	XMVECTOR wPos = XMLoadFloat3(&lPos);
+	wPos = XMVector3Transform(wPos,pMtx);
+
+	XMStoreFloat3(&lPos, wPos);
+	
+	return lPos;
+
+
+}
+
 
 
 

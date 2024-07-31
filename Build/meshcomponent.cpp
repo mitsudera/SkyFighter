@@ -7,6 +7,7 @@
 #include "gameobject.h"
 MeshComponent::MeshComponent()
 {
+	
 	BlendMeshMtxArray = nullptr;
 	MeshMtxArray = nullptr;
 	animation = FALSE;
@@ -104,19 +105,20 @@ void MeshComponent::Uninit(void)
 
 void MeshComponent::Draw(void)
 {
+	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetCullingMode(CULL_MODE::CULL_MODE_FRONT);
 
 	for (int i = 0; i < this->meshNum; i++)
 	{
 		this->DrawMesh(i);
 
 	}
+	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetCullingMode(CULL_MODE::CULL_MODE_BACK);
 
 }
 void MeshComponent::DrawMesh(int n)
 {
 
 
-	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetCullingMode(CULL_MODE::CULL_MODE_FRONT);
 	MeshDataList* list = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetMeshDataList(this->MeshDataListIndex);
 	this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetMeshDataList(this->MeshDataListIndex)->GetMeshData()[n].BufferSetVertex();
 	this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetMeshDataList(this->MeshDataListIndex)->GetMeshData()[n].BufferSetIndex();
@@ -124,7 +126,7 @@ void MeshComponent::DrawMesh(int n)
 
 	XMMATRIX world = XMMatrixIdentity();
 	world = XMMatrixMultiply(world, this->MeshMtxArray[n]);
-	world = XMMatrixMultiply(world, GetWorldMtx());
+	world = XMMatrixMultiply(world, this->GetWorldMtx());
 	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetWorldMatrix(&world);
 
 

@@ -1,0 +1,77 @@
+[
+    {
+        "components": [
+            {
+                "location": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "name": "Camera",
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "tags": [],
+                "type": "class CameraComponent"
+            },
+            {
+                "name": "Input",
+                "tags": [],
+                "type": "class InputComponent"
+            }
+        ],
+        "location": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "name": "EditorPlayer",
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "tags": [],
+        "type": "class EditorPlayer"
+    },
+    {
+        "components": [
+            {
+                "name": "UI",
+                "tags": [],
+                "type": "class UIComponent",
+                "widgetAssetName": "result"
+            }
+        ],
+        "location": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "name": "HUD",
+        "rotation": [
+            0.0,
+            -0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "tags": [],
+        "type": "class GameObject"
+    }
+]

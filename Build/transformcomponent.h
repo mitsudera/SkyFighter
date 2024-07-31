@@ -32,7 +32,9 @@ public:
 	XMMATRIX GetMtxRotX(void);
 	XMMATRIX GetMtxRotY(void);
 	XMMATRIX GetMtxRotZ(void);
+
 	XMMATRIX GetWorldMtx(void);
+	XMMATRIX GetWorldMtxWithParent(void);
 
 
 	void SetPosition(XMFLOAT3 pos);
@@ -51,6 +53,9 @@ public:
 	void SetMtxRotZ(XMMATRIX mtx);
 	void SetWorldMtx(XMMATRIX mtx);
 
+	void SetTransForm(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scl);
+
+	XMFLOAT3 GetWorldPos(void);
 
 
 protected:

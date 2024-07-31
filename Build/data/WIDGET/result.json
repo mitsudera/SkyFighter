@@ -1,0 +1,16 @@
+[
+    {
+        "angle": 0.0,
+        "name": "Image",
+        "position": [
+            639.0,
+            348.0
+        ],
+        "size": [
+            1291.0,
+            747.0
+        ],
+        "texturePath": "data/TEXTURE/result.png",
+        "type": "class ImageWidget"
+    }
+]

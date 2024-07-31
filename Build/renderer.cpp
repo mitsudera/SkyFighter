@@ -257,7 +257,7 @@ void Renderer::SetWorldViewProjection2D( void )
 	XMFLOAT2 screen = XMFLOAT2(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	XMMATRIX worldViewProjection;
-	worldViewProjection = XMMatrixOrthographicOffCenterLH(0.0f, screen.x, screen.y, 0.0f, 0.0f, 1.0f);
+	worldViewProjection = XMMatrixOrthographicOffCenterLH(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 0.0f, 1.0f);
 	worldViewProjection = XMMatrixTranspose(worldViewProjection);
 
 	m_ProjectionBuffer->SetToBuffer(m_ImmediateContext, &worldViewProjection);
@@ -371,8 +371,8 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory( &sd, sizeof( sd ) );
 	sd.BufferCount = 1;
-	sd.BufferDesc.Width = screen.x;
-	sd.BufferDesc.Height = screen.y;
+	sd.BufferDesc.Width = SCREEN_WIDTH;
+	sd.BufferDesc.Height = SCREEN_HEIGHT;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
@@ -406,7 +406,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//デバッグ文字出力用設定
 #if defined(_DEBUG) && defined(DEBUG_DISP_TEXTOUT)
-	hr = SwapChain->ResizeBuffers(0, screen.x, screen.y, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE); // N.B. the GDI compatible flag
+	hr = SwapChain->ResizeBuffers(0, SCREEN_WIDTH, SCREEN_HEIGHT, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_GDI_COMPATIBLE); // N.B. the GDI compatible flag
 	if (FAILED(hr))
 		return hr;
 #endif
@@ -449,8 +449,8 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// ビューポート設定
 	D3D11_VIEWPORT vp;
-	vp.Width = (FLOAT)screen.x;
-	vp.Height = (FLOAT)screen.y;
+	vp.Width = (FLOAT)SCREEN_WIDTH;
+	vp.Height = (FLOAT)SCREEN_HEIGHT;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
@@ -799,8 +799,8 @@ void Renderer::DebugTextOut(char* text, int x, int y)
 			RECT rect;
 			rect.left = 0;
 			rect.top = 0;
-			rect.right = screen.x;
-			rect.bottom = screen.y;
+			rect.right = SCREEN_WIDTH;
+			rect.bottom = SCREEN_HEIGHT;
 
 			//テキスト出力
 			DrawText(hdc, text, (int)strlen(text), &rect, DT_LEFT);

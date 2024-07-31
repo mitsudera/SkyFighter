@@ -66,7 +66,6 @@ protected:
 	int MeshDataListIndex;
 	vector<int> AnimDataIndexArray;
 
-	//GameEngine* pGameEngine;
 
 
 	XMMATRIX* MeshMtxArray;

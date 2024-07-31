@@ -4,6 +4,8 @@
 #include "Movementcomponent.h"
 #include "level.h"
 #include "meshcomponent.h"
+#include "CameraComponent.h"
+
 class Player:public GameObject
 {
 
@@ -25,7 +27,7 @@ private:
 	
 	
 	MeshComponent* meshComponent;
-	
+	CameraComponent* camera;
 
 };
 

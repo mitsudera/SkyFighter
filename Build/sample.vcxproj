@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="component.h" />
     <ClInclude Include="Coreminimal.h" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetsManager.cpp" />
+    <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="component.cpp" />
     <ClCompile Include="gameobject.cpp" />

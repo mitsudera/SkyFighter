@@ -8,45 +8,15 @@
 long g_mouseX = 0;
 long g_mouseY = 0;
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
-	// GameEngineとしてインスタンス化するためにWinMainをこのクラスに定義
 	Main* main = new Main;
 
 
 	int result;
-	result = main->Run(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+	result = main->Run(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 	delete main;
 	return result;
-}
-
-LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-
-	case WM_KEYDOWN:
-		switch (wParam)
-		{
-		case VK_ESCAPE:
-			DestroyWindow(hWnd);
-			break;
-		}
-		break;
-
-	case WM_MOUSEMOVE:
-		g_mouseX = LOWORD(lParam);
-		g_mouseY = HIWORD(lParam);
-		break;
-
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-
-	return 0;
 }
 
 Main::Main()
@@ -134,6 +104,7 @@ int Main::Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int
 	dwExecLastTime = dwFPSLastTime = timeGetTime();	// システム時刻をミリ秒単位で取得
 	dwCurrentTime = dwFrameCount = 0;
 
+
 	// 経過時間
 	this->deltaTime = 0;
 	this->beforeTime = timeGetTime();
@@ -165,7 +136,7 @@ int Main::Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int
 				dwFrameCount = 0;							// カウントをクリア
 			}
 
-			if ((dwCurrentTime - dwExecLastTime) >= (1000.0f / this->fps))	// 1/60秒ごとに実行
+			if ((dwCurrentTime - dwExecLastTime) >= (1000.0f / 60))	// 1/60秒ごとに実行
 			{
 				dwExecLastTime = dwCurrentTime;	// 処理した時刻を保存
 
@@ -204,9 +175,18 @@ float Main::GetDeltaTime(void)
 
 void Main::SetScene(SCENE scene)
 {
+	this->title->Uninit();
 
 	this->scene = scene;
-	this->levelList[scene]->Init();
+	switch (scene)
+	{
+	case TITLE:
+		this->title->Init();
+		break;
+
+	default:
+		break;
+	}
 
 }
 
@@ -227,6 +207,9 @@ Renderer* Main::GetRenderer(void)
 
 void Main::Init(void)
 {
+	//マウス位置の初期化
+	GetCursorPos(&this->mousePos);
+
 
 	//Renderer生成
 	this->renderer = new Renderer(this);
@@ -237,7 +220,8 @@ void Main::Init(void)
 
 
 	//各レベルの生成
-	Title* title = new Title(this);
+
+	this->title = new Title(this);
 
 	SetScene(SCENE::TITLE);
 	
@@ -246,29 +230,72 @@ void Main::Init(void)
 
 void Main::Update(void)
 {
-
-	this->levelList[this->scene]->Update();
+	switch (this->scene)
+	{
+	case SCENE::TITLE:
+		this->title->Update();
+		break;
+	case SCENE::STAGE1:
+		break;
+	case SCENE::RESULT:
+		break;
+	default:
+		break;
+	}
 }
 
 void Main::Draw(void)
 {
-	this->levelList[this->scene]->Draw();
+	renderer->Clear();
+
+
+	switch (this->scene)
+	{
+	case SCENE::TITLE:
+		this->title->Draw();
+		break;
+	case SCENE::STAGE1:
+		break;
+	case SCENE::RESULT:
+		break;
+	default:
+		break;
+	}
+
+	renderer->Present();
 
 }
 
 void Main::Uninit(void)
 {
-	for (int i = 0; i < levelList.size(); i++)
-	{
-		if (levelList[i]!=nullptr)
-		{
-			levelList[i]->Uninit();
-			delete levelList[i];
-			levelList[i] = nullptr;
 
-		}
-	}
+	this->title->Uninit();
 	this->renderer->UninitRenderer();
 	delete this->renderer;
 
 }
+
+LRESULT Main::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case VK_ESCAPE:					// [ESC]キーが押された
+			DestroyWindow(hWnd);		// ウィンドウを破棄するよう指示する
+			break;
+		}
+		break;
+
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+
+	return 0;
+}
+

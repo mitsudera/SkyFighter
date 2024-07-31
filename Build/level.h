@@ -1,6 +1,5 @@
 #pragma once
 #include "Coreminimal.h"
-
 class Main;
 class GameObject;
 
@@ -12,18 +11,19 @@ public:
 	Level(Main* main);
 	~Level();
 
-	virtual void Init(void);
-	virtual void Uninit(void);
-	virtual void Update(void);
-	virtual void Draw(void);
+	virtual void Init(void)=0;
+	virtual void Uninit(void)=0;
+	virtual void Update(void)=0;
+	virtual void Draw(void)=0;
 
 	Main* GetMain(void);
-
+	
+	
 
 protected:
 
 	Main* pMain;
-	vector<GameObject*> gameObject;
+	
 	
 	
 

@@ -15,6 +15,7 @@ public:
 	virtual void Draw(void)=0;
 
 	Level* GetLevel(void);
+	TransformComponent* GetTransFormComponent(void);
 
 protected:
 	Level* pLevel;

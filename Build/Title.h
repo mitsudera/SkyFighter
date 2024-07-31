@@ -1,18 +1,20 @@
 #pragma once
 #include "level.h"
+
+class Player;
 class Title :public Level
 {
 public:
-	
 	Title(Main* main);
 	~Title();
 
-	virtual void Init(void);
-	virtual void Uninit(void);
-	virtual void Update(void);
-	virtual void Draw(void);
-
+	// Level ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
+	virtual void Init(void) override;
+	virtual void Uninit(void) override;
+	virtual void Update(void) override;
+	virtual void Draw(void) override;
 private:
+	Player* player;
 
 
 };
