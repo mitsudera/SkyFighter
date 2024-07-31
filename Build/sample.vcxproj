@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="component.h" />
@@ -155,19 +156,38 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="math.h" />
+    <ClInclude Include="MeshAnimData.h" />
+    <ClInclude Include="meshcomponent.h" />
+    <ClInclude Include="MeshData.h" />
+    <ClInclude Include="Movementcomponent.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="renderer.h" />
+    <ClInclude Include="primitivecomponent.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SkeletonAnimData.h" />
+    <ClInclude Include="SkinMeshComponent.h" />
+    <ClInclude Include="SkinMeshDataList.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="transformcomponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="component.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="math.cpp" />
+    <ClCompile Include="MeshAnimData.cpp" />
+    <ClCompile Include="meshcomponent.cpp" />
+    <ClCompile Include="MeshData.cpp" />
+    <ClCompile Include="Movementcomponent.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="primitivecomponent.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="SkeletonAnimData.cpp" />
+    <ClCompile Include="SkinMeshComponent.cpp" />
+    <ClCompile Include="SkinMeshDataList.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="transformcomponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

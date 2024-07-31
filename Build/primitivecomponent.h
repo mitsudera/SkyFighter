@@ -1,16 +1,17 @@
 #pragma once
 #include "transformcomponent.h"
-class Primitivecomponent :public Transformcomponent
+class PrimitiveComponent :public TransformComponent
 {
 public:
-	Primitivecomponent();
-	~Primitivecomponent();
+	PrimitiveComponent();
+	PrimitiveComponent(GameObject* gameObject);
+	~PrimitiveComponent();
 
-	virtual void Init(void) override;
+	virtual void Init(void) override=0;
 
-	virtual void Uninit(void) override;
+	virtual void Uninit(void) override=0;
 
-	virtual void Update(void) override;
+	virtual void Update(void) override=0;
 
 	virtual void Draw(void) = 0;
 

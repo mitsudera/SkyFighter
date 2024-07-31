@@ -1,31 +1,25 @@
-#include "level.h"
+#include "Title.h"
 #include "gameobject.h"
-
-Level::Level()
-{
-}
-
-Level::Level(Main*main)
+Title::Title(Main* main)
 {
 	this->pMain = main;
 }
 
-Level::~Level()
+Title::~Title()
 {
+
 }
 
-void Level::Init(void)
+void Title::Init(void)
 {
-
-
-
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Init();
 	}
+
 }
 
-void Level::Uninit(void)
+void Title::Uninit(void)
 {
 	for (int i = 0; i < gameObject.size(); i++)
 	{
@@ -34,7 +28,7 @@ void Level::Uninit(void)
 
 }
 
-void Level::Update(void)
+void Title::Update(void)
 {
 	for (int i = 0; i < gameObject.size(); i++)
 	{
@@ -43,16 +37,12 @@ void Level::Update(void)
 
 }
 
-void Level::Draw(void)
+void Title::Draw(void)
 {
+
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Draw();
 	}
 
-}
-
-Main* Level::GetMain(void)
-{
-	return this->pMain;
 }

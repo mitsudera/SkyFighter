@@ -3,8 +3,9 @@
 #include "MeshAnimData.h"
 #include "SkinMeshDataList.h"
 #include "SkeletonAnimData.h"
-AssetsManager::AssetsManager()
+AssetsManager::AssetsManager(Main* main)
 {
+	this->pMain = main;
 }
 
 
@@ -93,6 +94,11 @@ KeyFrameAnimData* AssetsManager::GetKeyFrameAnimData(int n)
 
 
 
+
+Main* AssetsManager::GetMain(void)
+{
+	return this->pMain;
+}
 
 int AssetsManager::LoadMeshAnim(string filepath)
 {

@@ -1,6 +1,7 @@
 #pragma once
 #include"transformcomponent.h"
 #include"main.h"
+
 class GameObject
 {
 public:
@@ -13,9 +14,11 @@ public:
 	virtual void Update(void)=0;
 	virtual void Draw(void)=0;
 
+	Level* GetLevel(void);
+
 protected:
 	Level* pLevel;
-	Transformcomponent* transformComponent;
+	TransformComponent* transformComponent;
 	
 	
 

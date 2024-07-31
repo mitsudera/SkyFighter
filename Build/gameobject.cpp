@@ -3,12 +3,13 @@
 
 GameObject::GameObject()
 {
-	this->transformComponent = new Transformcomponent;
+	this->transformComponent = new TransformComponent;
 }
 
 GameObject::GameObject(Level* level)
 {
 	this->pLevel = level;
+	this->transformComponent = new TransformComponent;
 	
 }
 
@@ -31,4 +32,9 @@ void GameObject::Update(void)
 
 void GameObject::Draw(void)
 {
+}
+
+Level* GameObject::GetLevel(void)
+{
+	return this->pLevel;
 }

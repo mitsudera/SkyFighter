@@ -1,15 +1,13 @@
 #pragma once
 #include "component.h"
+#include "Coreminimal.h"
 
-
-
-
-class Transformcomponent :public Component
+class TransformComponent:public Component
 {
-
 public:
-	Transformcomponent();
-	~Transformcomponent();
+	TransformComponent();
+	TransformComponent(GameObject* gameObject);
+	~TransformComponent();
 
 	virtual void Init(void) override;
 
@@ -58,6 +56,7 @@ public:
 protected:
 
 	
+
 	XMFLOAT3		pos;		// ƒ|ƒŠƒSƒ“‚ÌˆÊ’u
 	XMFLOAT3		oldPos;
 	XMFLOAT3		rot;		// ƒ|ƒŠƒSƒ“‚ÌŒü‚«

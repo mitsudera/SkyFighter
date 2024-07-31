@@ -8,6 +8,7 @@ class Level
 {
 public:
 
+	Level();
 	Level(Main* main);
 	~Level();
 
@@ -15,6 +16,9 @@ public:
 	virtual void Uninit(void);
 	virtual void Update(void);
 	virtual void Draw(void);
+
+	Main* GetMain(void);
+
 
 protected:
 

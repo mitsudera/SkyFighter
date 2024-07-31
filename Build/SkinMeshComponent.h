@@ -1,5 +1,5 @@
 #pragma once
-#include "MeshComponent.h"
+#include "meshcomponent.h"
 #include "Renderer.h"
 
 struct MeshVertex
@@ -14,15 +14,13 @@ class SkinMeshComponent :public MeshComponent
 
 public:
 	SkinMeshComponent();
+	SkinMeshComponent(GameObject* gameObject);
 	~SkinMeshComponent();
 
 
 	virtual void Init(void) override;
 	virtual void Update(void) override;
 	virtual void Uninit(void) override;
-	virtual void BeginPlay(void) override;
-	virtual void UpdatePlay(void) override;
-	virtual void EndPlay(void) override;
 	
 	virtual void Draw(void) override;
 	virtual void DrawSkinMesh(int n) ;

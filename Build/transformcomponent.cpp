@@ -1,6 +1,6 @@
 #include "transformcomponent.h"
 #include "math.h"
-Transformcomponent::Transformcomponent()
+TransformComponent::TransformComponent()
 {
 	this->pos = { 0.0f,0.0f,0.0f };
 	this->oldPos = { 0.0f, 0.0f, 0.0f };
@@ -26,18 +26,23 @@ Transformcomponent::Transformcomponent()
 
 }
 
-Transformcomponent::~Transformcomponent()
+TransformComponent::TransformComponent(GameObject* gameObject)
+{
+	this->pGameObject = gameObject;
+}
+
+TransformComponent::~TransformComponent()
 {
 }
-void Transformcomponent::Init(void)
+void TransformComponent::Init(void)
 {
 }
 
-void Transformcomponent::Uninit(void)
+void TransformComponent::Uninit(void)
 {
 }
 
-void Transformcomponent::Update(void)
+void TransformComponent::Update(void)
 {
 
 
@@ -56,165 +61,165 @@ void Transformcomponent::Update(void)
 
 }
 
-XMFLOAT3 Transformcomponent::GetPosition(void)
+XMFLOAT3 TransformComponent::GetPosition(void)
 {
 	return this->pos;
 }
 
-XMFLOAT3 Transformcomponent::GetOldPosition(void)
+XMFLOAT3 TransformComponent::GetOldPosition(void)
 {
 	return this->oldPos;
 }
 
-XMFLOAT3 Transformcomponent::GetRotation(void)
+XMFLOAT3 TransformComponent::GetRotation(void)
 {
 	return this->rot;
 }
 
-XMFLOAT3 Transformcomponent::GetOldRotation(void)
+XMFLOAT3 TransformComponent::GetOldRotation(void)
 {
 	return this->oldRot;
 }
 
-XMFLOAT3 Transformcomponent::GetScale(void)
+XMFLOAT3 TransformComponent::GetScale(void)
 {
 	return this->scl;
 }
 
-XMFLOAT3 Transformcomponent::GetDirection(void)
+XMFLOAT3 TransformComponent::GetDirection(void)
 {
 	return this->dir;
 }
 
-XMVECTOR Transformcomponent::GetAxisX(void)
+XMVECTOR TransformComponent::GetAxisX(void)
 {
 	return this->axisX;
 }
 
-XMVECTOR Transformcomponent::GetAxizY(void)
+XMVECTOR TransformComponent::GetAxizY(void)
 {
 	return this->axisY;
 }
 
-XMVECTOR Transformcomponent::GetAxizZ(void)
+XMVECTOR TransformComponent::GetAxizZ(void)
 {
 	return this->axisZ;
 }
 
-XMVECTOR Transformcomponent::GetQtonX(void)
+XMVECTOR TransformComponent::GetQtonX(void)
 {
 	return this->qtonX;
 }
 
-XMVECTOR Transformcomponent::GetQtonY(void)
+XMVECTOR TransformComponent::GetQtonY(void)
 {
 	return this->qtonY;
 }
 
-XMVECTOR Transformcomponent::GetQtonZ(void)
+XMVECTOR TransformComponent::GetQtonZ(void)
 {
 	return this->qtonZ;
 }
 
-XMMATRIX Transformcomponent::GetMtxRot(void)
+XMMATRIX TransformComponent::GetMtxRot(void)
 {
 	return this->mtxrot;
 }
 
-XMMATRIX Transformcomponent::GetMtxRotX(void)
+XMMATRIX TransformComponent::GetMtxRotX(void)
 {
 	return this->mtxrotx;
 }
 
-XMMATRIX Transformcomponent::GetMtxRotY(void)
+XMMATRIX TransformComponent::GetMtxRotY(void)
 {
 	return this->mtxroty;
 }
 
-XMMATRIX Transformcomponent::GetMtxRotZ(void)
+XMMATRIX TransformComponent::GetMtxRotZ(void)
 {
 	return this->mtxrotz;
 }
 
-XMMATRIX Transformcomponent::GetWorldMtx(void)
+XMMATRIX TransformComponent::GetWorldMtx(void)
 {
 	return this->mtxWorld;
 }
 
-void Transformcomponent::SetPosition(XMFLOAT3 pos)
+void TransformComponent::SetPosition(XMFLOAT3 pos)
 {
 	this->pos = pos;
 	this->mtxpos = XMMatrixTranslation(pos.x, pos.y, pos.z);
 }
 
-void Transformcomponent::SetRotation(XMFLOAT3 rot)
+void TransformComponent::SetRotation(XMFLOAT3 rot)
 {
 	this->rot = rot;
 	this->mtxrot = XMMatrixRotationRollPitchYaw(rot.x,rot.y,rot.z);
 }
 
-void Transformcomponent::SetScale(XMFLOAT3 scl)
+void TransformComponent::SetScale(XMFLOAT3 scl)
 {
 	this->scl = scl;
 	this->mtxscl = XMMatrixScaling(scl.x, scl.y, scl.z);
 }
 
-void Transformcomponent::SetDirection(XMFLOAT3 dir)
+void TransformComponent::SetDirection(XMFLOAT3 dir)
 {
 	this->dir = dir;
 }
 
-void Transformcomponent::SetAxisX(XMVECTOR axis)
+void TransformComponent::SetAxisX(XMVECTOR axis)
 {
 	this->axisX = axis;
 }
 
-void Transformcomponent::SetAxizY(XMVECTOR axis)
+void TransformComponent::SetAxizY(XMVECTOR axis)
 {
 	this->axisY = axis;
 }
 
-void Transformcomponent::SetAxizZ(XMVECTOR axis)
+void TransformComponent::SetAxizZ(XMVECTOR axis)
 {
 	this->axisZ = axis;
 }
 
-void Transformcomponent::SetQtonX(XMVECTOR qton)
+void TransformComponent::SetQtonX(XMVECTOR qton)
 {
 	this->qtonX = qton;
 }
 
-void Transformcomponent::SetQtonY(XMVECTOR qton)
+void TransformComponent::SetQtonY(XMVECTOR qton)
 {
 	this->qtonY = qton;
 }
 
-void Transformcomponent::SetQtonZ(XMVECTOR qton)
+void TransformComponent::SetQtonZ(XMVECTOR qton)
 {
 	this->qtonZ = qton;
 }
 
-void Transformcomponent::SetMtxRot(XMMATRIX mtx)
+void TransformComponent::SetMtxRot(XMMATRIX mtx)
 {
 	this->mtxrot = mtx;
 }
 
-void Transformcomponent::SetMtxRotX(XMMATRIX mtx)
+void TransformComponent::SetMtxRotX(XMMATRIX mtx)
 {
 	this->mtxrotx = mtx;
 }
 
-void Transformcomponent::SetMtxRotY(XMMATRIX mtx)
+void TransformComponent::SetMtxRotY(XMMATRIX mtx)
 {
 	this->mtxroty = mtx;
 }
 
-void Transformcomponent::SetMtxRotZ(XMMATRIX mtx)
+void TransformComponent::SetMtxRotZ(XMMATRIX mtx)
 {
 	this->mtxrotz = mtx;
 }
 
-void Transformcomponent::SetWorldMtx(XMMATRIX mtx)
+void TransformComponent::SetWorldMtx(XMMATRIX mtx)
 {
 	this->mtxWorld = mtx;
 }

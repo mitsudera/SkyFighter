@@ -1,10 +1,16 @@
 #pragma once
 #include "primitivecomponent.h"
-class Meshcomponent :public Primitivecomponent
+
+class MeshDataList;
+
+class KeyFrameAnimData;
+
+class MeshComponent :public PrimitiveComponent
 {
 public:
-	Meshcomponent();
-	~Meshcomponent();
+	MeshComponent();
+	MeshComponent(GameObject* gameObject);
+	~MeshComponent();
 
 
 
@@ -20,11 +26,6 @@ public:
 		BLEND_ANIM,
 	};
 
-	virtual void Init(void) override;
-	virtual void Update(void) override;
-	virtual void Uninit(void) override;
-
-	virtual void Draw(void) override;
 
 	//void SetpGameEngine(GameEngine* gameEngine);
 
@@ -56,12 +57,32 @@ public:
 
 	virtual void DrawMesh(int n);
 
-	void SetCullingMode(int cullMode);
-	int GetCullingMode(void);
 
 
+protected:
+	string meshFilePath;
+	vector<string> animFilePath;
 
-private:
+	int MeshDataListIndex;
+	vector<int> AnimDataIndexArray;
+
+	//GameEngine* pGameEngine;
+
+
+	XMMATRIX* MeshMtxArray;
+	int meshNum;
+
+	XMMATRIX* BlendMeshMtxArray;
+	int animindex;
+	int lastanimindex;
+	int framecnt;
+	int framenum;
+	int blendcnt;
+	int blendcntmax;
+	ANIM_STATE animstate;
+	BOOL motionblend;
+	BOOL animation;
+
 
 	
 

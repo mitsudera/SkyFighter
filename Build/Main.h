@@ -1,12 +1,15 @@
 #pragma once
 #include "Coreminimal.h"
 #include "level.h"
+#include "AssetsManager.h"
+#include "Title.h"
 
 #define SCREEN_WIDTH	(1920)				// 初期化ウィンドウの横幅pixel
 #define SCREEN_HEIGHT	(1080)				// 初期化ウィンドウの縦幅pixel
 
 
 class Renderer;
+class AssetsManager;
 
 class Main
 {
@@ -37,6 +40,10 @@ public:
 	};
 	void SetScene(SCENE scene);
 	SCENE GetScene(void);
+
+	AssetsManager* GetAssetsManager(void);
+	Renderer* GetRenderer(void);
+
 protected:
 	void Init(void);
 	void Update(void);
@@ -56,6 +63,7 @@ private:
 	vector<Level*> levelList;
 
 	Renderer* renderer;
+	AssetsManager* assetsManager;
 
 };
 

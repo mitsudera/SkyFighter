@@ -165,3 +165,42 @@ XMVECTOR zonevec(void)
 	return vec;
 }
 
+XMFLOAT3 FbxDouble3ConvertToXMFLOAT3(FbxDouble3 fbxd3)
+{
+	XMFLOAT3 xmfl3;
+
+	xmfl3.x = (float)fbxd3[0];
+	xmfl3.y = (float)fbxd3[1];
+	xmfl3.z = (float)fbxd3[2];
+
+	return xmfl3;
+}
+
+XMMATRIX FbxMatrixConvertToXMMATRIX(FbxMatrix fbxmat)
+{
+	XMMATRIX xmat;
+	XMFLOAT4X4 matrix;
+	matrix._11 = (float)fbxmat[0][0];
+	matrix._12 = (float)fbxmat[0][1];
+	matrix._13 = (float)fbxmat[0][2];
+	matrix._14 = (float)fbxmat[0][3];
+
+	matrix._21 = (float)fbxmat[1][0];
+	matrix._22 = (float)fbxmat[1][1];
+	matrix._23 = (float)fbxmat[1][2];
+	matrix._24 = (float)fbxmat[1][3];
+
+	matrix._31 = (float)fbxmat[2][0];
+	matrix._32 = (float)fbxmat[2][1];
+	matrix._33 = (float)fbxmat[2][2];
+	matrix._34 = (float)fbxmat[2][3];
+
+	matrix._41 = (float)fbxmat[3][0];
+	matrix._42 = (float)fbxmat[3][1];
+	matrix._43 = (float)fbxmat[3][2];
+	matrix._44 = (float)fbxmat[3][3];
+
+	xmat = XMLoadFloat4x4(&matrix);
+	return xmat;
+
+}

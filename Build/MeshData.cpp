@@ -51,7 +51,7 @@ void DX11_TEXTURE::CreateTexture(char* path)
 {
 
 	D3DX11CreateShaderResourceViewFromFile(
-		this->psubset->GetpMeshData()->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDevice(),
+		this->psubset->GetpMeshData()->GetpAssetsManager()->GetMain()->GetRenderer()->GetDevice(),
 		path,
 		NULL,
 		NULL,
@@ -61,7 +61,7 @@ void DX11_TEXTURE::CreateTexture(char* path)
 }
 void DX11_TEXTURE::SetShaderResource(void)
 {
-	this->psubset->GetpMeshData()->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->PSSetShaderResources(0, 1, &Texture);
+	this->psubset->GetpMeshData()->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->PSSetShaderResources(0, 1, &Texture);
 }
 DX11_SUBSET* DX11_TEXTURE::GetpSubset(void)
 {
@@ -208,7 +208,7 @@ void MeshData::CreateVertexBuffer(int VertNum)
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->VertexBuffer);
+	this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->VertexBuffer);
 
 
 
@@ -240,7 +240,7 @@ void MeshData::CreateIndexBuffer(int IndexNum)
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->IndexBuffer);
+	this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->IndexBuffer);
 
 
 }
@@ -319,17 +319,17 @@ void MeshData::BufferSetVertex(void)
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 
-	this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->IASetVertexBuffers(0, 1, &this->VertexBuffer, &stride, &offset);
+	this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->IASetVertexBuffers(0, 1, &this->VertexBuffer, &stride, &offset);
 }
 
 void MeshData::BufferSetIndex(void)
 {
 
 	// プリミティブトポロジ設定
-	this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// インデックスバッファ設定
-	this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->IASetIndexBuffer(this->IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->IASetIndexBuffer(this->IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 }
 
@@ -615,13 +615,13 @@ void MeshData::LoadFbxMesh(FbxMesh* mesh,AssetsManager* ap)
 
 		// 頂点バッファへのポインタを取得
 		D3D11_MAPPED_SUBRESOURCE msr;
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Map(this->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 		VERTEX_3D* pVtx = (VERTEX_3D*)msr.pData;
 
 		memcpy(pVtx, VertexArray, sizeof(VERTEX_3D) * PolygonVertexNum);
 
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Unmap(this->GetVertexBuffer(), 0);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->GetVertexBuffer(), 0);
 	}
 	// インデックスバッファ生成
 	this->CreateIndexBuffer(indexnum);
@@ -630,7 +630,7 @@ void MeshData::LoadFbxMesh(FbxMesh* mesh,AssetsManager* ap)
 
 		// インデックスバッファのポインタを取得
 		D3D11_MAPPED_SUBRESOURCE msr;
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Map(this->GetIndexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->GetIndexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 		unsigned int* pIdx = (unsigned int*)msr.pData;
 
@@ -643,7 +643,7 @@ void MeshData::LoadFbxMesh(FbxMesh* mesh,AssetsManager* ap)
 			n = i;
 		}
 
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Unmap(this->GetIndexBuffer(), 0);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->GetIndexBuffer(), 0);
 	}
 
 

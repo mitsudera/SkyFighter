@@ -43,6 +43,12 @@
     <Filter Include="Renderer">
       <UniqueIdentifier>{6b986b38-cb3b-4544-803c-12f615aa04ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ModelAnimation">
+      <UniqueIdentifier>{068f0cf0-e300-4e51-9f3d-ce27d8a92a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manger">
+      <UniqueIdentifier>{050ddd03-4604-4d07-a199-659043612c60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h">
@@ -60,7 +66,7 @@
     <ClInclude Include="level.h">
       <Filter>level</Filter>
     </ClInclude>
-    <ClInclude Include="renderer.h">
+    <ClInclude Include="Renderer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Buffer.h">
@@ -78,6 +84,36 @@
     <ClInclude Include="player.h">
       <Filter>gameobject</Filter>
     </ClInclude>
+    <ClInclude Include="SkinMeshComponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinMeshDataList.h">
+      <Filter>ModelAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Movementcomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshAnimData.h">
+      <Filter>ModelAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>ModelAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonAnimData.h">
+      <Filter>ModelAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="meshcomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="primitivecomponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -92,7 +128,7 @@
     <ClCompile Include="level.cpp">
       <Filter>level</Filter>
     </ClCompile>
-    <ClCompile Include="renderer.cpp">
+    <ClCompile Include="Renderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="gameobject.cpp">
@@ -106,6 +142,36 @@
     </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinMeshComponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinMeshDataList.cpp">
+      <Filter>ModelAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Movementcomponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetsManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshAnimData.cpp">
+      <Filter>ModelAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>ModelAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonAnimData.cpp">
+      <Filter>ModelAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="meshcomponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="primitivecomponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>level</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ class AssetsManager
 
 
 public:
-	AssetsManager();
+	AssetsManager(Main* main);
 	~AssetsManager();
 
 	void Init(void);
@@ -32,7 +32,7 @@ public:
 	KeyFrameAnimData* GetKeyFrameAnimData(int n);
 
 
-	GameEngine* GetGameEngine(void);
+	Main* GetMain(void);
 
 	int LoadMeshAnim(string filepath);
 
@@ -47,6 +47,7 @@ public:
 
 private:
 
+	Main* pMain;
 	vector<MeshDataList*> MeshDataListArray;
 	vector<KeyFrameAnimData*>  KeyFrameAnimDataArray;
 	vector<SkinMeshDataList*> SkinMeshDataListArray;

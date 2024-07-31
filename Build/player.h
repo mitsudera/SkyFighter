@@ -3,6 +3,7 @@
 #include "transformcomponent.h"
 #include "Movementcomponent.h"
 #include "level.h"
+#include "meshcomponent.h"
 class Player:public GameObject
 {
 
@@ -22,9 +23,9 @@ public:
 
 private:
 	
-
-
-
+	
+	MeshComponent* meshComponent;
+	
 
 };
 

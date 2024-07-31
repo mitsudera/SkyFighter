@@ -1,12 +1,10 @@
-#include "MeshComponent.h"
-#include "GameEngine.h"
+#include "meshcomponent.h"
 #include "Renderer.h"
 #include "AssetsManager.h"
 #include "SkinMeshDataList.h"
-#include "World.h"
 #include "SkinMeshComponent.h"
 #include "SkeletonAnimData.h"
-
+#include "gameobject.h"
 SkinMeshComponent::SkinMeshComponent()
 {
 	this->blendBoneMtx = nullptr;
@@ -16,6 +14,11 @@ SkinMeshComponent::SkinMeshComponent()
 
 }
 
+SkinMeshComponent::SkinMeshComponent(GameObject* gameObject)
+{
+	this->pGameObject = gameObject;
+}
+
 SkinMeshComponent::~SkinMeshComponent()
 {
 }
@@ -23,7 +26,6 @@ SkinMeshComponent::~SkinMeshComponent()
 void SkinMeshComponent::Init(void)
 {
 	MeshComponent::Init();
-	SetName("SkinMesh");
 
 }
 
@@ -43,19 +45,19 @@ void SkinMeshComponent::Update(void)
 		
 		for (int i = 0; i < this->boneCnt; i++)
 		{
-			this->boneMtx[i] = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex])->GetFrameSkeleton(framecnt)->GetBone(i)->GetMtx();
+			this->boneMtx[i] = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex])->GetFrameSkeleton(framecnt)->GetBone(i)->GetMtx();
 
 		}
 
 
 		for (int i = 0; i < this->meshNum; i++)
 		{
-			SkinMeshData* skinmeshdata = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData();
+			SkinMeshData* skinmeshdata = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData();
 
 			int controlN = skinmeshdata[i].GetControlNum();
 			CONTROLPOINT* cparray = new CONTROLPOINT[controlN];
-			SkinMeshDataList* smdl = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex);
-			SkeletonAnimData* sad = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex]);
+			SkinMeshDataList* smdl = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex);
+			SkeletonAnimData* sad = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex]);
 
 
 
@@ -100,13 +102,13 @@ void SkinMeshComponent::Update(void)
 			delete[] cparray;
 			// 頂点バッファへのポインタを取得
 			D3D11_MAPPED_SUBRESOURCE msr;
-			this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Map(this->meshVertex[i].m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+			this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->meshVertex[i].m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 			VERTEX_3D* pVtx = (VERTEX_3D*)msr.pData;
 
 			memcpy(pVtx, this->meshVertex[i].vertexArray, sizeof(VERTEX_3D) * this->meshVertex[i].vertNum);
 
-			this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Unmap(this->meshVertex[i].m_vertexBuffer, 0);
+			this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->meshVertex[i].m_vertexBuffer, 0);
 
 
 			
@@ -130,7 +132,7 @@ void SkinMeshComponent::Update(void)
 
 		for (int i = 0; i < this->boneCnt; i++)
 		{
-			XMMATRIX mtx1 = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex])->GetFrameSkeleton(framecnt)->GetBone(i)->GetMtx() * blendweight1;
+			XMMATRIX mtx1 = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex])->GetFrameSkeleton(framecnt)->GetBone(i)->GetMtx() * blendweight1;
 			XMMATRIX mtx2 = this->blendBoneMtx[i] * blendweight2;
 			
 			this->boneMtx[i] = mtx1 + mtx2;
@@ -140,12 +142,12 @@ void SkinMeshComponent::Update(void)
 
 		for (int i = 0; i < this->meshNum; i++)
 		{
-			SkinMeshData* skinmeshdata = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData();
+			SkinMeshData* skinmeshdata = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData();
 
 			int controlN = skinmeshdata[i].GetControlNum();
 			CONTROLPOINT* cparray = new CONTROLPOINT[controlN];
-			SkinMeshDataList* smdl = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex);
-			SkeletonAnimData* sad = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex]);
+			SkinMeshDataList* smdl = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex);
+			SkeletonAnimData* sad = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[animindex]);
 
 
 
@@ -191,13 +193,13 @@ void SkinMeshComponent::Update(void)
 			delete[] cparray;
 			// 頂点バッファへのポインタを取得
 			D3D11_MAPPED_SUBRESOURCE msr;
-			this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Map(this->meshVertex[i].m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+			this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->meshVertex[i].m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 			VERTEX_3D* pVtx = (VERTEX_3D*)msr.pData;
 
 			memcpy(pVtx, this->meshVertex[i].vertexArray, sizeof(VERTEX_3D) * this->meshVertex[i].vertNum);
 
-			this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Unmap(this->meshVertex[i].m_vertexBuffer, 0);
+			this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->meshVertex[i].m_vertexBuffer, 0);
 
 
 
@@ -224,21 +226,6 @@ void SkinMeshComponent::Uninit(void)
 	MeshComponent::Uninit();
 }
 
-void SkinMeshComponent::BeginPlay(void)
-{
-	MeshComponent::BeginPlay();
-}
-
-void SkinMeshComponent::UpdatePlay(void)
-{
-	MeshComponent::UpdatePlay();
-}
-
-void SkinMeshComponent::EndPlay(void)
-{
-	MeshComponent::EndPlay();
-}
-
 void SkinMeshComponent::Draw(void)
 {
 	for (int i = 0; i < this->meshNum; i++)
@@ -249,41 +236,41 @@ void SkinMeshComponent::Draw(void)
 
 void SkinMeshComponent::DrawSkinMesh(int n)
 {
-	this->GetWorld()->GetGameEngine()->GetRenderer()->SetCullingMode(CULL_MODE_NONE);
-	MeshDataList* list = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex);
+	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetCullingMode(CULL_MODE_NONE);
+	MeshDataList* list = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex);
 	
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
 
-	this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->IASetVertexBuffers(0, 1, &this->meshVertex[n].m_vertexBuffer, &stride, &offset);
+	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->IASetVertexBuffers(0, 1, &this->meshVertex[n].m_vertexBuffer, &stride, &offset);
 
 
-	this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].BufferSetIndex();
+	this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].BufferSetIndex();
 
 	XMMATRIX world = XMMatrixIdentity();
 	world = XMMatrixMultiply(world, this->MeshMtxArray[n]);
-	world = XMMatrixMultiply(world, GetWorldMatrix());
-	this->GetWorld()->GetGameEngine()->GetRenderer()->SetWorldMatrix(&world);
+	world = XMMatrixMultiply(world, GetWorldMtx());
+	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetWorldMatrix(&world);
 
 
 	//マテリアルテクスチャ設定
-	int subsetnum = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetSubsetNum();
+	int subsetnum = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetSubsetNum();
 
 	for (unsigned short i = 0; i < subsetnum; i++)
 	{
-		MATERIAL m = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetSubset()[0].GetMaterial();
+		MATERIAL m = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetSubset()[0].GetMaterial();
 
 
 
-		this->GetWorld()->GetGameEngine()->GetRenderer()->SetMaterial(m);
+		this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetMaterial(m);
 
 
 		if (m.noDiffuseTex == FALSE)
 		{
-			this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetSubset()[i].GetTexture()[0].SetShaderResource();
+			this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetSubset()[i].GetTexture()[0].SetShaderResource();
 		}
-		this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->DrawIndexed(this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetIndexNum(), 0, 0);
+		this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->DrawIndexed(this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[n].GetIndexNum(), 0, 0);
 	}
 
 }
@@ -321,15 +308,15 @@ void SkinMeshComponent::SetSkinMeshStatus(string meshfilepath)
 
 void SkinMeshComponent::SetSkinMesh(void)
 {
-	this->MeshDataListIndex = this->GetWorld()->GetGameEngine()->GetAssetsManager()->LoadSkinMesh(this->meshFilePath);
-	this->CreateMeshMtxArray(this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetMeshDataNum());
+	this->MeshDataListIndex = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->LoadSkinMesh(this->meshFilePath);
+	this->CreateMeshMtxArray(this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetMeshDataNum());
 	this->meshVertex = new MeshVertex[this->meshNum];
-	this->boneCnt = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkeleton()->GetBoneCount();
+	this->boneCnt = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkeleton()->GetBoneCount();
 	this->boneMtx = new XMMATRIX[boneCnt];
 	this->blendBoneMtx = new XMMATRIX[boneCnt];
 	for (int i = 0; i < boneCnt; i++)
 	{
-		this->boneMtx[i] = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkeleton()->GetBone(i)->GetMtx();
+		this->boneMtx[i] = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkeleton()->GetBone(i)->GetMtx();
 
 	}
 	SetBlendBone();
@@ -337,13 +324,13 @@ void SkinMeshComponent::SetSkinMesh(void)
 	for (int i = 0; i < this->meshNum; i++)
 	{
 
-		MeshMtxArray[i] = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[i].GetOffset();
-		int vertNum = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[i].GetVertNum();
+		MeshMtxArray[i] = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[i].GetOffset();
+		int vertNum = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[i].GetVertNum();
 		this->meshVertex[i].vertexArray = new VERTEX_3D[vertNum];
 		this->meshVertex[i].vertNum = vertNum;
 		for (int j = 0; j < vertNum; j++)
 		{
-			this->meshVertex[i].vertexArray[j] = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[i].GetVertex(j);
+			this->meshVertex[i].vertexArray[j] = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkinMeshDataList(this->MeshDataListIndex)->GetSkinMeshData()[i].GetVertex(j);
 		}
 
 
@@ -355,17 +342,17 @@ void SkinMeshComponent::SetSkinMesh(void)
 		bd.ByteWidth = sizeof(VERTEX_3D) * vertNum;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		this->GetWorld()->GetGameEngine()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->meshVertex[i].m_vertexBuffer);
+		this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->meshVertex[i].m_vertexBuffer);
 
 		// 頂点バッファへのポインタを取得
 		D3D11_MAPPED_SUBRESOURCE msr;
-		this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Map(this->meshVertex[i].m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->meshVertex[i].m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 		VERTEX_3D* pVtx = (VERTEX_3D*)msr.pData;
 
 		memcpy(pVtx, this->meshVertex[i].vertexArray, sizeof(VERTEX_3D) * vertNum);
 
-		this->GetWorld()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Unmap(this->meshVertex[i].m_vertexBuffer, 0);
+		this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->meshVertex[i].m_vertexBuffer, 0);
 
 			
 	}
@@ -376,11 +363,11 @@ void SkinMeshComponent::SetSkinMesh(void)
 	{
 		for (int i = 0; i < this->animFilePath.size(); i++)
 		{
-			int n = this->GetWorld()->GetGameEngine()->GetAssetsManager()->LoadSkeletonAnimData(this->animFilePath[i]);
+			int n = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->LoadSkeletonAnimData(this->animFilePath[i]);
 			this->AnimDataIndexArray.push_back(n);
 		}
 		framecnt = 0;
-		framenum = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[this->animindex])->GetFrameNum();
+		framenum = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkeletonAnimData(this->AnimDataIndexArray[this->animindex])->GetFrameNum();
 
 	}
 
@@ -402,7 +389,7 @@ void SkinMeshComponent::SwichAnimIndex(int n)
 {
 	animindex = n;
 	framecnt = 0;
-	framenum = this->GetWorld()->GetGameEngine()->GetAssetsManager()->GetSkeletonAnimData(AnimDataIndexArray[n])->GetFrameNum();
+	framenum = this->GetGameObject()->GetLevel()->GetMain()->GetAssetsManager()->GetSkeletonAnimData(AnimDataIndexArray[n])->GetFrameNum();
 	if (motionblend)
 	{
 		SetBlendMtxArray();

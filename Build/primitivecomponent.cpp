@@ -1,25 +1,30 @@
 #include "primitivecomponent.h"
 
-Primitivecomponent::Primitivecomponent()
+PrimitiveComponent::PrimitiveComponent()
 {
 }
 
-Primitivecomponent::~Primitivecomponent()
+PrimitiveComponent::PrimitiveComponent(GameObject* gameObject)
+{
+	this->pGameObject = gameObject;
+}
+
+PrimitiveComponent::~PrimitiveComponent()
 {
 }
 
-void Primitivecomponent::Init(void)
+void PrimitiveComponent::Init(void)
 {
 }
 
-void Primitivecomponent::Uninit(void)
+void PrimitiveComponent::Uninit(void)
 {
 }
 
-void Primitivecomponent::Update(void)
+void PrimitiveComponent::Update(void)
 {
 }
 
-void Primitivecomponent::Draw(void)
+void PrimitiveComponent::Draw(void)
 {
 }

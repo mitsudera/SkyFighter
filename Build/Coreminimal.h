@@ -51,3 +51,5 @@ using namespace std;
 #pragma comment (lib,"libxml2-mt.lib")
 #pragma comment (lib,"zlib-mt.lib")
 
+#include"math.h"
+#include"collision.h"

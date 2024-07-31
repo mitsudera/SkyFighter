@@ -215,20 +215,29 @@ Main::SCENE Main::GetScene(void)
 	return this->scene;
 }
 
+AssetsManager* Main::GetAssetsManager(void)
+{
+	return this->assetsManager;
+}
+
+Renderer* Main::GetRenderer(void)
+{
+	return this->renderer;
+}
+
 void Main::Init(void)
 {
+
 	//Renderer¶¬
 	this->renderer = new Renderer(this);
 
 	this->renderer->InitRenderer(*GetInstanceHandle(), *GetWindowHangle(), true);
 
+	this->assetsManager = new AssetsManager(this);
+
+
 	//ŠeƒŒƒxƒ‹‚Ì¶¬
-	Level* title = new Level(this);
-	levelList.push_back(title);
-	Level* stage1 = new Level(this);
-	levelList.push_back(stage1);
-	Level* result = new Level(this);
-	levelList.push_back(result);
+	Title* title = new Title(this);
 
 	SetScene(SCENE::TITLE);
 	

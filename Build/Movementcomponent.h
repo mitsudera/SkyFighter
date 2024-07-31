@@ -1,12 +1,13 @@
 #pragma once
 #include "component.h"
-class Movementcomponent :public Component
+class MovementComponent :public Component
 {
 public:
 
-	Movementcomponent();
+	MovementComponent();
+	MovementComponent(GameObject* gameObject);
 	
-	~Movementcomponent();
+	~MovementComponent();
 
 	virtual void Init(void) override;
 

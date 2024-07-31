@@ -1,6 +1,5 @@
 #include "SkinMeshDataList.h"
 #include "AssetsManager.h"
-#include "GameEngine.h"
 
 BONE::BONE()
 {
@@ -351,13 +350,13 @@ void SkinMeshData::LoadSkinMeshData(FbxMesh* mesh, SKELETON* sp, AssetsManager* 
 
 		// 頂点バッファへのポインタを取得
 		D3D11_MAPPED_SUBRESOURCE msr;
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Map(this->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 		VERTEX_3D* pVtx = (VERTEX_3D*)msr.pData;
 
 		memcpy(pVtx, VertexArray, sizeof(VERTEX_3D) * PolygonVertexNum);
 
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Unmap(this->GetVertexBuffer(), 0);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->GetVertexBuffer(), 0);
 	}
 	// インデックスバッファ生成
 	this->CreateIndexBuffer(indexnum);
@@ -366,7 +365,7 @@ void SkinMeshData::LoadSkinMeshData(FbxMesh* mesh, SKELETON* sp, AssetsManager* 
 
 		// インデックスバッファのポインタを取得
 		D3D11_MAPPED_SUBRESOURCE msr;
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Map(this->GetIndexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->GetIndexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 		unsigned int* pIdx = (unsigned int*)msr.pData;
 
@@ -379,7 +378,7 @@ void SkinMeshData::LoadSkinMeshData(FbxMesh* mesh, SKELETON* sp, AssetsManager* 
 			n = i;
 		}
 
-		this->GetpAssetsManager()->GetGameEngine()->GetRenderer()->GetDeviceContext()->Unmap(this->GetIndexBuffer(), 0);
+		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->GetIndexBuffer(), 0);
 	}
 
 

@@ -1,25 +1,27 @@
 #include "Movementcomponent.h"
 
-Movementcomponent::Movementcomponent()
+MovementComponent::MovementComponent()
 {
 }
 
-Movementcomponent::~Movementcomponent()
+MovementComponent::MovementComponent(GameObject* gameObject)
+{
+	this->pGameObject = gameObject;
+}
+
+MovementComponent::~MovementComponent()
 {
 }
 
-void Movementcomponent::Init(void)
+void MovementComponent::Init(void)
 {
 }
 
-void Movementcomponent::Uninit(void)
+void MovementComponent::Uninit(void)
 {
 }
 
-void Movementcomponent::Update(void)
+void MovementComponent::Update(void)
 {
 }
 
-void Movementcomponent::Draw(void)
-{
-}
