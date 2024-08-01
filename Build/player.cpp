@@ -19,24 +19,16 @@ void Player::Init(void)
 	this->meshComponent->Init();
 	this->camera->Init();
 
-	camera->SetPosition(XMFLOAT3(0.0f, 0.0f, 1.0f));
+	camera->SetPosition(XMFLOAT3(0.0f, 5.0f, -50.0f));
 	
-	transformComponent->SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
-	
-	transformComponent->SetScale(XMFLOAT3(1.0f, 1.0f, 1.0f));
-	vector<string> animpath = {
-	"data/animation/keyframe/robotwalk.fbx",
-	"data/animation/keyframe/robotrun.fbx"
-	};
+	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
 
 	meshComponent->SetMeshComponent(
-		"data/MODEL/mesh/robot.fbx",
-		animpath,
-		TRUE,
-		30);
+		"data/MODEL/mesh/sentouki.fbx");
 
 	meshComponent->SetMeshDataList();
-	meshComponent->SetAnimationArray();
+
+
 }
 
 void Player::Uninit(void)

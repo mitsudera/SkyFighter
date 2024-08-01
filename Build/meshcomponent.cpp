@@ -1,6 +1,5 @@
 #pragma once
 #include "meshcomponent.h"
-#include "Renderer.h"
 #include "AssetsManager.h"
 #include "MeshData.h"
 #include "MeshAnimData.h"
@@ -20,7 +19,7 @@ MeshComponent::MeshComponent()
 	lastanimindex = 0;
 	meshNum = 0;
 	MeshDataListIndex = 0;
-
+	cullMode = CULL_MODE::CULL_MODE_FRONT;
 
 	motionblend = FALSE;
 
@@ -30,6 +29,24 @@ MeshComponent::MeshComponent()
 MeshComponent::MeshComponent(GameObject* gameObject)
 {
 	this->pGameObject = gameObject;
+
+	BlendMeshMtxArray = nullptr;
+	MeshMtxArray = nullptr;
+	animation = FALSE;
+	animindex = 0;
+	animstate = ANIM_STATE::NO_ANIM;
+	blendcnt = 0;
+	blendcntmax = 0;
+	framecnt = 0;
+	framenum = 0;
+	lastanimindex = 0;
+	meshNum = 0;
+	MeshDataListIndex = 0;
+	cullMode = CULL_MODE::CULL_MODE_FRONT;
+
+	motionblend = FALSE;
+
+
 }
 
 MeshComponent::~MeshComponent()
@@ -105,7 +122,7 @@ void MeshComponent::Uninit(void)
 
 void MeshComponent::Draw(void)
 {
-	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetCullingMode(CULL_MODE::CULL_MODE_FRONT);
+	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetCullingMode(this->cullMode);
 
 	for (int i = 0; i < this->meshNum; i++)
 	{
@@ -150,6 +167,11 @@ void MeshComponent::DrawMesh(int n)
 	}
 
 
+}
+
+void MeshComponent::SetCullMode(CULL_MODE mode)
+{
+	this->cullMode = mode;
 }
 
 

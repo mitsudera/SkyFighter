@@ -152,72 +152,109 @@ void PSmain(in float4 inPosition : SV_POSITION,
 	}
 	else
 	{
-		float4 tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-		float4 outColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+		if(Material.phong==false)
+        {
+            float4 tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+            float4 outColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-		for (int i = 0; i < 5; i++)
-		{
-			float3 lightDir;
-			float light;
+            for (int i = 0; i < 5; i++)
+            {
+                float3 lightDir;
+                float light;
 
-			if (Light.Flags[i].y == 1)
-			{
-				if (Light.Flags[i].x == 1)
-				{
-					lightDir = normalize(Light.Direction[i].xyz);
-					light = dot(lightDir, inNormal.xyz);
+                if (Light.Flags[i].y == 1)
+                {
+                    if (Light.Flags[i].x == 1)
+                    {
+                        lightDir = normalize(Light.Direction[i].xyz);
+                        light = dot(lightDir, inNormal.xyz);
 
-					light = 0.5 - 0.5 * light;
-					tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
-				}
-				else if (Light.Flags[i].x == 2)
-				{
-					lightDir = normalize(Light.Position[i].xyz - inWorldPos.xyz);
-					light = dot(lightDir, inNormal.xyz);
+                        light = 0.5 - 0.5 * light;
+                        tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+                    }
+                    else if (Light.Flags[i].x == 2)
+                    {
+                        lightDir = normalize(Light.Position[i].xyz - inWorldPos.xyz);
+                        light = dot(lightDir, inNormal.xyz);
 
-					tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+                        tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
 
-					float distance = length(inWorldPos - Light.Position[i]);
+                        float distance = length(inWorldPos - Light.Position[i]);
 
-					float att = saturate((Light.Attenuation[i].x - distance) / Light.Attenuation[i].x);
-					tempColor *= att;
-				}
-				else
-				{
-					tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-				}
+                        float att = saturate((Light.Attenuation[i].x - distance) / Light.Attenuation[i].x);
+                        tempColor *= att;
+                    }
+                    else
+                    {
+                        tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+                    }
 
-				outColor += tempColor;
-			}
-		}
+                    outColor += tempColor;
+                }
+            }
 
-		color = outColor;
-		color.a = inDiffuse.a * Material.Diffuse.a;
+            color = outColor;
+            color.a = inDiffuse.a * Material.Diffuse.a;
+        }
+		else
+        {
+            float4 tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+            float4 outColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+
+ 
+            for (int i = 0; i < 5; i++)
+            {
+                float3 lightDir;
+                float light;
+                float3 iA;
+                float3 iD;
+                float3 iS;
+                
+                if (Light.Flags[i].y == 1)
+                {
+                    if (Light.Flags[i].x == 1)
+                    {
+                        lightDir = normalize(Light.Direction[i].xyz);
+                        light = dot(lightDir, inNormal.xyz);
+
+                        light = 0.5 - 0.5 * light;
+                        float3 r = 2.0 * inNormal.xyz * light - lightDir;
+
+                        iA = Material.Ambient * Light.Ambient[i];
+                        iD = color * Material.Diffuse * light * Light.Diffuse[i];
+
+                        iS = pow(saturate(dot(r, lightDir)), Material.Specular.w) * Material.Specular.xyz * Material.Specular.xyz;
+                    }
+                    else if (Light.Flags[i].x == 2)
+                    {
+                        lightDir = normalize(Light.Position[i].xyz - inWorldPos.xyz);
+                        light = dot(lightDir, inNormal.xyz);
+
+                        tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+
+                        float distance = length(inWorldPos - Light.Position[i]);
+
+                        float att = saturate((Light.Attenuation[i].x - distance) / Light.Attenuation[i].x);
+                        tempColor *= att;
+                    }
+                    else
+                    {
+                        tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
+                    }
+
+                    outColor += tempColor;
+                }
+            }
+
+            color = outColor;
+            color.a = inDiffuse.a * Material.Diffuse.a;
+
+        }
+			
+
 	}
 
-	//ƒtƒHƒO
-	if (Fog.Enable == 1)
-	{
-		float z = inPosition.z*inPosition.w;
-		float f = (Fog.Distance.y - z) / (Fog.Distance.y - Fog.Distance.x);
-		f = saturate(f);
-		outDiffuse = f * color + (1 - f)*Fog.FogColor;
-		outDiffuse.a = color.a;
-	}
-	else
-	{
-		outDiffuse = color;
-	}
+	outDiffuse = color;
 
-	//‰Žæ‚è
-	if (fuchi == 1)
-	{
-		float angle = dot(normalize(inWorldPos.xyz - Camera.xyz), normalize(inNormal));
-		//if ((angle < 0.5f)&&(angle > -0.5f))
-		if (angle > -0.3f)
-		{
-			outDiffuse.rb  = 1.0f;
-			outDiffuse.g = 0.0f;			
-		}
-	}
 }

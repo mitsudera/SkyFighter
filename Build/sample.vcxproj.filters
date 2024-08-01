@@ -46,9 +46,6 @@
     <Filter Include="Manger">
       <UniqueIdentifier>{050ddd03-4604-4d07-a199-659043612c60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gameobject\debug">
-      <UniqueIdentifier>{17db20de-c812-44f0-8e3e-65b3732cde70}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h">
@@ -117,6 +114,12 @@
     <ClInclude Include="CameraComponent.h">
       <Filter>component</Filter>
     </ClInclude>
+    <ClInclude Include="SkySphire.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -178,6 +181,12 @@
     </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="SkySphire.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

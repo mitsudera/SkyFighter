@@ -1,5 +1,6 @@
 #pragma once
 #include "primitivecomponent.h"
+#include "Renderer.h"
 
 class MeshDataList;
 
@@ -57,7 +58,7 @@ public:
 
 	virtual void DrawMesh(int n);
 
-
+	void SetCullMode(CULL_MODE mode);
 
 protected:
 	string meshFilePath;
@@ -82,6 +83,7 @@ protected:
 	BOOL motionblend;
 	BOOL animation;
 
+	CULL_MODE cullMode;
 
 	
 

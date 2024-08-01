@@ -14,8 +14,7 @@ public:
 	virtual void Update(void) override;
 	virtual void Draw(void) override;
 private:
-	Player* player;
-
+	vector<GameObject*> gameObject;
 
 };
 

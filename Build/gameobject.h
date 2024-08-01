@@ -2,6 +2,10 @@
 #include"transformcomponent.h"
 #include"main.h"
 
+
+class MeshComponent;
+
+
 class GameObject
 {
 public:
