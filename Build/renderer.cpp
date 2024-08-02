@@ -27,6 +27,8 @@ Renderer::Renderer(Main*main)
 
 	m_VertexShader = NULL;
 	m_PixelShader = NULL;
+	m_VertexShaderShadow = NULL;
+	m_PixelShaderShadow = NULL;
 	VertexLayout = NULL;
 
 
@@ -304,15 +306,16 @@ void Renderer::SetLightEnable(BOOL flag)
 	SetLightBuffer();
 }
 
-void Renderer::SetLight(int index, LIGHT* pLight)
+void Renderer::SetLight(LightComponent* pLight)
 {
-	Light.Position[index] = XMFLOAT4(pLight->Position.x, pLight->Position.y, pLight->Position.z, 0.0f);
-	Light.Direction[index] = XMFLOAT4(pLight->Direction.x, pLight->Direction.y, pLight->Direction.z, 0.0f);
-	Light.Diffuse[index] = pLight->Diffuse;
-	Light.Ambient[index] = pLight->Ambient;
-	Light.Flags[index].Type = pLight->Type;
-	Light.Flags[index].OnOff = pLight->Enable;
-	Light.Attenuation[index].x = pLight->Attenuation;
+	int index = pLight->GetIndex();
+	Light.Position[index] = XMFLOAT4(pLight->GetPosition().x,pLight->GetPosition().y,pLight->GetPosition().z, 0.0f);
+	Light.direction[index] = XMFLOAT4(pLight->GetDirection().x , pLight->GetDirection().y, pLight->GetDirection().z, 0.0f);
+	Light.Diffuse[index] = pLight->GetDiffuse();
+	Light.Ambient[index] = pLight->GetAmbient();
+	Light.Flags[index].Type = pLight->GetType();
+	Light.Flags[index].OnOff = pLight->GetEnable();
+	Light.Attenuation[index].x = pLight->GetAttenuation();
 
 	SetLightBuffer();
 }
@@ -354,6 +357,12 @@ void Renderer::SetShaderCamera(XMFLOAT3 pos)
 
 	m_CameraBuffer->SetToBuffer(m_ImmediateContext, &tmp);
 	//GetDeviceContext()->UpdateSubresource(CameraBuffer, 0, NULL, &tmp, 0, 0);
+}
+
+
+void Renderer::SetShadow(SHADOWMAP_CBUFFER* shadow)
+{
+	m_ShadowBuffer->SetToBuffer(m_ImmediateContext, shadow);
 }
 
 
@@ -457,6 +466,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	vp.TopLeftY = 0;
 	m_ImmediateContext->RSSetViewports( 1, &vp );
 
+	this->defaultViewPort = vp;
 
 
 	// ラスタライザステート作成
@@ -464,6 +474,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	ZeroMemory( &rd, sizeof( rd ) );
 	rd.FillMode = D3D11_FILL_SOLID;
 	rd.CullMode = D3D11_CULL_NONE; 
+
 	rd.DepthClipEnable = TRUE; 
 	rd.MultisampleEnable = FALSE; 
 	m_D3DDevice->CreateRasterizerState( &rd, &RasterStateCullOff);
@@ -545,8 +556,9 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	SetDepthEnable(TRUE);
 
 
+	ID3D11SamplerState* samplerState[2];
 
-	// サンプラーステート設定
+	// Wrapサンプラーステート設定
 	D3D11_SAMPLER_DESC samplerDesc;
 	ZeroMemory( &samplerDesc, sizeof( samplerDesc ) );
 	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
@@ -559,16 +571,29 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	ID3D11SamplerState* samplerState = NULL;
-	m_D3DDevice->CreateSamplerState( &samplerDesc, &samplerState );
+	m_D3DDevice->CreateSamplerState( &samplerDesc, &samplerState[0] );
 
-	m_ImmediateContext->PSSetSamplers( 0, 1, &samplerState );
+	m_ImmediateContext->PSSetSamplers( 0, 1, &samplerState[0] );
+
+
+	// Borderサンプラーステート設定
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.BorderColor[0] = 1.0f;
+	samplerDesc.BorderColor[1] = 1.0f;
+	samplerDesc.BorderColor[2] = 1.0f;
+	samplerDesc.BorderColor[3] = 1.0f;
+	m_D3DDevice->CreateSamplerState(&samplerDesc, &samplerState[1]);
+	m_ImmediateContext->PSSetSamplers(1, 1, &samplerState[1]);
+
 
 
 	
 	// 頂点シェーダコンパイル・生成
  
 	ID3DBlob* pVSBlob = this->CreateVSFile("shader.hlsl","VSmain", & m_VertexShader);
+	pVSBlob = this->CreateVSFile("shader.hlsl","VS_SM", & m_VertexShaderShadow);
 
 	// 入力レイアウト生成
 	D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -590,6 +615,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// ピクセルシェーダコンパイル・生成
 	this->CreatePSFile("shader.hlsl","PSmain", &m_PixelShader);
+	this->CreatePSFile("shader.hlsl","PSmain", &m_PixelShaderShadow);
 
 
 	// 定数バッファ生成
@@ -607,7 +633,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//ライト初期化
 	ZeroMemory(&Light, sizeof(LIGHT_CBUFFER));
-	Light.Direction[0] = XMFLOAT4(1.0f, -1.0f, 1.0f, 0.0f);
+	Light.direction[0] = XMFLOAT4(1.0f, -1.0f, 1.0f, 0.0f);
 	Light.Diffuse[0] = XMFLOAT4(0.9f, 0.9f, 0.9f, 1.0f);
 	Light.Ambient[0] = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 	Light.Flags[0].Type = LIGHT_TYPE_DIRECTIONAL;
@@ -649,6 +675,7 @@ void Renderer::UninitRenderer(void)
 	delete m_FogBuffer;
 	delete m_FuchiBuffer;
 	delete m_CameraBuffer;
+	delete m_ShadowBuffer;
 	//m_WorldBuffer.ReleaseBuffer();
 	//m_ViewBuffer.ReleaseBuffer();
 	//m_ProjectionBuffer.ReleaseBuffer();
@@ -669,6 +696,9 @@ void Renderer::UninitRenderer(void)
 	if (m_VertexShader)			m_VertexShader->Release();
 	if (m_PixelShader)			m_PixelShader->Release();
 
+	if (m_VertexShaderShadow)			m_VertexShaderShadow->Release();
+	if (m_PixelShaderShadow)			m_PixelShaderShadow->Release();
+
 	if (m_ImmediateContext)		m_ImmediateContext->ClearState();
 	if (RenderTargetView)		RenderTargetView->Release();
 	if (SwapChain)				SwapChain->Release();
@@ -687,6 +717,8 @@ void Renderer::InitConstantBuffers(void) {
 	m_FogBuffer = new Buffer<FOG_CBUFFER>(GetDevice());
 	m_FuchiBuffer = new Buffer<FUCHI>(GetDevice());
 	m_CameraBuffer = new Buffer<XMFLOAT4>(GetDevice());
+	m_ShadowBuffer = new Buffer<SHADOWMAP_CBUFFER>(GetDevice());
+
 }
 
 void Renderer::SetShaderBuffersMode(ShaderBF_MODE bfMode) {
@@ -724,6 +756,11 @@ void Renderer::SetShaderBuffersMode(ShaderBF_MODE bfMode) {
 			//カメラ
 			m_CameraBuffer->SetVS(m_ImmediateContext, 7);
 			m_CameraBuffer->SetPS(m_ImmediateContext, 7);
+
+			//影
+			m_ShadowBuffer->SetVS(m_ImmediateContext, 8);
+			m_ShadowBuffer->SetPS(m_ImmediateContext, 8);
+
 		}
 		break;
 	case PARTICAL_BF:
@@ -757,6 +794,29 @@ void Renderer::SetClearColor(float* color4)
 	ClearColor[1] = color4[1];
 	ClearColor[2] = color4[2];
 	ClearColor[3] = color4[3];
+}
+
+ID3D11InputLayout** Renderer::GetVertexLayout(void)
+{
+	return &this->VertexLayout;
+}
+
+void Renderer::SetShaderDefault(void)
+{
+	m_ImmediateContext->VSSetShader(m_VertexShader,NULL,0);
+	m_ImmediateContext->PSSetShader(m_PixelShader,NULL,0);
+	// RSにビューポートを設定
+	m_ImmediateContext->RSSetViewports(1, &defaultViewPort);
+	// OMに描画ターゲット ビューと深度/ステンシル・ビューを設定
+	m_ImmediateContext->OMSetRenderTargets(1, &RenderTargetView, DepthStencilView);
+
+}
+
+void Renderer::SetShaderShadow(void)
+{
+	m_ImmediateContext->VSSetShader(m_VertexShaderShadow,NULL,0);
+	m_ImmediateContext->PSSetShader(m_PixelShaderShadow,NULL,0);
+
 }
 
 

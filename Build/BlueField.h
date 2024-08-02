@@ -1,16 +1,10 @@
 #pragma once
 #include "gameobject.h"
-
-class DirectionalLightComponent;
-
-
-class Light :public GameObject
+class BlueField :public GameObject
 {
 public:
-
-	Light(Level* level);
-	~Light();
-
+	BlueField(Level* level);
+	~BlueField();
 
 
 	// GameObject ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
@@ -21,9 +15,8 @@ public:
 	virtual void Update(void) override;
 
 	virtual void Draw(void) override;
-	
+
 private:
-
-	DirectionalLightComponent* dirLight;
-
+	MeshComponent* mesh;
 };
+

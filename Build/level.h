@@ -2,7 +2,7 @@
 #include "Coreminimal.h"
 class Main;
 class GameObject;
-
+class ShadowMapping;
 class Level
 {
 public:
@@ -15,6 +15,8 @@ public:
 	virtual void Uninit(void)=0;
 	virtual void Update(void)=0;
 	virtual void Draw(void)=0;
+	virtual void DrawShadowObject(void) = 0;
+	virtual void DrawGameObject(void) = 0;
 
 	Main* GetMain(void);
 	
@@ -24,7 +26,10 @@ protected:
 
 	Main* pMain;
 	
-	
+	vector<GameObject*> gameObject;
+	vector<GameObject*> shadowObject;
+	ShadowMapping* shdowMap;
+
 	
 
 };

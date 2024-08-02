@@ -79,14 +79,15 @@ void CameraComponent::Update(void)
 	PrimitiveComponent::Update();
 
 
-	SetCamera();
-	SetViewPort(g_ViewPortType);
 
 }
 
 void CameraComponent::Draw(void)
 {
 	PrimitiveComponent::Draw();
+
+	SetCamera();
+	SetViewPort(g_ViewPortType);
 
 
 	//SetCameraAT(XMFLOAT3(0, 0, 1));

@@ -403,6 +403,7 @@ void SkinMeshData::LoadSkinMeshData(FbxMesh* mesh, SKELETON* sp, AssetsManager* 
 		FbxSurfaceMaterial* fbxmaterial = node->GetMaterial(i);
 
 
+		FbxClassId id = fbxmaterial->GetClassId();
 
 		if (fbxmaterial != 0)
 		{
@@ -412,7 +413,7 @@ void SkinMeshData::LoadSkinMeshData(FbxMesh* mesh, SKELETON* sp, AssetsManager* 
 			// マテリアル解析
 			// LambertかPhongか
 			//lambart
-			if (fbxmaterial->GetClassId().Is(FbxSurfaceLambert::ClassId))
+			if (id == (FbxSurfaceLambert::ClassId))
 			{
 
 				// Lambertにダウンキャスト
@@ -449,7 +450,7 @@ void SkinMeshData::LoadSkinMeshData(FbxMesh* mesh, SKELETON* sp, AssetsManager* 
 
 			}
 			//phong
-			else if (fbxmaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
+			else if (id == (FbxSurfacePhong::ClassId))
 			{
 
 				// Phongにダウンキャスト

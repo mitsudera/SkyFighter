@@ -41,12 +41,12 @@ cbuffer MaterialBuffer : register( b3 )
 // ライト用バッファ
 struct LIGHT
 {
-	float4		Direction[5];
-	float4		Position[5];
-	float4		Diffuse[5];
-	float4		Ambient[5];
-	float4		Attenuation[5];
-	int4		Flags[5];
+	float4		Direction[8];
+	float4		Position[8];
+	float4		Diffuse[8];
+	float4		Ambient[8];
+	float4		Attenuation[8];
+	int4		Flags[8];
 	int			Enable;
 	int			Dummy[3];//16byte境界用
 };
@@ -84,6 +84,20 @@ cbuffer CameraBuffer : register(b7)
 }
 
 
+struct SHADOW
+{
+    matrix wvp;
+    matrix view;
+    matrix proj;
+    int enable;
+    int dummy[3];
+};
+
+cbuffer ShadowBuffer : register(b8)
+{
+    SHADOW Shadow;
+}
+
 
 //=============================================================================
 // 頂点シェーダ
@@ -97,7 +111,8 @@ void VSmain( in  float4 inPosition		: POSITION0,
 						  out float4 outNormal		: NORMAL0,
 						  out float2 outTexCoord	: TEXCOORD0,
 						  out float4 outDiffuse		: COLOR0,
-						  out float4 outWorldPos    : POSITION0)
+						  out float4 outWorldPos    : POSITION0,
+                          out float4 outPosSM       : POSITION1)
 {
 	matrix wvp;
 	wvp = mul(World, View);
@@ -111,6 +126,19 @@ void VSmain( in  float4 inPosition		: POSITION0,
 	outWorldPos = mul(inPosition, World);
 
 	outDiffuse = inDiffuse;
+    
+    
+    //頂点座標　モデル座標系→透視座標系(シャドウマップ)
+    matrix SMWorldViewProj = mul(World, Shadow.wvp);
+    wvp = mul(World, View);
+    wvp = mul(wvp, Projection);
+
+    float4 pos4 = mul(inPosition, SMWorldViewProj);
+    pos4.xyz = pos4.xyz / pos4.w;
+    outPosSM.x = (pos4.x + 1.0) / 2.0;
+    outPosSM.y = (-pos4.y + 1.0) / 2.0;
+    outPosSM.z = pos4.z - 0.00002;
+
 }
 
 
@@ -118,8 +146,12 @@ void VSmain( in  float4 inPosition		: POSITION0,
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
-Texture2D		g_Texture : register( t0 );
-SamplerState	g_SamplerState : register( s0 );
+Texture2D Texture : register(t0);
+Texture2D ShadowMap : register(t1);
+Texture2D ShadowMapTex : register(t2);
+
+SamplerState smpWrap : register(s0);
+SamplerState smpBorder : register(s1);
 
 
 //=============================================================================
@@ -130,29 +162,77 @@ void PSmain(in float4 inPosition : SV_POSITION,
 						 in  float2 inTexCoord		: TEXCOORD0,
 						 in  float4 inDiffuse		: COLOR0,
 						 in  float4 inWorldPos      : POSITION0,
+						 in  float4 inPosSM          : POSITION1, // 頂点座標(シャドウマップの透視座標系)
+
 
 						 out float4 outDiffuse		: SV_Target )
 {
-	float4 color;
+    float4 color;
+    float sma = 1.0;
+    					//影
+    if (Shadow.enable == 1)
+    {
 
-	if (Material.noDiffuseTex == 0)
-	{
-		color = g_Texture.Sample(g_SamplerState, inTexCoord);
+				//		// シャドウマップ
 
-		color *= inDiffuse;
-	}
-	else
-	{
-		color = inDiffuse;
-	}
+        float sm = ShadowMap.Sample(smpBorder, inPosSM.xy).r;
+						
 
-	if (Light.Enable == 0)
-	{
-		color = color * Material.Diffuse;
-	}
-	else
-	{
-		if(Material.phong==false)
+
+
+        float4 sa = ShadowMapTex.Sample(smpBorder, inPosSM.xy);
+        //sm = sa.r;
+
+        if (inPosSM.z > sm)
+        {
+
+            sma = 0.5;
+
+            sma = sma + (0.5 - (sa.a * 0.5));
+        }
+						
+
+						
+
+        //if (sm == 1.0)
+        //{
+        //    sma = 1.0;
+        //}
+        
+        sma = (inPosSM.z < sm) ? 1.0 : 0.5;
+        if (sm == 1.0)
+        {
+            sma = 1.0*sa.r;
+        }
+        
+ 
+
+    }
+    else
+    {
+        sma = 1.0;
+    }
+ 
+
+    if (Material.noDiffuseTex == 0)
+    {
+        color = Texture.Sample(smpWrap, inTexCoord);
+
+        color *= inDiffuse;
+    }
+    else
+    {
+        
+        color = inDiffuse;
+    }
+
+    if (Light.Enable == 0)
+    {
+        color = color * Material.Diffuse;
+    }
+    else
+    {
+        if (Material.phong == false)
         {
             float4 tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
             float4 outColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -168,9 +248,24 @@ void PSmain(in float4 inPosition : SV_POSITION,
                     {
                         lightDir = normalize(Light.Direction[i].xyz);
                         light = dot(lightDir, inNormal.xyz);
+                        if (light < -0.1)
+                        {
 
-                        light = 0.5 - 0.5 * light;
-                        tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+                            light = (0.5 - 0.5 * light) * sma;
+                            tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+                        }
+                        else
+                        {
+
+
+                            light = (0.5 - 0.5 * light);
+
+                            tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+
+                        }
+                        
+  
+
                     }
                     else if (Light.Flags[i].x == 2)
                     {
@@ -196,7 +291,7 @@ void PSmain(in float4 inPosition : SV_POSITION,
             color = outColor;
             color.a = inDiffuse.a * Material.Diffuse.a;
         }
-		else
+        else
         {
             float4 tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
             float4 outColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -216,15 +311,20 @@ void PSmain(in float4 inPosition : SV_POSITION,
                     if (Light.Flags[i].x == 1)
                     {
                         lightDir = normalize(Light.Direction[i].xyz);
-                        light = dot(lightDir, inNormal.xyz);
+                        light = dot(lightDir, normalize(inNormal.xyz));
 
                         light = 0.5 - 0.5 * light;
                         float3 r = 2.0 * inNormal.xyz * light - lightDir;
 
-                        iA = Material.Ambient * Light.Ambient[i];
+                        float3 v = normalize(Camera.xyz - inWorldPos.xyz);
+                        
+                        iA = Material.Ambient.xyz * Material.Ambient.w * Light.Ambient[i].xyz;
                         iD = color * Material.Diffuse * light * Light.Diffuse[i];
 
-                        iS = pow(saturate(dot(r, lightDir)), Material.Specular.w) * Material.Specular.xyz * Material.Specular.xyz;
+                        iS = pow(saturate(dot(r, v)), Material.Shininess) * Material.Specular.xyz;
+                        
+                        tempColor = float4(saturate((iA + iD + iS)), 1.0f);
+
                     }
                     else if (Light.Flags[i].x == 2)
                     {
@@ -253,8 +353,66 @@ void PSmain(in float4 inPosition : SV_POSITION,
         }
 			
 
-	}
+    }
 
-	outDiffuse = color;
+    outDiffuse = color;
 
+}
+
+void VS_SM(
+		in float4 inPosition : POSITION0,
+		in float4 inNormal : NORMAL0,
+		in float4 inDiffuse : COLOR0,
+		in float2 inTexCoord : TEXCOORD0,
+
+		out float4 outPosition : SV_POSITION,
+		out float2 outTexCoord : TEXCOORD0,
+		out float4 outDiffuse : COLOR0,
+		out float4 outWorldPos : POSITION0
+)
+{
+    matrix wvp;
+    wvp = mul(World, View);
+    wvp = mul(wvp, Projection);
+    outPosition = mul(inPosition, wvp);
+
+
+    outTexCoord = inTexCoord;
+
+    outWorldPos = mul(inPosition, World);
+
+    outDiffuse = inDiffuse;
+}
+
+
+//シャドウマップ用ピクセルシェーダー
+void PS_SM(
+		in float4 inPosition : SV_POSITION,
+		in float2 inTexCoord : TEXCOORD0,
+		in float4 inDiffuse : COLOR0,
+		in float4 inWorldPos : POSITION0,
+
+
+		out float4 outDiffuse : SV_Target
+		)
+{
+    float4 color;
+    if (Material.noDiffuseTex == 0)
+    {
+        color = Texture.Sample(smpWrap, inTexCoord);
+
+        color *= inDiffuse;
+    }
+    else
+    {
+        
+        color = inDiffuse;
+    }
+    
+    color = color * Material.Diffuse;
+
+    color.r = inPosition.z;
+    
+    
+    outDiffuse = color;
 }

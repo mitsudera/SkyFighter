@@ -8,10 +8,11 @@
 #include "CoreMinimal.h"
 #include "Main.h"
 #include "Buffer.h"
+#include "LightComponent.h"
+#include "ShadowMapping.h"
 //*********************************************************
 // マクロ定義
 //*********************************************************
-#define LIGHT_MAX		(5)
 
 enum LIGHT_TYPE
 {
@@ -68,16 +69,6 @@ struct MATERIAL
 	int			phong;				//0=lambart,1=phong
 };
 
-// ライト構造体
-struct LIGHT {
-	XMFLOAT3	Direction;	// ライトの方向
-	XMFLOAT3	Position;	// ライトの位置
-	XMFLOAT4	Diffuse;	// 拡散光の色
-	XMFLOAT4	Ambient;	// 環境光の色
-	float		Attenuation;// 減衰率
-	int			Type;		// ライト種別・有効フラグ
-	int			Enable;		// ライト種別・有効フラグ
-};
 
 // フォグ構造体
 struct FOG {
@@ -111,14 +102,14 @@ struct LIGHTFLAGS
 // ライト用定数バッファ構造体
 struct LIGHT_CBUFFER
 {
-	XMFLOAT4	Direction[LIGHT_MAX];	// ライトの方向
+	XMFLOAT4	direction[LIGHT_MAX];	// ライトの方向
 	XMFLOAT4	Position[LIGHT_MAX];	// ライトの位置
 	XMFLOAT4	Diffuse[LIGHT_MAX];		// 拡散光の色
 	XMFLOAT4	Ambient[LIGHT_MAX];		// 環境光の色
 	XMFLOAT4	Attenuation[LIGHT_MAX];	// 減衰率
 	LIGHTFLAGS	Flags[LIGHT_MAX];		// ライト種別
 	int			Enable;					// ライティング有効・無効フラグ
-	int			Dummy[3];				// 16byte境界用
+	int			Dummy[15];				// 16byte境界用
 };
 
 // フォグ用定数バッファ構造体
@@ -184,7 +175,7 @@ public:
 
 	void SetLightBuffer(void); // static
 	void SetLightEnable(BOOL flag);
-	void SetLight(int index, LIGHT* light);
+	void SetLight(LightComponent* light);
 
 	void SetFogBuffer(void);
 	void SetFogEnable(BOOL flag);
@@ -195,8 +186,15 @@ public:
 	void SetFuchi(int flag);
 	void SetShaderCamera(XMFLOAT3 pos);
 
+	void SetShadow(SHADOWMAP_CBUFFER* shadow);
+
 	void SetClearColor(float* color4);
 
+	ID3D11InputLayout** GetVertexLayout(void);
+
+	void SetShaderDefault(void);
+
+	void SetShaderShadow(void);
 
 private:
 
@@ -209,6 +207,8 @@ private:
 	IDXGISwapChain* SwapChain;
 	ID3D11RenderTargetView* RenderTargetView;
 	ID3D11DepthStencilView* DepthStencilView;
+	
+	D3D11_VIEWPORT defaultViewPort;
 
 	void	InitConstantBuffers(void);
 
@@ -216,6 +216,8 @@ private:
 
 	ID3D11VertexShader* m_VertexShader;
 	ID3D11PixelShader* m_PixelShader;
+	ID3D11VertexShader* m_VertexShaderShadow;
+	ID3D11PixelShader* m_PixelShaderShadow;
 	ID3D11InputLayout* VertexLayout;
 
 	Buffer<XMMATRIX>			*m_WorldBuffer;
@@ -226,15 +228,8 @@ private:
 	Buffer<FOG_CBUFFER>			*m_FogBuffer;
 	Buffer<FUCHI>				*m_FuchiBuffer;
 	Buffer<XMFLOAT4>			*m_CameraBuffer;
+	Buffer<SHADOWMAP_CBUFFER>	*m_ShadowBuffer;
 
-	//ID3D11Buffer* WorldBuffer;
-	//ID3D11Buffer* ViewBuffer;
-	//ID3D11Buffer* ProjectionBuffer;
-	//ID3D11Buffer* MaterialBuffer;
-	//ID3D11Buffer* LightBuffer;
-	//ID3D11Buffer* FogBuffer;
-	//ID3D11Buffer* FuchiBuffer;
-	//ID3D11Buffer* CameraBuffer;
 
 	ID3D11DepthStencilState* DepthStateEnable;
 	ID3D11DepthStencilState* DepthStateDisable;

@@ -46,6 +46,9 @@
     <Filter Include="Manger">
       <UniqueIdentifier>{050ddd03-4604-4d07-a199-659043612c60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{71882956-d0f8-44de-b497-d9d029decca4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h">
@@ -64,9 +67,6 @@
       <Filter>level</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="gameobject.h">
@@ -118,7 +118,22 @@
       <Filter>gameobject</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLightComponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="LightComponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMapping.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="BlueField.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +201,24 @@
       <Filter>gameobject</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>gameobject</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalLightComponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="LightComponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMapping.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueField.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="shader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -19,9 +19,9 @@ void Player::Init(void)
 	this->meshComponent->Init();
 	this->camera->Init();
 
-	camera->SetPosition(XMFLOAT3(0.0f, 5.0f, -50.0f));
+	camera->SetPosition(XMFLOAT3(0.0f, 10.0f, -30.0f));
 	
-	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
+	transformComponent->SetTransForm(XMFLOAT3(0.0f, 10.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
 
 	meshComponent->SetMeshComponent(
 		"data/MODEL/mesh/sentouki.fbx");

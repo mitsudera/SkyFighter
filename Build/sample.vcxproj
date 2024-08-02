@@ -148,14 +148,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AssetsManager.h" />
+    <ClInclude Include="BlueField.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="component.h" />
     <ClInclude Include="Coreminimal.h" />
+    <ClInclude Include="DirectionalLightComponent.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="LightComponent.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="MeshAnimData.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="primitivecomponent.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ShadowMapping.h" />
     <ClInclude Include="SkeletonAnimData.h" />
     <ClInclude Include="SkinMeshComponent.h" />
     <ClInclude Include="SkinMeshDataList.h" />
@@ -174,12 +178,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetsManager.cpp" />
+    <ClCompile Include="BlueField.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="component.cpp" />
+    <ClCompile Include="DirectionalLightComponent.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="MeshAnimData.cpp" />
@@ -189,12 +196,18 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="primitivecomponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ShadowMapping.cpp" />
     <ClCompile Include="SkeletonAnimData.cpp" />
     <ClCompile Include="SkinMeshComponent.cpp" />
     <ClCompile Include="SkinMeshDataList.cpp" />
     <ClCompile Include="SkySphire.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="transformcomponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="shader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

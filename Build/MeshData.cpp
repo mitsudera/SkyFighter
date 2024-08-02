@@ -678,7 +678,7 @@ void MeshData::LoadFbxMesh(FbxMesh* mesh,AssetsManager* ap)
 			//lambart
 			material.phong = 0;
 
-			if (fbxmaterial->GetClassId().Is(FbxSurfaceLambert::ClassId))
+			if (id==(FbxSurfaceLambert::ClassId))
 			{
 
 				// Lambertにダウンキャスト
@@ -715,7 +715,7 @@ void MeshData::LoadFbxMesh(FbxMesh* mesh,AssetsManager* ap)
 
 			}
 			//phong
-			else if (fbxmaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
+			else if (id==(FbxSurfacePhong::ClassId))
 			{
 
 				// Phongにダウンキャスト

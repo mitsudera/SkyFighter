@@ -13,8 +13,12 @@ public:
 	virtual void Uninit(void) override;
 	virtual void Update(void) override;
 	virtual void Draw(void) override;
+	virtual void DrawGameObject(void) override;
+
+	virtual void DrawShadowObject(void) override;
 private:
-	vector<GameObject*> gameObject;
+	
+
 
 };
 
