@@ -6,10 +6,10 @@
 ShadowMapping::ShadowMapping(Level* level)
 {
 	this->pLevel = level;
-	this->quarity = 8192.0f;
-	this->hw = 8192.0f;
+	this->quarity = 1024.0f;
+	this->hw = 64.0f;
 
-	pos = XMFLOAT3(100.0f, 100.0f, 100.0f);
+	pos = XMFLOAT3(10.0f, 10.0f, 10.0f);
 	at = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	this->ShadowMap.Enable = TRUE;
@@ -26,7 +26,7 @@ void ShadowMapping::Init(void)
 {
 	Renderer* renderer = this->pLevel->GetMain()->GetRenderer();
 
-
+	HRESULT hr;
 
 
 
@@ -40,13 +40,13 @@ void ShadowMapping::Init(void)
 	descDepth.SampleDesc.Count = 1;  // マルチサンプリングの設定
 	descDepth.SampleDesc.Quality = 0;  // マルチサンプリングの品質
 	descDepth.Usage = D3D11_USAGE_DEFAULT;      // デフォルト使用法
-	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE; // 深度/ステンシル、シェーダ リソース ビューとして使用
+	descDepth.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL; // 深度/ステンシル、シェーダ リソース ビューとして使用
 	descDepth.CPUAccessFlags = 0;   // CPUからはアクセスしない
 	descDepth.MiscFlags = 0;   // その他の設定なし
-	renderer->GetDevice()->CreateTexture2D(
+	hr = renderer->GetDevice()->CreateTexture2D(
 		&descDepth,         // 作成する2Dテクスチャの設定
-		NULL,               // 
-		&pShadowMapTexture);     // 作成したテクスチャを受け取る変数
+		nullptr,               // 
+		&ShadowMapDS);     // 作成したテクスチャを受け取る変数
 
 	// 深度/ステンシル ビューの作成
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
@@ -54,10 +54,10 @@ void ShadowMapping::Init(void)
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Flags = 0;
 	descDSV.Texture2D.MipSlice = 0;
-	renderer->GetDevice()->CreateDepthStencilView(
-		pShadowMapTexture,         // 深度/ステンシル・ビューを作るテクスチャ
+	hr = renderer->GetDevice()->CreateDepthStencilView(
+		ShadowMapDS,         // 深度/ステンシル・ビューを作るテクスチャ
 		&descDSV,             // 深度/ステンシル・ビューの設定
-		&pShadowMapDSView); // 作成したビューを受け取る変数
+		&ShadowMapDSView); // 作成したビューを受け取る変数
 
 	// シェーダ リソース ビューの作成
 	D3D11_SHADER_RESOURCE_VIEW_DESC srDesc;
@@ -67,10 +67,10 @@ void ShadowMapping::Init(void)
 	srDesc.Texture2D.MipLevels = -1;  // すべてのミップマップ レベル
 
 	// シェーダ リソース ビューの作成
-	renderer->GetDevice()->CreateShaderResourceView(
-		pShadowMapTexture,          // アクセスするテクスチャ リソース
+	hr = renderer->GetDevice()->CreateShaderResourceView(
+		ShadowMapDS,          // アクセスするテクスチャ リソース
 		&srDesc,               // シェーダ リソース ビューの設定
-		&pShadowMapSRView);  // 受け取る変数
+		&ShadowMapDSSRView);  // 受け取る変数
 
 
 
@@ -80,7 +80,7 @@ void ShadowMapping::Init(void)
 	descDepth.Format = DXGI_FORMAT_R8G8B8A8_TYPELESS;  // フォーマット
 	descDepth.Usage = D3D11_USAGE_DEFAULT;      // デフォルト使用法
 	descDepth.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; //シェーダ リソース ビューとして使用
-	renderer->GetDevice()->CreateTexture2D(
+	hr = renderer->GetDevice()->CreateTexture2D(
 		&descDepth,         // 作成する2Dテクスチャの設定
 		NULL,               // 
 		&ShadowMapingTexture);     // 作成したテクスチャを受け取る変数
@@ -92,21 +92,23 @@ void ShadowMapping::Init(void)
 	memset(&rtvDesc, 0, sizeof(rtvDesc));
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-
+	
 	// レンダーターゲットビューの生成
-	renderer->GetDevice()->CreateRenderTargetView(ShadowMapingTexture, &rtvDesc, &RenderTargetShadow);
+
+
+	hr = renderer->GetDevice()->CreateRenderTargetView(ShadowMapingTexture, &rtvDesc, &RenderTargetShadow);
 
 	// シェーダ リソース ビューの作成
 	srDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // フォーマット
 	srDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;  // 2Dテクスチャ
 	srDesc.Texture2D.MostDetailedMip = 0;   // 最初のミップマップ レベル
 	srDesc.Texture2D.MipLevels = -1;  // すべてのミップマップ レベル
-
+	
 	// シェーダ リソース ビューの作成
-	renderer->GetDevice()->CreateShaderResourceView(
+	hr = renderer->GetDevice()->CreateShaderResourceView(
 		ShadowMapingTexture,          // アクセスするテクスチャ リソース
 		&srDesc,               // シェーダ リソース ビューの設定
-		&pShadowMapSRViewBA);  // 受け取る変数
+		&ShadowMapSRView);  // 受け取る変数
 
 
 
@@ -149,22 +151,22 @@ void ShadowMapping::Draw(void)
 
 
 	// 深度/ステンシルのクリア
-	renderer->GetDeviceContext()->ClearDepthStencilView(pShadowMapDSView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	renderer->GetDeviceContext()->ClearDepthStencilView(ShadowMapDSView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	// RSにビューポートを設定
 	renderer->GetDeviceContext()->RSSetViewports(1, ViewPortShadowMap);
 
 
 	//アルファ値も使う場合
-	renderer->GetDeviceContext()->OMSetRenderTargets(1, &RenderTargetShadow, pShadowMapDSView);
+	renderer->GetDeviceContext()->OMSetRenderTargets(1, &RenderTargetShadow, ShadowMapDSView);
 
-	////デプスステンシルバッファのみでシャドウマッピングする場合
+	//デプスステンシルバッファのみでシャドウマッピングする場合
 	//ID3D11RenderTargetView* pRender[1] = { NULL };
-	//renderer->GetDeviceContext()->OMSetRenderTargets(1, pRender, pShadowMapDSView);
+	//renderer->GetDeviceContext()->OMSetRenderTargets(1, pRender, ShadowMapDSView);
 
-	XMMATRIX mtxShadowMapView = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&at), XMLoadFloat3(&up));
+	XMMATRIX mtxShadowMapView = XMMatrixLookAtLH(XMLoadFloat3(&this->pos), XMLoadFloat3(&this->at), XMLoadFloat3(&this->up));
 	renderer->SetViewMatrix(&mtxShadowMapView);
-	XMMATRIX mtxShadowMapProj = XMMatrixOrthographicLH(hw, hw, 1.0f, 1000.0f);
+	XMMATRIX mtxShadowMapProj = XMMatrixOrthographicLH(hw, hw, 10.0f, 1000.0f);
 	renderer->SetProjectionMatrix(&mtxShadowMapProj);
 
 	XMMATRIX smwvp = XMMatrixTranspose(XMMatrixIdentity() * mtxShadowMapView * mtxShadowMapProj);
@@ -177,8 +179,13 @@ void ShadowMapping::Draw(void)
 
 	pLevel->DrawShadowObject();
 
-	renderer->GetDeviceContext()->PSSetShaderResources(1, 1, &this->pShadowMapSRView);
-	renderer->GetDeviceContext()->PSSetShaderResources(2, 1, &this->pShadowMapSRViewBA);
+
+	//レンダーターゲットから外さないとシェーダーリソースにバインドできない
+	renderer->GetDeviceContext()->OMSetRenderTargets(0, nullptr, nullptr);
+
+	renderer->GetDeviceContext()->PSSetShaderResources(1, 1, &this->ShadowMapDSSRView);
+	renderer->GetDeviceContext()->PSSetShaderResources(2, 1, &this->ShadowMapSRView);
+
 
 }
 

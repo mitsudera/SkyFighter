@@ -135,6 +135,9 @@
     <ClInclude Include="Buffer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -213,6 +216,9 @@
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="BlueField.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>gameobject</Filter>
     </ClCompile>
   </ItemGroup>

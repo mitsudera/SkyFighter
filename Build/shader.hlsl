@@ -169,6 +169,7 @@ void PSmain(in float4 inPosition : SV_POSITION,
 {
     float4 color;
     float sma = 1.0;
+    bool shadow;
     					//‰e
     if (Shadow.enable == 1)
     {
@@ -183,7 +184,7 @@ void PSmain(in float4 inPosition : SV_POSITION,
         float4 sa = ShadowMapTex.Sample(smpBorder, inPosSM.xy);
         //sm = sa.r;
 
-        if (inPosSM.z > sm)
+        if (inPosSM.z> sm)
         {
 
             sma = 0.5;
@@ -199,11 +200,6 @@ void PSmain(in float4 inPosition : SV_POSITION,
         //    sma = 1.0;
         //}
         
-        sma = (inPosSM.z < sm) ? 1.0 : 0.5;
-        if (sm == 1.0)
-        {
-            sma = 1.0*sa.r;
-        }
         
  
 
@@ -237,7 +233,7 @@ void PSmain(in float4 inPosition : SV_POSITION,
             float4 tempColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
             float4 outColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 float3 lightDir;
                 float light;
@@ -248,6 +244,8 @@ void PSmain(in float4 inPosition : SV_POSITION,
                     {
                         lightDir = normalize(Light.Direction[i].xyz);
                         light = dot(lightDir, inNormal.xyz);
+                        
+
                         if (light < -0.1)
                         {
 
@@ -298,7 +296,7 @@ void PSmain(in float4 inPosition : SV_POSITION,
 
 
  
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 float3 lightDir;
                 float light;
@@ -356,7 +354,6 @@ void PSmain(in float4 inPosition : SV_POSITION,
     }
 
     outDiffuse = color;
-
 }
 
 void VS_SM(
@@ -412,7 +409,7 @@ void PS_SM(
     color = color * Material.Diffuse;
 
     color.r = inPosition.z;
-    
+    color.g = inPosition.z * inPosition.z;
     
     outDiffuse = color;
 }

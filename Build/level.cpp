@@ -1,7 +1,7 @@
 #include "level.h"
 #include "gameobject.h"
 #include "Main.h"
-
+#include "camera.h"
 Level::Level()
 {
 }

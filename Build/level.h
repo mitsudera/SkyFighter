@@ -3,6 +3,7 @@
 class Main;
 class GameObject;
 class ShadowMapping;
+class Camera;
 class Level
 {
 public:
@@ -31,6 +32,8 @@ protected:
 	ShadowMapping* shdowMap;
 
 	
+	Camera* mainCamera;
+
 
 };
 

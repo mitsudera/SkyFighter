@@ -48,13 +48,13 @@ private:
 
 	SHADOWMAP_CBUFFER	ShadowMap;
 
-	ID3D11Texture2D* pShadowMapTexture;			// シャドウ・マップ
-	ID3D11DepthStencilView* pShadowMapDSView;	// 深度/ステンシル・ビュー
-	ID3D11ShaderResourceView* pShadowMapSRView;	// シェーダ・リソース・ビュー
+	ID3D11Texture2D* ShadowMapDS;			// シャドウ・マップ
+	ID3D11DepthStencilView* ShadowMapDSView;	// 深度/ステンシル・ビュー
+	ID3D11ShaderResourceView* ShadowMapDSSRView;	// シェーダ・リソース・ビュー
 
 	ID3D11Texture2D* ShadowMapingTexture;
 	ID3D11RenderTargetView* RenderTargetShadow;
-	ID3D11ShaderResourceView* pShadowMapSRViewBA;	// シェーダ・リソース・ビュー
+	ID3D11ShaderResourceView* ShadowMapSRView;	// シェーダ・リソース・ビュー
 
 	D3D11_VIEWPORT            ViewPortShadowMap[1];       // ビューポート
 

@@ -16,7 +16,7 @@
 //*****************************************************************************
 #define	VIEW_ANGLE		(XMConvertToRadians(45.0f))						// ビュー平面の視野角
 #define	VIEW_ASPECT		((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比	
-#define	VIEW_NEAR_Z		(0.1f)											// ビュー平面のNearZ値
+#define	VIEW_NEAR_Z		(10.0f)											// ビュー平面のNearZ値
 #define	VIEW_FAR_Z		(10000.0f)										// ビュー平面のFarZ値
 
 #define	VALUE_MOVE_CAMERA	(2.0f)										// カメラの移動量
@@ -68,7 +68,7 @@ void CameraComponent::Init(void)
 	this->nearZ = VIEW_NEAR_Z;
 	this->farZ = VIEW_FAR_Z;
 
-
+	this->mode = MODE::WORLD;
 
 	// ビューポートタイプの初期化
 	//SetViewPort(g_ViewPortType);
@@ -102,6 +102,12 @@ void CameraComponent::Uninit(void)
 
 
 
+void CameraComponent::SetMode(MODE mode)
+{
+	this->mode = mode;
+
+}
+
 //=============================================================================
 // カメラの更新
 //=============================================================================
@@ -112,18 +118,37 @@ void CameraComponent::SetCamera(void)
 	XMMATRIX mtxView;
 
 
+	SetCameraAT(this->lookObject->GetTransFormComponent()->GetPosition());
 
 
-
+	XMFLOAT3 pos;
 
 	XMFLOAT3 At = this->at;
 	XMFLOAT3 Up = this->up;
 
+	switch (this->mode)
+	{
+	case MODE::TRACKING:
 
-	
+		XMMATRIX pMtx = this->lookObject->GetTransFormComponent()->GetWorldMtx();
+		XMFLOAT3 lPos = this->pos;
+		XMVECTOR wPos = XMLoadFloat3(&lPos);
+		wPos = XMVector3Transform(wPos, pMtx);
+		XMStoreFloat3(&lPos, wPos);
+		pos = lPos;
+		break;
+	case MODE::WORLD:
+		
+		pos = this->pos;
+		break;
+
+	default:
+		break;
+	}
+
+
 
 	//mtxView = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&this->at), XMLoadFloat3(&this->up));
-	XMFLOAT3 pos =GetWorldPos();
 
 	XMVECTOR posv = XMLoadFloat3(&pos);
 
@@ -238,6 +263,11 @@ void CameraComponent::SetCameraAT(XMFLOAT3 pos)
 void CameraComponent::SetCameraUp(XMFLOAT3 up)
 {
 	this->up = up;
+}
+
+void CameraComponent::SetLookObject(GameObject* gameObject)
+{
+	this->lookObject = gameObject;
 }
 
 XMFLOAT4X4 CameraComponent::CameraInverseViewMatrix(void) const {

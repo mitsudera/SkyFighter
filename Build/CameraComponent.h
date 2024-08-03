@@ -38,6 +38,7 @@ public:
 
 	void SetCameraAT(XMFLOAT3 pos);
 	void SetCameraUp(XMFLOAT3 up);
+	void SetLookObject(GameObject* gameObject);
 
 	XMFLOAT4X4 CameraInverseViewMatrix(void) const;
 	XMFLOAT4X4 CameraViewMatrix(void) const;
@@ -51,6 +52,13 @@ public:
 	virtual void Draw(void) override;
 	virtual void Uninit(void) override;
 
+	enum class MODE
+	{
+		TRACKING,
+		WORLD,
+	};
+
+	void SetMode(MODE mode);
 
 private:
 	void SetCamera(void);
@@ -58,6 +66,7 @@ private:
 	XMFLOAT4X4			mtxView;		// ビューマトリックス
 	XMFLOAT4X4			mtxInvView;		// ビューマトリックス
 	XMFLOAT4X4			mtxProjection;	// プロジェクションマトリックス
+
 
 	XMFLOAT3			at;				// カメラの注視点
 	XMFLOAT3			up;				// カメラの上方向ベクトル
@@ -68,8 +77,9 @@ private:
 	float				nearZ;			// カメラのクリッピング最小値Z
 	float				farZ;			// カメラのクリッピング最大値Z
 
-private:
+	GameObject*			lookObject;
 
+	MODE				mode;
 
 
 };

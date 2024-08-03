@@ -27,7 +27,6 @@ private:
 	
 	
 	MeshComponent* meshComponent;
-	CameraComponent* camera;
 
 };
 

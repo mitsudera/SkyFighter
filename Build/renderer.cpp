@@ -390,6 +390,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = bWindow;
+	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // モード自動切り替え
 
 	//デバッグ文字出力用設定
 #if defined(_DEBUG) && defined(DEBUG_DISP_TEXTOUT)
@@ -429,7 +430,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 
 	//ステンシル用テクスチャー作成
-	ID3D11Texture2D* depthTexture = NULL;
+	depthTexture = NULL;
 	D3D11_TEXTURE2D_DESC td;
 	ZeroMemory( &td, sizeof(td) );
 	td.Width			= sd.BufferDesc.Width;
@@ -485,8 +486,6 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	rd.CullMode = D3D11_CULL_BACK;
 	m_D3DDevice->CreateRasterizerState(&rd, &RasterStateCullCCW);
 
-	// カリングモード設定（CCW）
-	SetCullingMode(CULL_MODE_BACK);
 
 
 
@@ -548,8 +547,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &DepthStateEnable );//深度有効ステート
 
-	//depthStencilDesc.DepthEnable = FALSE;
-	depthStencilDesc.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ZERO;
+	//depthStencilDesc.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &DepthStateDisable );//深度無効ステート
 
 	// 深度ステンシルステート設定
@@ -817,6 +815,11 @@ void Renderer::SetShaderShadow(void)
 	m_ImmediateContext->VSSetShader(m_VertexShaderShadow,NULL,0);
 	m_ImmediateContext->PSSetShader(m_PixelShaderShadow,NULL,0);
 
+}
+
+IDXGISwapChain* Renderer::GetSwapChain(void)
+{
+	return this->SwapChain;
 }
 
 

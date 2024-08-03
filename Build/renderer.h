@@ -196,6 +196,8 @@ public:
 
 	void SetShaderShadow(void);
 
+	IDXGISwapChain* GetSwapChain(void);
+
 private:
 
 	Main* main;
@@ -207,7 +209,8 @@ private:
 	IDXGISwapChain* SwapChain;
 	ID3D11RenderTargetView* RenderTargetView;
 	ID3D11DepthStencilView* DepthStencilView;
-	
+	ID3D11Texture2D* depthTexture;
+
 	D3D11_VIEWPORT defaultViewPort;
 
 	void	InitConstantBuffers(void);

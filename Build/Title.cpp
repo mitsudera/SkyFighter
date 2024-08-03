@@ -6,6 +6,7 @@
 #include "Light.h"
 #include "ShadowMapping.h"
 #include "BlueField.h"
+#include "camera.h"
 
 Title::Title(Main* main)
 {
@@ -13,12 +14,16 @@ Title::Title(Main* main)
 
 	this->shdowMap = new ShadowMapping(this);
 
-	SkySphire* sky = new SkySphire(this);
-	gameObject.push_back(sky);
+	this->mainCamera = new Camera(this);
+	this->gameObject.push_back(mainCamera);
+
 
 	Player* player = new Player(this);
 	gameObject.push_back(player);
 	shadowObject.push_back(player);
+
+	SkySphire* sky = new SkySphire(this);
+	gameObject.push_back(sky);
 
 	BlueField* blueField = new BlueField(this);
 	gameObject.push_back(blueField);
@@ -38,12 +43,19 @@ Title::~Title()
 void Title::Init(void)
 {
 	this->shdowMap->Init();
-
+	
+	this->shdowMap->SetShadowMap(
+		XMFLOAT3(0.0f, 1000.0f, -1000.0f),
+		this->gameObject[1]->GetTransFormComponent()->GetPosition(), 
+		XMFLOAT3(0.0f, 1.0f, 0.0f));
 	this->GetMain()->GetRenderer()->SetLightEnable(TRUE);
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Init();
 	}
+
+	this->mainCamera->SetLookObject(gameObject[1]);
+	
 
 }
 
@@ -61,6 +73,11 @@ void Title::Uninit(void)
 void Title::Update(void)
 {
 	this->shdowMap->Update();
+	this->shdowMap->SetShadowMap(
+		XMFLOAT3(10.0f, 10.0f, -10.0f),
+		this->gameObject[0]->GetTransFormComponent()->GetPosition(),
+		XMFLOAT3(0.0f, 1.0f, 0.0f));
+
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Update();
