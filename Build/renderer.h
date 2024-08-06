@@ -194,7 +194,6 @@ public:
 
 	void SetShaderDefault(void);
 
-	void SetShaderShadow(void);
 
 	IDXGISwapChain* GetSwapChain(void);
 
@@ -219,8 +218,6 @@ private:
 
 	ID3D11VertexShader* m_VertexShader;
 	ID3D11PixelShader* m_PixelShader;
-	ID3D11VertexShader* m_VertexShaderShadow;
-	ID3D11PixelShader* m_PixelShaderShadow;
 	ID3D11InputLayout* VertexLayout;
 
 	Buffer<XMMATRIX>			*m_WorldBuffer;

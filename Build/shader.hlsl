@@ -195,10 +195,10 @@ void PSmain(in float4 inPosition : SV_POSITION,
 
 						
 
-        //if (sm == 1.0)
-        //{
-        //    sma = 1.0;
-        //}
+        if (sm == 1.0)
+        {
+            sma = 1.0;
+        }
         
         
  
@@ -310,8 +310,22 @@ void PSmain(in float4 inPosition : SV_POSITION,
                     {
                         lightDir = normalize(Light.Direction[i].xyz);
                         light = dot(lightDir, normalize(inNormal.xyz));
+                        if (light < -0.1)
+                        {
 
-                        light = 0.5 - 0.5 * light;
+                            light = (0.5 - 0.5 * light) * sma;
+                            tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+                        }
+                        else
+                        {
+
+
+                            light = (0.5 - 0.5 * light);
+
+                            tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
+
+                        }
+
                         float3 r = 2.0 * inNormal.xyz * light - lightDir;
 
                         float3 v = normalize(Camera.xyz - inWorldPos.xyz);
@@ -412,4 +426,58 @@ void PS_SM(
     color.g = inPosition.z * inPosition.z;
     
     outDiffuse = color;
+}
+
+void VS_2D(
+		in float4 inPosition : POSITION0,
+		in float4 inNormal : NORMAL0,
+		in float4 inDiffuse : COLOR0,
+		in float2 inTexCoord : TEXCOORD0,
+
+		out float4 outPosition : SV_POSITION,
+		out float2 outTexCoord : TEXCOORD0,
+		out float4 outDiffuse : COLOR0,
+		out float4 outWorldPos : POSITION0
+)
+{
+    outPosition = inPosition;
+
+
+    outTexCoord = inTexCoord;
+
+
+    outDiffuse = inDiffuse;
+}
+
+
+void xpass(
+		in float4 inPosition : SV_POSITION,
+		in float4 inNormal : NORMAL0,
+		in float2 inTexCoord : TEXCOORD0,
+		in float4 inDiffuse : COLOR0,
+		in float4 inWorldPos : POSITION0,
+
+		out float4 outDiffuse : SV_Target)
+{
+    float x;
+    float y;
+    Texture.GetDimensions(x, y);
+
+    float3 col = gaus.weight1.x * Texture.Sample(smpWrap, float2(inTexCoord) + float2(+1.0f / MAP_WIDTH, 0));
+    col += gaus.weight1.y * (Texture.Sample(smpWrap, inTexCoord + float2(+3.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-3.0f / MAP_WIDTH, 0)));
+    col += gaus.weight1.z * (Texture.Sample(smpWrap, inTexCoord + float2(+5.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-5.0f / MAP_WIDTH, 0)));
+    col += gaus.weight1.w * (Texture.Sample(smpWrap, inTexCoord + float2(+7.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-7.0f / MAP_WIDTH, 0)));
+    col += gaus.weight2.x * (Texture.Sample(smpWrap, inTexCoord + float2(+9.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-9.0f / MAP_WIDTH, 0)));
+    col += gaus.weight2.y * (Texture.Sample(smpWrap, inTexCoord + float2(+11.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-11.0f / MAP_WIDTH, 0)));
+    col += gaus.weight2.z * (Texture.Sample(smpWrap, inTexCoord + float2(+13.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-13.0f / MAP_WIDTH, 0)));
+    col += gaus.weight2.w * (Texture.Sample(smpWrap, inTexCoord + float2(+15.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-15.0f / MAP_WIDTH, 0)));
+
+    float3 col = Texture.Sample(smpWrap, inTexCoord);
+
+
+    
+
+    outDiffuse = color;
+
+
 }

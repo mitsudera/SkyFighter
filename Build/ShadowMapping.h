@@ -32,6 +32,7 @@ public:
 	void SetShadowMap(XMFLOAT3 pos, XMFLOAT3 at, XMFLOAT3 up);
 	void SetPos(XMFLOAT3 pos);
 	void SetShadowBuffer(void);
+	void SetShaderShadow(void);
 
 private:
 
@@ -44,6 +45,8 @@ private:
 	float quarity;
 	float hw;
 
+	ID3D11VertexShader* m_VertexShaderShadow;
+	ID3D11PixelShader* m_PixelShaderShadow;
 
 
 	SHADOWMAP_CBUFFER	ShadowMap;
@@ -57,6 +60,18 @@ private:
 	ID3D11ShaderResourceView* ShadowMapSRView;	// シェーダ・リソース・ビュー
 
 	D3D11_VIEWPORT            ViewPortShadowMap[1];       // ビューポート
+	
+
+	ID3D11Texture2D* ShadowMapingTextureX;
+	ID3D11RenderTargetView* RenderTargetShadowX;
+	ID3D11ShaderResourceView* ShadowMapSRViewX;	// シェーダ・リソース・ビュー
+
+	ID3D11Texture2D* ShadowMapingTextureY;
+	ID3D11RenderTargetView* RenderTargetShadowY;
+	ID3D11ShaderResourceView* ShadowMapSRViewY;	// シェーダ・リソース・ビュー
+
+
+
 
 };
 

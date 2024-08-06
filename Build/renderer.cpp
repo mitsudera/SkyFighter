@@ -27,8 +27,6 @@ Renderer::Renderer(Main*main)
 
 	m_VertexShader = NULL;
 	m_PixelShader = NULL;
-	m_VertexShaderShadow = NULL;
-	m_PixelShaderShadow = NULL;
 	VertexLayout = NULL;
 
 
@@ -591,7 +589,6 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// 頂点シェーダコンパイル・生成
  
 	ID3DBlob* pVSBlob = this->CreateVSFile("shader.hlsl","VSmain", & m_VertexShader);
-	pVSBlob = this->CreateVSFile("shader.hlsl","VS_SM", & m_VertexShaderShadow);
 
 	// 入力レイアウト生成
 	D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -613,7 +610,6 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// ピクセルシェーダコンパイル・生成
 	this->CreatePSFile("shader.hlsl","PSmain", &m_PixelShader);
-	this->CreatePSFile("shader.hlsl","PSmain", &m_PixelShaderShadow);
 
 
 	// 定数バッファ生成
@@ -693,9 +689,6 @@ void Renderer::UninitRenderer(void)
 	if (VertexLayout)			VertexLayout->Release();
 	if (m_VertexShader)			m_VertexShader->Release();
 	if (m_PixelShader)			m_PixelShader->Release();
-
-	if (m_VertexShaderShadow)			m_VertexShaderShadow->Release();
-	if (m_PixelShaderShadow)			m_PixelShaderShadow->Release();
 
 	if (m_ImmediateContext)		m_ImmediateContext->ClearState();
 	if (RenderTargetView)		RenderTargetView->Release();
@@ -810,12 +803,6 @@ void Renderer::SetShaderDefault(void)
 
 }
 
-void Renderer::SetShaderShadow(void)
-{
-	m_ImmediateContext->VSSetShader(m_VertexShaderShadow,NULL,0);
-	m_ImmediateContext->PSSetShader(m_PixelShaderShadow,NULL,0);
-
-}
 
 IDXGISwapChain* Renderer::GetSwapChain(void)
 {

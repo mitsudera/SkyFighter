@@ -9,11 +9,13 @@ ShadowMapping::ShadowMapping(Level* level)
 	this->quarity = 1024.0f;
 	this->hw = 64.0f;
 
-	pos = XMFLOAT3(10.0f, 10.0f, 10.0f);
+	pos = XMFLOAT3(10.0f, 100.0f, 10.0f);
 	at = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	this->ShadowMap.Enable = TRUE;
 
+	m_VertexShaderShadow = NULL;
+	m_PixelShaderShadow = NULL;
 
 
 }
@@ -28,6 +30,8 @@ void ShadowMapping::Init(void)
 
 	HRESULT hr;
 
+	renderer->CreateVSFile("shader.hlsl", "VS_SM", &m_VertexShaderShadow);
+	renderer->CreatePSFile("shader.hlsl", "PS_SM", &m_PixelShaderShadow);
 
 
 	// シャドウ マップの作成
@@ -131,6 +135,10 @@ void ShadowMapping::Init(void)
 
 void ShadowMapping::Uninit(void)
 {
+
+	if (m_VertexShaderShadow)			m_VertexShaderShadow->Release();
+	if (m_PixelShaderShadow)			m_PixelShaderShadow->Release();
+
 }
 
 void ShadowMapping::Update(void)
@@ -141,7 +149,7 @@ void ShadowMapping::Update(void)
 void ShadowMapping::Draw(void)
 {
 	Renderer* renderer = pLevel->GetMain()->GetRenderer();
-	renderer->SetShaderShadow();
+	this->SetShaderShadow();
 	
 	// 描画ターゲットのクリア
 	float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 背景色
@@ -206,5 +214,13 @@ void ShadowMapping::SetShadowBuffer(void)
 	
 	this->pLevel->GetMain()->GetRenderer()->SetShadow(&this->ShadowMap);
 
+
+}
+void ShadowMapping::SetShaderShadow(void)
+{
+	Renderer* renderer = pLevel->GetMain()->GetRenderer();
+
+	renderer->GetDeviceContext()->VSSetShader(m_VertexShaderShadow, NULL, 0);
+	renderer->GetDeviceContext()->PSSetShader(m_PixelShaderShadow, NULL, 0);
 
 }

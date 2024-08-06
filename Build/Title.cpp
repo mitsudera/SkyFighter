@@ -44,10 +44,6 @@ void Title::Init(void)
 {
 	this->shdowMap->Init();
 	
-	this->shdowMap->SetShadowMap(
-		XMFLOAT3(0.0f, 1000.0f, -1000.0f),
-		this->gameObject[1]->GetTransFormComponent()->GetPosition(), 
-		XMFLOAT3(0.0f, 1.0f, 0.0f));
 	this->GetMain()->GetRenderer()->SetLightEnable(TRUE);
 	for (int i = 0; i < gameObject.size(); i++)
 	{
@@ -72,11 +68,12 @@ void Title::Uninit(void)
 
 void Title::Update(void)
 {
-	this->shdowMap->Update();
 	this->shdowMap->SetShadowMap(
-		XMFLOAT3(10.0f, 10.0f, -10.0f),
+		XMFLOAT3(0.0f, 100.0f, -100.0f),
 		this->gameObject[0]->GetTransFormComponent()->GetPosition(),
 		XMFLOAT3(0.0f, 1.0f, 0.0f));
+	this->shdowMap->Update();
+
 
 	for (int i = 0; i < gameObject.size(); i++)
 	{
