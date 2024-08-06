@@ -98,6 +98,21 @@ cbuffer ShadowBuffer : register(b8)
     SHADOW Shadow;
 }
 
+struct GAUSSIAN
+{
+    float4 weight1;
+    float4 weight2;
+
+};
+
+cbuffer GaussianBuffer : register(b9)
+{
+    GAUSSIAN gaus;
+
+}
+
+
+
 
 //=============================================================================
 // 頂点シェーダ
@@ -137,7 +152,7 @@ void VSmain( in  float4 inPosition		: POSITION0,
     pos4.xyz = pos4.xyz / pos4.w;
     outPosSM.x = (pos4.x + 1.0) / 2.0;
     outPosSM.y = (-pos4.y + 1.0) / 2.0;
-    outPosSM.z = pos4.z - 0.00002;
+    outPosSM.z = pos4.z - 0.0002;
 
 }
 
@@ -176,29 +191,28 @@ void PSmain(in float4 inPosition : SV_POSITION,
 
 				//		// シャドウマップ
 
-        float sm = ShadowMap.Sample(smpBorder, inPosSM.xy).r;
+        //float sm = ShadowMap.Sample(smpBorder, inPosSM.xy).r;
 						
 
 
 
-        float4 sa = ShadowMapTex.Sample(smpBorder, inPosSM.xy);
-        //sm = sa.r;
+        float2 sm = ShadowMapTex.Sample(smpBorder, inPosSM.xy);
 
-        if (inPosSM.z> sm)
+        if (inPosSM.z> sm.r)
         {
 
             sma = 0.5;
 
-            sma = sma + (0.5 - (sa.a * 0.5));
+            sma = sma + (0.5 - (sm.g * 0.5));
         }
 						
 
 						
 
-        if (sm == 1.0)
-        {
-            sma = 1.0;
-        }
+        //if (sm == 1.0)
+        //{
+        //    sma = 1.0;
+        //}
         
         
  
@@ -423,7 +437,7 @@ void PS_SM(
     color = color * Material.Diffuse;
 
     color.r = inPosition.z;
-    color.g = inPosition.z * inPosition.z;
+    color.g = color.a;
     
     outDiffuse = color;
 }
@@ -463,21 +477,20 @@ void xpass(
     float y;
     Texture.GetDimensions(x, y);
 
-    float3 col = gaus.weight1.x * Texture.Sample(smpWrap, float2(inTexCoord) + float2(+1.0f / MAP_WIDTH, 0));
-    col += gaus.weight1.y * (Texture.Sample(smpWrap, inTexCoord + float2(+3.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-3.0f / MAP_WIDTH, 0)));
-    col += gaus.weight1.z * (Texture.Sample(smpWrap, inTexCoord + float2(+5.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-5.0f / MAP_WIDTH, 0)));
-    col += gaus.weight1.w * (Texture.Sample(smpWrap, inTexCoord + float2(+7.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-7.0f / MAP_WIDTH, 0)));
-    col += gaus.weight2.x * (Texture.Sample(smpWrap, inTexCoord + float2(+9.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-9.0f / MAP_WIDTH, 0)));
-    col += gaus.weight2.y * (Texture.Sample(smpWrap, inTexCoord + float2(+11.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-11.0f / MAP_WIDTH, 0)));
-    col += gaus.weight2.z * (Texture.Sample(smpWrap, inTexCoord + float2(+13.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-13.0f / MAP_WIDTH, 0)));
-    col += gaus.weight2.w * (Texture.Sample(smpWrap, inTexCoord + float2(+15.0f / MAP_WIDTH, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-15.0f / MAP_WIDTH, 0)));
+    float3 col = gaus.weight1.x * Texture.Sample(smpWrap, float2(inTexCoord) + float2(+1.0f / x, 0));
+    col += gaus.weight1.y * (Texture.Sample(smpWrap, inTexCoord + float2(+3.0f / x, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-3.0f / x, 0)));
+    col += gaus.weight1.z * (Texture.Sample(smpWrap, inTexCoord + float2(+5.0f / x, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-5.0f / x, 0)));
+    col += gaus.weight1.w * (Texture.Sample(smpWrap, inTexCoord + float2(+7.0f / x, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-7.0f / x, 0)));
+    col += gaus.weight2.x * (Texture.Sample(smpWrap, inTexCoord + float2(+9.0f / x, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-9.0f / x, 0)));
+    col += gaus.weight2.y * (Texture.Sample(smpWrap, inTexCoord + float2(+11.0f / x, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-11.0f / x, 0)));
+    col += gaus.weight2.z * (Texture.Sample(smpWrap, inTexCoord + float2(+13.0f / x, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-13.0f / x, 0)));
+    col += gaus.weight2.w * (Texture.Sample(smpWrap, inTexCoord + float2(+15.0f / x, 0)) + Texture.Sample(smpWrap, inTexCoord + float2(-15.0f / x, 0)));
 
-    float3 col = Texture.Sample(smpWrap, inTexCoord);
 
 
     
 
-    outDiffuse = color;
+    outDiffuse = (col, 1.0f);
 
 
 }

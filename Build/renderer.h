@@ -128,6 +128,12 @@ struct FUCHI
 	int			fill[3];
 };
 
+struct GaussianCBuffer {
+	float weight[8];
+};
+
+
+
 class Main;
 
 class Renderer
@@ -187,7 +193,8 @@ public:
 	void SetShaderCamera(XMFLOAT3 pos);
 
 	void SetShadow(SHADOWMAP_CBUFFER* shadow);
-
+	
+	void SetGausBuffer(void);
 	void SetClearColor(float* color4);
 
 	ID3D11InputLayout** GetVertexLayout(void);
@@ -229,7 +236,8 @@ private:
 	Buffer<FUCHI>				*m_FuchiBuffer;
 	Buffer<XMFLOAT4>			*m_CameraBuffer;
 	Buffer<SHADOWMAP_CBUFFER>	*m_ShadowBuffer;
-
+	Buffer<GaussianCBuffer>		*m_GausBuffer;
+	
 
 	ID3D11DepthStencilState* DepthStateEnable;
 	ID3D11DepthStencilState* DepthStateDisable;
@@ -251,6 +259,7 @@ private:
 
 	FUCHI				Fuchi;
 
+	GaussianCBuffer		Gaus;
 
 	float ClearColor[4] ;	// îwåiêF
 

@@ -641,6 +641,10 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	material.Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	SetMaterial(material);
 
+
+	//ガウシアンブラー用バッファセット
+	SetGausBuffer();
+
 	return S_OK;
 }
 
@@ -670,6 +674,7 @@ void Renderer::UninitRenderer(void)
 	delete m_FuchiBuffer;
 	delete m_CameraBuffer;
 	delete m_ShadowBuffer;
+	delete m_GausBuffer;
 	//m_WorldBuffer.ReleaseBuffer();
 	//m_ViewBuffer.ReleaseBuffer();
 	//m_ProjectionBuffer.ReleaseBuffer();
@@ -709,6 +714,7 @@ void Renderer::InitConstantBuffers(void) {
 	m_FuchiBuffer = new Buffer<FUCHI>(GetDevice());
 	m_CameraBuffer = new Buffer<XMFLOAT4>(GetDevice());
 	m_ShadowBuffer = new Buffer<SHADOWMAP_CBUFFER>(GetDevice());
+	m_GausBuffer = new Buffer<GaussianCBuffer>(GetDevice());
 
 }
 
@@ -751,6 +757,9 @@ void Renderer::SetShaderBuffersMode(ShaderBF_MODE bfMode) {
 			//影
 			m_ShadowBuffer->SetVS(m_ImmediateContext, 8);
 			m_ShadowBuffer->SetPS(m_ImmediateContext, 8);
+			//影
+			m_GausBuffer->SetVS(m_ImmediateContext, 9);
+			m_GausBuffer->SetPS(m_ImmediateContext, 9);
 
 		}
 		break;
@@ -778,6 +787,31 @@ void Renderer::Clear(void)
 	m_ImmediateContext->ClearDepthStencilView( DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
+
+void Renderer::SetGausBuffer(void)
+{
+	GaussianCBuffer gaus;
+	ZeroMemory(&gaus, sizeof(gaus));
+	float total = 0;
+	constexpr float disperision = 10.0f;
+	for (int i = 0; i < 8; i++) {
+		float pos = 1.0f + 2.0f * (float)i;
+		gaus.weight[i] = expf(-0.5f * pos * pos / disperision);
+		if (i == 0) {
+			total += gaus.weight[i];
+		}
+		else {
+			total += 2.0f * gaus.weight[i];
+		}
+	}
+
+	for (int i = 0; i < 8; i++) {
+		gaus.weight[i] /= total;
+	}
+
+
+	m_GausBuffer->SetToBuffer(m_ImmediateContext, &gaus);
+}
 
 void Renderer::SetClearColor(float* color4)
 {
