@@ -18,3 +18,5 @@ XMVECTOR zonevec(void);
 XMFLOAT3 FbxDouble3ConvertToXMFLOAT3(FbxDouble3 fbxd3);
 
 XMMATRIX FbxMatrixConvertToXMMATRIX(FbxMatrix fbxmat);
+
+XMFLOAT3 XMFLOAT3Normalize(XMFLOAT3 p);

@@ -9,7 +9,7 @@ TransformComponent::TransformComponent()
 	this->rot = { 0.0f,0.0f,0.0f };
 	this->oldRot = { 0.0f,0.0f,0.0f };
 	this->scl = { 1.0f,1.0f,1.0f };
-	this->dir = { 0.0f,0.0f,-1.0f };
+	this->forward = { 0.0f,0.0f,-1.0f };
 	this->axisX = xonevec();
 	this->axisY = yonevec();
 	this->axisZ = zonevec();
@@ -35,7 +35,7 @@ TransformComponent::TransformComponent(GameObject* gameObject)
 	this->rot = { 0.0f,0.0f,0.0f };
 	this->oldRot = { 0.0f,0.0f,0.0f };
 	this->scl = { 1.0f,1.0f,1.0f };
-	this->dir = { 0.0f,0.0f,-1.0f };
+	this->forward = { 0.0f,0.0f,1.0f };
 	this->axisX = xonevec();
 	this->axisY = yonevec();
 	this->axisZ = zonevec();
@@ -78,6 +78,18 @@ void TransformComponent::Update(void)
 
 	this->mtxWorld = world;
 
+	XMFLOAT3 p = { 0.0f,0.0f,-1.0f };
+	XMVECTOR v = XMLoadFloat3(&p);
+
+	v = XMVector3Transform(v, mtxrot);
+
+	v = XMVector3Normalize(v);
+
+	XMStoreFloat3(&p, v);
+
+	this->forward = p;
+	
+	
 
 	this->oldPos = pos;
 	this->oldRot = rot;
@@ -112,7 +124,7 @@ XMFLOAT3 TransformComponent::GetScale(void)
 
 XMFLOAT3 TransformComponent::GetDirection(void)
 {
-	return this->dir;
+	return this->forward;
 }
 
 XMVECTOR TransformComponent::GetAxisX(void)
@@ -198,9 +210,9 @@ void TransformComponent::SetScale(XMFLOAT3 scl)
 	this->mtxscl = XMMatrixScaling(scl.x, scl.y, scl.z);
 }
 
-void TransformComponent::SetDirection(XMFLOAT3 dir)
+void TransformComponent::SetDirection(XMFLOAT3 forward)
 {
-	this->dir = dir;
+	this->forward = forward;
 }
 
 void TransformComponent::SetAxisX(XMVECTOR axis)
@@ -278,6 +290,47 @@ XMFLOAT3 TransformComponent::GetWorldPos(void)
 	return lPos;
 
 
+}
+
+void TransformComponent::MoveX(float f)
+{
+	this->pos.x += f;
+	this->PosUpdate();
+
+}
+
+void TransformComponent::MoveY(float f)
+{
+	this->pos.y += f;
+	this->PosUpdate();
+
+}
+
+void TransformComponent::MoveZ(float f)
+{
+	this->pos.z += f;
+	this->PosUpdate();
+
+}
+
+
+void TransformComponent::MoveForward(float f)
+{
+	float x, y, z;
+	x = this->forward.x * f;
+	y = this->forward.y * f;
+	z = this->forward.z * f;
+
+	MoveX(x);
+	MoveY(y);
+	MoveZ(z);
+
+
+}
+
+void TransformComponent::PosUpdate(void)
+{
+	this->mtxpos = XMMatrixTranslation(this->pos.x, this->pos.y, this->pos.z);
 }
 
 

@@ -17,7 +17,7 @@
 #define	VIEW_ANGLE		(XMConvertToRadians(45.0f))						// ビュー平面の視野角
 #define	VIEW_ASPECT		((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比	
 #define	VIEW_NEAR_Z		(10.0f)											// ビュー平面のNearZ値
-#define	VIEW_FAR_Z		(10000.0f)										// ビュー平面のFarZ値
+#define	VIEW_FAR_Z		(1000.0f)										// ビュー平面のFarZ値
 
 #define	VALUE_MOVE_CAMERA	(2.0f)										// カメラの移動量
 #define	VALUE_ROTATE_CAMERA	(XM_PI * 0.01f)								// カメラの回転量
@@ -121,7 +121,7 @@ void CameraComponent::SetCamera(void)
 	SetCameraAT(this->lookObject->GetTransFormComponent()->GetPosition());
 
 
-	XMFLOAT3 pos;
+	XMFLOAT3 pos = {.0f,.0f,.0f};
 
 	XMFLOAT3 At = this->at;
 	XMFLOAT3 Up = this->up;

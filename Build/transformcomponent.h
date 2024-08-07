@@ -40,7 +40,7 @@ public:
 	void SetPosition(XMFLOAT3 pos);
 	void SetRotation(XMFLOAT3 rot);
 	void SetScale(XMFLOAT3 scl);
-	void SetDirection(XMFLOAT3 dir);
+	void SetDirection(XMFLOAT3 forward);
 	void SetAxisX(XMVECTOR axis);
 	void SetAxizY(XMVECTOR axis);
 	void SetAxizZ(XMVECTOR axis);
@@ -55,8 +55,18 @@ public:
 
 	void SetTransForm(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scl);
 
+
+
 	XMFLOAT3 GetWorldPos(void);
 
+	void MoveX(float f);
+	void MoveY(float f);
+	void MoveZ(float f);
+
+
+	void MoveForward(float f);
+
+	void PosUpdate(void);
 
 protected:
 
@@ -67,7 +77,7 @@ protected:
 	XMFLOAT3		rot;		// ポリゴンの向き
 	XMFLOAT3		oldRot;
 	XMFLOAT3		scl;		// ポリゴンの大きさ(スケール)
-	XMFLOAT3		dir;
+	XMFLOAT3		forward;
 
 	XMVECTOR		axisX;
 	XMVECTOR		axisY;

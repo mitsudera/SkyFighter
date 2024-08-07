@@ -49,6 +49,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{71882956-d0f8-44de-b497-d9d029decca4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{a57e3c68-9334-4fae-aa89-3be1329fc009}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h">
@@ -86,9 +89,6 @@
     </ClInclude>
     <ClInclude Include="SkinMeshDataList.h">
       <Filter>ModelAnimation</Filter>
-    </ClInclude>
-    <ClInclude Include="Movementcomponent.h">
-      <Filter>component</Filter>
     </ClInclude>
     <ClInclude Include="AssetsManager.h">
       <Filter>Manager</Filter>
@@ -138,6 +138,9 @@
     <ClInclude Include="Camera.h">
       <Filter>gameobject</Filter>
     </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -172,9 +175,6 @@
     </ClCompile>
     <ClCompile Include="SkinMeshDataList.cpp">
       <Filter>ModelAnimation</Filter>
-    </ClCompile>
-    <ClCompile Include="Movementcomponent.cpp">
-      <Filter>component</Filter>
     </ClCompile>
     <ClCompile Include="AssetsManager.cpp">
       <Filter>Manager</Filter>
@@ -220,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

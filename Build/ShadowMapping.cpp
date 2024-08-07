@@ -1,26 +1,32 @@
 #include "ShadowMapping.h"
 #include "level.h"
+#include "gameobject.h"
 #include "Main.h"
 #include "Renderer.h"
 
 ShadowMapping::ShadowMapping(Level* level)
 {
 	this->pLevel = level;
-	this->quarity = 1024.0f;
-	this->hw = 64.0f;
+	this->quarity = 1024.0f*4.0f;
+	this->quarityblur = 1024.0f*4.0f;
+	this->hw = 32.0f;
 
-	pos = XMFLOAT3(10.0f, 100.0f, 10.0f);
+	pos = XMFLOAT3(100.0f, 100.0f, 100.0f);
 	at = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	this->ShadowMap.Enable = TRUE;
-
+	SetShadowMode(SHADOW_MODE::VARIANCE);
 	m_VertexShaderShadow = nullptr;
 	m_PixelShaderShadow = nullptr;
 
 	m_VertexShaderShadow2D = nullptr;
 	m_PixelShaderShadowX = nullptr;
+	m_PixelShaderShadowY = nullptr;
 
+	this->ShadowTarget = nullptr;
 
+	this->dir=XMFLOAT3(0.0f, 1.0f, 0.0f);
+	this->len = 100.0f;
 }
 
 ShadowMapping::~ShadowMapping()
@@ -38,6 +44,7 @@ void ShadowMapping::Init(void)
 
 	renderer->CreateVSFile("shader.hlsl", "VS_2D", &m_VertexShaderShadow2D);
 	renderer->CreatePSFile("shader.hlsl", "xpass", &m_PixelShaderShadowX);
+	renderer->CreatePSFile("shader.hlsl", "ypass", &m_PixelShaderShadowY);
 
 
 	// シャドウ マップの作成
@@ -124,6 +131,9 @@ void ShadowMapping::Init(void)
 
 
 	// Xシャドウ マップの作成
+	descDepth.Width = quarityblur;
+	descDepth.Height = quarityblur;
+
 	descDepth.Format = DXGI_FORMAT_R32G32_TYPELESS;  // フォーマット
 	descDepth.Usage = D3D11_USAGE_DEFAULT;      // デフォルト使用法
 	descDepth.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; //シェーダ リソース ビューとして使用
@@ -158,6 +168,44 @@ void ShadowMapping::Init(void)
 		&ShadowMapSRViewX);  // 受け取る変数
 
 
+	// Yシャドウ マップの作成
+	descDepth.Width = quarityblur;
+	descDepth.Height = quarityblur;
+
+	descDepth.Format = DXGI_FORMAT_R32G32_TYPELESS;  // フォーマット
+	descDepth.Usage = D3D11_USAGE_DEFAULT;      // デフォルト使用法
+	descDepth.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; //シェーダ リソース ビューとして使用
+	hr = renderer->GetDevice()->CreateTexture2D(
+		&descDepth,         // 作成する2Dテクスチャの設定
+		NULL,               // 
+		&ShadowMapingTextureY);     // 作成したテクスチャを受け取る変数
+
+
+
+	// レンダーターゲットビューの設定
+	
+	//memset(&rtvDesc, 0, sizeof(rtvDesc));
+	//rtvDesc.Format = DYGI_FORMAT_R32G32_FLOAT;
+	//rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEYTURE2D;
+
+	// レンダーターゲットビューの生成
+
+
+	hr = renderer->GetDevice()->CreateRenderTargetView(ShadowMapingTextureY, &rtvDesc, &RenderTargetShadowY);
+
+	//// シェーダ リソース ビューの作成
+	//srDesc.Format = DYGI_FORMAT_R32G32_FLOAT; // フォーマット
+	//srDesc.ViewDimension = D3D_SRV_DIMENSION_TEYTURE2D;  // 2Dテクスチャ
+	//srDesc.Texture2D.MostDetailedMip = 0;   // 最初のミップマップ レベル
+	//srDesc.Texture2D.MipLevels = -1;  // すべてのミップマップ レベル
+
+	// シェーダ リソース ビューの作成
+	hr = renderer->GetDevice()->CreateShaderResourceView(
+		ShadowMapingTextureY,          // アクセスするテクスチャ リソース
+		&srDesc,               // シェーダ リソース ビューの設定
+		&ShadowMapSRViewY);  // 受け取る変数
+
+
 
 
 		// ビューポートの設定
@@ -167,6 +215,14 @@ void ShadowMapping::Init(void)
 	ViewPortShadowMap[0].Height = quarity;	// ビューポート領域の高さ
 	ViewPortShadowMap[0].MinDepth = 0.0f;		// ビューポート領域の深度値の最小値
 	ViewPortShadowMap[0].MaxDepth = 1.0f;		// ビューポート領域の深度値の最大値
+
+
+	ViewPortShadowMap[1].TopLeftX = 0.0f;		// ビューポート領域の左上X座標。
+	ViewPortShadowMap[1].TopLeftY = 0.0f;		// ビューポート領域の左上Y座標。
+	ViewPortShadowMap[1].Width = quarityblur;	// ビューポート領域の幅
+	ViewPortShadowMap[1].Height = quarityblur;	// ビューポート領域の高さ
+	ViewPortShadowMap[1].MinDepth = 0.0f;		// ビューポート領域の深度値の最小値
+	ViewPortShadowMap[1].MaxDepth = 1.0f;		// ビューポート領域の深度値の最大値
 
 
 
@@ -195,19 +251,19 @@ void ShadowMapping::Init(void)
 	vertex[0].TexCoord = XMFLOAT2(0.0f,0.0f);
 
 	// 頂点１番（右上の頂点）
-	vertex[1].Position = XMFLOAT3(hw, 0.0f, 0.0f);
+	vertex[1].Position = XMFLOAT3(quarityblur, 0.0f, 0.0f);
 	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[1].TexCoord = XMFLOAT2(quarity, 0.0f);
+	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
 	// 頂点２番（左下の頂点）
-	vertex[2].Position = XMFLOAT3(0.0f, hw, 0.0f);
+	vertex[2].Position = XMFLOAT3(0.0f, quarityblur, 0.0f);
 	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[2].TexCoord = XMFLOAT2(0.0f, quarity);
+	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
 	// 頂点３番（右下の頂点）
-	vertex[3].Position = XMFLOAT3(hw, hw, 0.0f);
+	vertex[3].Position = XMFLOAT3(quarityblur, quarityblur, 0.0f);
 	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[3].TexCoord = XMFLOAT2(quarity, quarity);
+	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 	
 	renderer->GetDeviceContext()->Unmap(VertexBuffer, 0);
 
@@ -226,6 +282,15 @@ void ShadowMapping::Uninit(void)
 void ShadowMapping::Update(void)
 {
 	Renderer* renderer= this->pLevel->GetMain()->GetRenderer();
+	if (ShadowTarget!=nullptr)
+	{
+		this->at = ShadowTarget->GetTransFormComponent()->GetPosition();
+		this->pos.x = at.x + dir.x * len;
+		this->pos.y = at.y + dir.y * len;
+		this->pos.z = at.z + dir.z * len;
+	}
+	
+	
 }
 
 void ShadowMapping::Draw(void)
@@ -239,10 +304,8 @@ void ShadowMapping::Draw(void)
 		RenderTargetShadow, // クリアする描画ターゲット
 		ClearColor);         // クリアする値
 
-		// 描画ターゲットのクリア
-	renderer->GetDeviceContext()->ClearRenderTargetView(
-		RenderTargetShadowX, // クリアする描画ターゲット
-		ClearColor);         // クリアする値
+	ClearColor[0] = 0.0f;	// 背景色
+	ClearColor[1] = 0.0f;	// 背景色
 
 
 	// 深度/ステンシルのクリア
@@ -261,7 +324,7 @@ void ShadowMapping::Draw(void)
 
 	XMMATRIX mtxShadowMapView = XMMatrixLookAtLH(XMLoadFloat3(&this->pos), XMLoadFloat3(&this->at), XMLoadFloat3(&this->up));
 	renderer->SetViewMatrix(&mtxShadowMapView);
-	XMMATRIX mtxShadowMapProj = XMMatrixOrthographicLH(hw, hw, 10.0f, 1000.0f);
+	XMMATRIX mtxShadowMapProj = XMMatrixOrthographicLH(hw, hw, 100.0f, 500.0f);
 	renderer->SetProjectionMatrix(&mtxShadowMapProj);
 
 	XMMATRIX smwvp = XMMatrixTranspose(XMMatrixIdentity() * mtxShadowMapView * mtxShadowMapProj);
@@ -275,28 +338,19 @@ void ShadowMapping::Draw(void)
 	pLevel->DrawShadowObject();
 
 
+	
+
 	////レンダーターゲットから外さないとシェーダーリソースにバインドできない
-	//renderer->GetDeviceContext()->OMSetRenderTargets(0, nullptr, nullptr);
-
-	this->SetShaderXpass();
-
-
-
-	// RSにビューポートを設定
-	renderer->GetDeviceContext()->RSSetViewports(1, ViewPortShadowMap);
-
-
-
-
-	renderer->GetDeviceContext()->OMSetRenderTargets(1, &RenderTargetShadowX, nullptr);
-
-	renderer->SetWorldViewProjection2D();
+	renderer->GetDeviceContext()->OMSetRenderTargets(0, nullptr, nullptr);
 
 
 	renderer->GetDeviceContext()->PSSetShaderResources(1, 1, &this->ShadowMapDSSRView);
-	renderer->GetDeviceContext()->PSSetShaderResources(0, 1, &this->ShadowMapSRView);
-	renderer->GetDeviceContext()->PSSetShaderResources(2, 1, &this->ShadowMapSRView);
 
+
+	// RSにビューポートを設定
+	renderer->GetDeviceContext()->RSSetViewports(1, &ViewPortShadowMap[1]);
+
+	this->SetWorldViewProjection2D();
 
 
 	// 頂点バッファ設定
@@ -305,9 +359,76 @@ void ShadowMapping::Draw(void)
 
 	renderer->GetDeviceContext()->IASetVertexBuffers(0, 1, &this->VertexBuffer, &stride, &offset);
 
+	// プリミティブトポロジ設定
+	renderer->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	renderer->SetCullingMode(CULL_MODE_NONE);
 
 
-	renderer->GetDeviceContext()->Draw(4, 0);
+	for (int i = 0; i < 1; i++)
+	{
+
+		// 描画ターゲットのクリア
+		renderer->GetDeviceContext()->ClearRenderTargetView(
+			RenderTargetShadowX, // クリアする描画ターゲット
+			ClearColor);         // クリアする値
+
+
+
+		this->SetShaderXpass();
+
+
+
+
+		if (i == 0)
+		{
+			renderer->GetDeviceContext()->PSSetShaderResources(0, 1, &this->ShadowMapSRView);
+
+		}
+		else
+		{
+
+			renderer->GetDeviceContext()->PSSetShaderResources(0, 1, &this->ShadowMapSRViewY);
+
+		}
+		renderer->GetDeviceContext()->OMSetRenderTargets(1, &RenderTargetShadowX, nullptr);
+
+		renderer->GetDeviceContext()->Draw(4, 0);
+
+		this->SetShaderYpass();
+
+		// 描画ターゲットのクリア
+		renderer->GetDeviceContext()->ClearRenderTargetView(
+			RenderTargetShadowY, // クリアする描画ターゲット
+			ClearColor);         // クリアする値
+
+
+		renderer->GetDeviceContext()->OMSetRenderTargets(1, &RenderTargetShadowY, nullptr);
+
+
+		renderer->GetDeviceContext()->PSSetShaderResources(0, 1, &this->ShadowMapSRViewX);
+
+
+
+
+		renderer->GetDeviceContext()->Draw(4, 0);
+
+
+
+		////レンダーターゲットから外さないとシェーダーリソースにバインドできない
+		renderer->GetDeviceContext()->OMSetRenderTargets(0, nullptr, nullptr);
+
+
+	}
+
+
+
+
+
+	////レンダーターゲットから外さないとシェーダーリソースにバインドできない
+	renderer->GetDeviceContext()->OMSetRenderTargets(0, nullptr, nullptr);
+
+	renderer->GetDeviceContext()->PSSetShaderResources(2, 1, &this->ShadowMapSRViewY);
 
 }
 
@@ -345,4 +466,51 @@ void ShadowMapping::SetShaderXpass(void)
 	renderer->GetDeviceContext()->VSSetShader(m_VertexShaderShadow2D, NULL, 0);
 	renderer->GetDeviceContext()->PSSetShader(m_PixelShaderShadowX, NULL, 0);
 
+}
+void ShadowMapping::SetShaderYpass(void)
+{
+	Renderer* renderer = pLevel->GetMain()->GetRenderer();
+
+	renderer->GetDeviceContext()->VSSetShader(m_VertexShaderShadow2D, NULL, 0);
+	renderer->GetDeviceContext()->PSSetShader(m_PixelShaderShadowY, NULL, 0);
+
+}
+void ShadowMapping::SetWorldViewProjection2D(void)
+{
+	Renderer* renderer = this->pLevel->GetMain()->GetRenderer();
+
+	XMMATRIX world = XMMatrixIdentity();
+	renderer->SetWorldMatrix(&world);
+
+	XMMATRIX view = XMMatrixIdentity();
+	renderer->SetViewMatrix(&view);
+
+
+	XMMATRIX projection;
+	projection = XMMatrixOrthographicOffCenterLH(0.0f, this->quarityblur, this->quarityblur, 0.0f, 0.0f, 1.0f);
+	renderer->SetProjectionMatrix(&projection);
+
+}
+
+void ShadowMapping::SetShadowMode(SHADOW_MODE mode)
+{
+	this->ShadowMap.mode = mode;
+}
+
+void ShadowMapping::SetTarget(GameObject* gameObject)
+{
+	this->ShadowTarget = gameObject;
+}
+
+void ShadowMapping::SetDirection(XMFLOAT3 dir)
+{
+
+	this->dir = XMFLOAT3Normalize(dir);
+	
+
+}
+
+void ShadowMapping::SetLen(float len)
+{
+	this->len = len;
 }

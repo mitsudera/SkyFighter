@@ -2,6 +2,15 @@
 #include "Coreminimal.h"
 
 class Level;
+class GameObject;
+
+typedef enum 
+{
+	NORMAL,
+	VARIANCE,
+
+
+}SHADOW_MODE;
 
 // 影用定数バッファ構造体
 struct SHADOWMAP_CBUFFER
@@ -14,7 +23,8 @@ struct SHADOWMAP_CBUFFER
 
 
 	int			Enable;
-	int			Dummy[15];
+	BOOL		mode;
+	int			Dummy[14];
 };
 
 
@@ -34,18 +44,26 @@ public:
 	void SetShadowBuffer(void);
 	void SetShaderShadow(void);
 	void SetShaderXpass(void);
-
-
-
+	void SetShaderYpass(void);
+	void SetWorldViewProjection2D(void);
+	void SetShadowMode(SHADOW_MODE mode);
+	void SetTarget(GameObject* gameObject);
+	void SetDirection(XMFLOAT3 dir);
+	void SetLen(float len);
 private:
 
-	Level* pLevel;
+	GameObject* ShadowTarget;
 
+
+	Level* pLevel;
+	XMFLOAT3 dir;
+	float len;
 	XMFLOAT3 pos;
 	XMFLOAT3 at;
 	XMFLOAT3 up;
 
 	float quarity;
+	float quarityblur;
 	float hw;
 
 	ID3D11VertexShader* m_VertexShaderShadow;
@@ -53,6 +71,7 @@ private:
 
 	ID3D11VertexShader* m_VertexShaderShadow2D;
 	ID3D11PixelShader* m_PixelShaderShadowX;
+	ID3D11PixelShader* m_PixelShaderShadowY;
 
 
 	SHADOWMAP_CBUFFER	ShadowMap;
@@ -65,7 +84,7 @@ private:
 	ID3D11RenderTargetView* RenderTargetShadow;
 	ID3D11ShaderResourceView* ShadowMapSRView;	// シェーダ・リソース・ビュー
 
-	D3D11_VIEWPORT            ViewPortShadowMap[1];       // ビューポート
+	D3D11_VIEWPORT            ViewPortShadowMap[2];       // ビューポート
 	
 
 	ID3D11Texture2D* ShadowMapingTextureX;

@@ -5,19 +5,22 @@
 //
 //=============================================================================
 #pragma once
+#include "Coreminimal.h"
 
 
-//*****************************************************************************
-// マクロ定義
-//*****************************************************************************
+#define	NUM_KEY_MAX			(256)
 
-// プログラム分けするときに使う
-#define	USE_KEYBOARD										// 宣言するとキーボードで操作可能になる
-#define	USE_MOUSE											// 宣言するとマウスで操作可能になる
-#define	USE_PAD												// 宣言するとパッドで操作可能になる
+// game pad用設定値
+#define DEADZONE		2500			// 各軸の25%を無効ゾーンとする
+#define DEADZONER		1000			// 各軸の10%を無効ゾーンとする
+#define RANGE_MAX		1000			// 有効範囲の最大値
+#define RANGE_MIN		-1000			// 有効範囲の最小値
+#define RANGE_MAXRight	1500			// 有効範囲の最大値
+#define RANGE_MINRight	-1500			// 有効範囲の最小値
 
 
 /* game pad情報 */
+
 #define BUTTON_UP		0x00000001l	// 方向キー上(.rgdwPOV<0)
 #define BUTTON_DOWN		0x00000002l	// 方向キー下(.rgdwPOV>0)
 #define BUTTON_LEFT		0x00000004l	// 方向キー左(.rgdwPOV<0)
@@ -39,38 +42,101 @@
 #define GAMEPADMAX		4			// 同時に接続するジョイパッドの最大数をセット
 
 
+class Main;
+
+class Input
+{
+public:
+	Input(Main* main);
+	~Input();
+	HRESULT Init(HINSTANCE hInst, HWND hWnd);
+	void Uninit(void);
+	void Update(void);
+
+	HRESULT InitKeyboard(HINSTANCE hInst, HWND hWnd);
+	void UninitKeyboard(void);
+	HRESULT UpdateKeyboard(void);
+
+	HRESULT InitializeMouse(HINSTANCE hInst, HWND hWindow); // マウスの初期化
+	void UninitMouse();						// マウスの終了処理
+	HRESULT UpdateMouse();					// マウスの更新処理
+
+	HRESULT InitializePad(void);			// パッド初期化
+	void UpdatePad(void);
+	void UninitPad(void);
+
+
+	//---------------------------- keyboard
+	bool GetKeyboardPress(int nKey);
+	bool GetKeyboardTrigger(int nKey);
+	bool GetKeyboardRepeat(int nKey);
+	bool GetKeyboardRelease(int nKey);
+
+	//---------------------------- mouse
+	BOOL IsMouseLeftPressed(void);      // 左クリックした状態
+	BOOL IsMouseLeftTriggered(void);    // 左クリックした瞬間
+	BOOL IsMouseRightPressed(void);     // 右クリックした状態
+	BOOL IsMouseRightTriggered(void);   // 右クリックした瞬間
+	BOOL IsMouseCenterPressed(void);    // 中クリックした状態
+	BOOL IsMouseCenterTriggered(void);  // 中クリックした瞬間
+	long GetMouseX(void);               // マウスがX方向に動いた相対値
+	long GetMouseY(void);               // マウスがY方向に動いた相対値
+	long GetMouseZ(void);               // マウスホイールが動いた相対値
+
+	//---------------------------- game pad
+	BOOL IsButtonPressed(int padNo, DWORD button);
+	BOOL IsButtonTriggered(int padNo, DWORD button);
+
+
+	LONG GetLeftStickX(int padNo);
+	LONG GetLeftStickY(int padNo);
+	LONG GetRightStickX(int padNo);
+	LONG GetRightStickY(int padNo);
+	LONG GetVALUER2(int padNo);
+	LONG GetVALUEL2(int padNo);
+
+
+
+
+private:
+
+	//------------------------------- keyboard
+	LPDIRECTINPUT8			pDInput;					// IDirectInput8インターフェースへのポインタ
+	LPDIRECTINPUTDEVICE8	pDIDevKeyboard;			// IDirectInputDevice8インターフェースへのポインタ(キーボード)
+	BYTE					keyState[NUM_KEY_MAX];			// キーボードの状態を受け取るワーク
+	BYTE					keyStateTrigger[NUM_KEY_MAX];		// キーボードの状態を受け取るワーク
+	BYTE					keyStateRepeat[NUM_KEY_MAX];		// キーボードの状態を受け取るワーク
+	BYTE					keyStateRelease[NUM_KEY_MAX];		// キーボードの状態を受け取るワーク
+	int						keyStateRepeatCnt[NUM_KEY_MAX];	// キーボードのリピートカウンタ
+
+	//--------------------------------- mouse
+	LPDIRECTINPUTDEVICE8 pMouse; // mouse
+
+	DIMOUSESTATE2   mouseState;		// マウスのダイレクトな状態
+	DIMOUSESTATE2   mouseTrigger;	// 押された瞬間だけON
+
+	//--------------------------------- game pad
+
+	LPDIRECTINPUTDEVICE8	pGamePad[GAMEPADMAX];// パッドデバイス
+
+	DWORD	padState[GAMEPADMAX];	// パッド情報（複数対応）
+	DWORD	padTrigger[GAMEPADMAX];
+
+	int		padCount;			// 検出したパッドの数
+	LONG LeftStickY[GAMEPADMAX];
+	LONG LeftStickX[GAMEPADMAX];
+	LONG RightStickY[GAMEPADMAX];
+	LONG RightStickX[GAMEPADMAX];
+	LONG VALUER2[GAMEPADMAX];
+	LONG VALUEL2[GAMEPADMAX];
+
+
+
+};
+
+
+
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-HRESULT InitInput(HINSTANCE hInst, HWND hWnd);
-void UninitInput(void);
-void UpdateInput(void);
-
-//---------------------------- keyboard
-bool GetKeyboardPress(int nKey);
-bool GetKeyboardTrigger(int nKey);
-bool GetKeyboardRepeat(int nKey);
-bool GetKeyboardRelease(int nKey);
-
-//---------------------------- mouse
-BOOL IsMouseLeftPressed(void);      // 左クリックした状態
-BOOL IsMouseLeftTriggered(void);    // 左クリックした瞬間
-BOOL IsMouseRightPressed(void);     // 右クリックした状態
-BOOL IsMouseRightTriggered(void);   // 右クリックした瞬間
-BOOL IsMouseCenterPressed(void);    // 中クリックした状態
-BOOL IsMouseCenterTriggered(void);  // 中クリックした瞬間
-long GetMouseX(void);               // マウスがX方向に動いた相対値
-long GetMouseY(void);               // マウスがY方向に動いた相対値
-long GetMouseZ(void);               // マウスホイールが動いた相対値
-
-//---------------------------- game pad
-BOOL IsButtonPressed(int padNo,DWORD button);
-BOOL IsButtonTriggered(int padNo,DWORD button);
-
-
-LONG GetLeftStickX(int padNo);
-LONG GetLeftStickY(int padNo);
-LONG GetRightStickX(int padNo);
-LONG GetRightStickY(int padNo);
-LONG GetVALUER2(int padNo);
-LONG GetVALUEL2(int padNo);

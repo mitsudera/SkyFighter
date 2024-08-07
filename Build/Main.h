@@ -3,6 +3,7 @@
 #include "level.h"
 #include "AssetsManager.h"
 #include "Title.h"
+#include "input.h"
 
 #define SCREEN_WIDTH	(1920)				// 初期化ウィンドウの横幅pixel
 #define SCREEN_HEIGHT	(1080)				// 初期化ウィンドウの縦幅pixel
@@ -43,6 +44,7 @@ public:
 
 	AssetsManager* GetAssetsManager(void);
 	Renderer* GetRenderer(void);
+	Input* GetInput(void);
 
 protected:
 	void Init(void);
@@ -66,6 +68,7 @@ private:
 
 	Renderer* renderer;
 	AssetsManager* assetsManager;
+	Input* input;
 
 };
 

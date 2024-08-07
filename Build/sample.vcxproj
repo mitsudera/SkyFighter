@@ -157,6 +157,7 @@
     <ClInclude Include="Coreminimal.h" />
     <ClInclude Include="DirectionalLightComponent.h" />
     <ClInclude Include="gameobject.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightComponent.h" />
@@ -165,7 +166,6 @@
     <ClInclude Include="MeshAnimData.h" />
     <ClInclude Include="meshcomponent.h" />
     <ClInclude Include="MeshData.h" />
-    <ClInclude Include="Movementcomponent.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="primitivecomponent.h" />
     <ClInclude Include="Renderer.h" />
@@ -186,6 +186,7 @@
     <ClCompile Include="component.cpp" />
     <ClCompile Include="DirectionalLightComponent.cpp" />
     <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightComponent.cpp" />
@@ -194,7 +195,6 @@
     <ClCompile Include="MeshAnimData.cpp" />
     <ClCompile Include="meshcomponent.cpp" />
     <ClCompile Include="MeshData.cpp" />
-    <ClCompile Include="Movementcomponent.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="primitivecomponent.cpp" />
     <ClCompile Include="Renderer.cpp" />

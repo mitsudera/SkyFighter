@@ -204,3 +204,17 @@ XMMATRIX FbxMatrixConvertToXMMATRIX(FbxMatrix fbxmat)
 	return xmat;
 
 }
+
+XMFLOAT3 XMFLOAT3Normalize(XMFLOAT3 p)
+{
+	XMVECTOR v = XMLoadFloat3(&p);
+
+	v = XMVector3Normalize(v);
+
+	XMFLOAT3 ans;
+
+	XMStoreFloat3(&ans, v);
+
+	return ans;
+
+}

@@ -81,9 +81,9 @@ XMFLOAT3 LightComponent::GetDirection(void)
 	return this->direction;
 }
 
-void LightComponent::SetDirecton(XMFLOAT3 dir)
+void LightComponent::SetDirecton(XMFLOAT3 forward)
 {
-	this->direction = dir;
+	this->direction = forward;
 }
 
 XMFLOAT3 LightComponent::GetPosition(void)

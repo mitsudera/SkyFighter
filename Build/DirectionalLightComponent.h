@@ -11,6 +11,6 @@ public:
 	virtual void Uninit(void) override;
 	virtual void Update(void) override;
 
-	void SetLight(int index,XMFLOAT3 dir, XMFLOAT4 diffuse, XMFLOAT4 amb);
+	void SetLight(int index,XMFLOAT3 forward, XMFLOAT4 diffuse, XMFLOAT4 amb);
 };
 

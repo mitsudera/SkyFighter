@@ -13,7 +13,7 @@ Camera::~Camera()
 void Camera::Init(void)
 {
 	this->cameraComponent->Init();
-	cameraComponent->SetPosition(XMFLOAT3(5.0f, 10.0f, -30.0f));
+	cameraComponent->SetPosition(XMFLOAT3(4.0f, 8.0f, -15.0f));
 	cameraComponent->SetMode(CameraComponent::MODE::TRACKING);
 	
 }

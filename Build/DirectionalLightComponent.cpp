@@ -27,9 +27,9 @@ void DirectionalLightComponent::Update(void)
 	LightComponent::Update();
 }
 
-void DirectionalLightComponent::SetLight(int index, XMFLOAT3 dir, XMFLOAT4 diffuse, XMFLOAT4 amb)
+void DirectionalLightComponent::SetLight(int index, XMFLOAT3 forward, XMFLOAT4 diffuse, XMFLOAT4 amb)
 {
-	this->direction = dir;
+	this->direction = forward;
 	this->diffuse = diffuse;
 	this->ambient = amb;
 	this->enable = TRUE;

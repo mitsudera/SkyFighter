@@ -31,7 +31,7 @@ public:
 	BOOL GetEnable(void);
 
 	XMFLOAT3 GetDirection(void);
-	void SetDirecton(XMFLOAT3 dir);
+	void SetDirecton(XMFLOAT3 forward);
 	XMFLOAT3 GetPosition(void);
 	void SetPosition(XMFLOAT3 pos);
 	XMFLOAT4 GetAmbient(void);

@@ -205,6 +205,11 @@ Renderer* Main::GetRenderer(void)
 	return this->renderer;
 }
 
+Input* Main::GetInput(void)
+{
+	return this->input;
+}
+
 void Main::Init(void)
 {
 	//マウス位置の初期化
@@ -218,6 +223,9 @@ void Main::Init(void)
 
 	this->assetsManager = new AssetsManager(this);
 
+	this->input = new Input(this);
+
+	this->input->Init(*GetInstanceHandle(), *GetWindowHangle());
 
 	//各レベルの生成
 
@@ -230,6 +238,7 @@ void Main::Init(void)
 
 void Main::Update(void)
 {
+	this->input->Update();
 	switch (this->scene)
 	{
 	case SCENE::TITLE:
@@ -268,7 +277,7 @@ void Main::Draw(void)
 
 void Main::Uninit(void)
 {
-
+	this->input->Uninit();
 	this->title->Uninit();
 	this->renderer->UninitRenderer();
 	delete this->renderer;

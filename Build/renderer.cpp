@@ -793,7 +793,7 @@ void Renderer::SetGausBuffer(void)
 	GaussianCBuffer gaus;
 	ZeroMemory(&gaus, sizeof(gaus));
 	float total = 0;
-	constexpr float disperision = 10.0f;
+	constexpr float disperision = 40.0f;
 	for (int i = 0; i < 8; i++) {
 		float pos = 1.0f + 2.0f * (float)i;
 		gaus.weight[i] = expf(-0.5f * pos * pos / disperision);
