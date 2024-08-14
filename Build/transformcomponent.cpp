@@ -65,7 +65,8 @@ void TransformComponent::Init(void)
 	this->rot = { 0.0f,0.0f,0.0f };
 	this->oldRot = { 0.0f,0.0f,0.0f };
 	this->scl = { 1.0f,1.0f,1.0f };
-	this->forward = { 0.0f,0.0f,-1.0f };
+	this->forward = { 0.0f,0.0f,1.0f };
+	this->fDirection= { 0.0f,0.0f,1.0f };
 	this->axisX = xonevec();
 	this->axisY = yonevec();
 	this->axisZ = zonevec();
@@ -99,16 +100,14 @@ void TransformComponent::Update(void)
 
 	this->mtxWorld = world;
 
-	XMFLOAT3 p = { 0.0f,0.0f,-1.0f };
-	XMVECTOR v = XMLoadFloat3(&p);
+	XMVECTOR v = XMLoadFloat3(&fDirection);
 
 	v = XMVector3Transform(v, mtxrot);
 
 	v = XMVector3Normalize(v);
 
-	XMStoreFloat3(&p, v);
+	XMStoreFloat3(&this->forward, v);
 
-	this->forward = p;
 	
 	
 
@@ -352,6 +351,11 @@ void TransformComponent::MoveForward(float f)
 void TransformComponent::PosUpdate(void)
 {
 	this->mtxpos = XMMatrixTranslation(this->pos.x, this->pos.y, this->pos.z);
+}
+
+void TransformComponent::SetForwardDiection(XMFLOAT3 dir)
+{
+	this->fDirection = XMFLOAT3Normalize(dir);
 }
 
 

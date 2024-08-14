@@ -143,6 +143,7 @@ BOOL CollisionPointSphere(XMFLOAT3 point, XMFLOAT3 center, float r)
 }
 BOOL CollisionPointBox(XMFLOAT3 point, XMMATRIX boxMatrix)
 {
+	return FALSE;
 }
 
 BOOL CollisionPointCapsule(XMFLOAT3 point, XMFLOAT3 pos1, XMFLOAT3 pos2,float r)

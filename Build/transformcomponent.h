@@ -16,7 +16,7 @@ public:
 	virtual void Update(void) override;
 
 
-	XMFLOAT3 GetPosition(void);
+	virtual XMFLOAT3 GetPosition(void);
 	XMFLOAT3 GetOldPosition(void);
 	XMFLOAT3 GetRotation(void);
 	XMFLOAT3 GetOldRotation(void);
@@ -66,7 +66,10 @@ public:
 
 	void MoveForward(float f);
 
+
 	void PosUpdate(void);
+
+	void SetForwardDiection(XMFLOAT3 dir);
 
 protected:
 
@@ -78,6 +81,7 @@ protected:
 	XMFLOAT3		oldRot;
 	XMFLOAT3		scl;		// ポリゴンの大きさ(スケール)
 	XMFLOAT3		forward;
+	XMFLOAT3		fDirection;
 
 	XMVECTOR		axisX;
 	XMVECTOR		axisY;

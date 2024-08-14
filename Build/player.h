@@ -1,9 +1,9 @@
 #pragma once
 #include "gameobject.h"
-#include "transformcomponent.h"
-#include "level.h"
-#include "meshcomponent.h"
-#include "CameraComponent.h"
+
+class Level;
+class MeshComponent;
+class ColliderComponent;
 
 class Player:public GameObject
 {
@@ -26,6 +26,8 @@ private:
 	
 	
 	MeshComponent* meshComponent;
+	ColliderComponent* collider;
+	
 
 };
 

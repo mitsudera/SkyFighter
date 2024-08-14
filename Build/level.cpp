@@ -20,3 +20,8 @@ Main* Level::GetMain(void)
 {
 	return this->pMain;
 }
+
+CollisionManger* Level::GetCollisionManager(void)
+{
+	return this->collisionManager;
+}

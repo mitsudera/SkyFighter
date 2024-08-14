@@ -4,17 +4,14 @@
 
 
 
-
 typedef enum
 {
-	Player,
-	Enemy,
-	Field,
+	TagPlayer,
+	TagEnemy,
+	TagField,
 
 	MAX,
 }ObjectTag;
-
-
 
 struct HitResult
 {
@@ -22,6 +19,8 @@ struct HitResult
 	vector<GameObject*> hitObject;
 
 };
+
+
 
 enum class Shape
 {
@@ -31,6 +30,8 @@ enum class Shape
 	Sphere,
 	Capsule,
 
+
+	//–¢ŽÀ‘•
 	AABB,
 	CBB,
 
@@ -39,6 +40,8 @@ enum class Shape
 class ColliderComponent :public TransformComponent
 {
 public:
+
+
 
 
 	ColliderComponent(GameObject* gameObject);
@@ -74,13 +77,25 @@ public:
 	void SetEnd(XMFLOAT3 p);
 	XMFLOAT3 GetEnd(void);
 
+	void Clear(void);
+
+	void SetPointCollider(XMFLOAT3 pos);
+	void SetLineCollider(XMFLOAT3 pos, XMFLOAT3 spos, XMFLOAT3 epos);
+	void SetSphereCollider(XMFLOAT3 pos, float r);
+	void SetCapsuleCollider(XMFLOAT3 pos, XMFLOAT3 spos, XMFLOAT3 epos, float r);
+	float GetCheckRadius(void);
+
+	virtual XMFLOAT3 GetPosition(void) override;
+
 private:
 	HitResult result;
 	ObjectTag tag;
 	Shape shape;
 	float radius;
-	XMFLOAT3 sPoint;
-	XMFLOAT3 ePoint;
+	XMFLOAT3 sPos;
+	XMFLOAT3 ePos;
+	float check;
+
 
 };
 

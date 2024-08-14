@@ -22,10 +22,18 @@ void CollisionManger::Uninit(void)
 void CollisionManger::Update(void)
 {
 
+	for (int i = 0; i < colliderList.size(); i++)
+	{
+		colliderList[i]->Clear();
+	}
+
+
 	for (int i = 0; i < pairList.size(); i++)
 	{
 		
 		BOOL ans = CheckCillision(pairList[i]);
+
+
 
 		pairList[i].collider1->SetHitTag(pairList[i].collider2->GetTag(), ans);
 		pairList[i].collider2->SetHitTag(pairList[i].collider1->GetTag(), ans);
@@ -66,8 +74,15 @@ BOOL CollisionManger::CheckCillision(ColliderPair pair)
 	XMFLOAT3 pos1 = pair.collider1->GetWorldPos();
 	XMFLOAT3 pos2 = pair.collider2->GetWorldPos();
 
-	XMFLOAT3 opos1 = pair.collider1->GetOldPosition();
-	XMFLOAT3 opos2 = pair.collider2->GetOldPosition();
+	float check1 = pair.collider1->GetCheckRadius();
+	float check2 = pair.collider2->GetCheckRadius();
+
+	//‚±‚±‚Å‘å‚Ü‚©‚É“–‚½‚Á‚Ä‚¢‚é‚©”»’è
+	if (CollisionSphereSphere(pos1, check1, pos2, check2) == FALSE)
+	{
+		return FALSE;
+	}
+
 
 	XMFLOAT3 rot1 = pair.collider1->GetRotation();
 	XMFLOAT3 rot2 = pair.collider2->GetRotation();
@@ -83,6 +98,8 @@ BOOL CollisionManger::CheckCillision(ColliderPair pair)
 
 	XMFLOAT3 ePoint1 = pair.collider1->GetEnd();
 	XMFLOAT3 ePoint2 = pair.collider2->GetEnd();
+
+
 
 
 

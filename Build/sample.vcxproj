@@ -159,6 +159,7 @@
     <ClInclude Include="component.h" />
     <ClInclude Include="Coreminimal.h" />
     <ClInclude Include="DirectionalLightComponent.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="level.h" />
@@ -176,7 +177,7 @@
     <ClInclude Include="SkeletonAnimData.h" />
     <ClInclude Include="SkinMeshComponent.h" />
     <ClInclude Include="SkinMeshDataList.h" />
-    <ClInclude Include="SkySphire.h" />
+    <ClInclude Include="SkySphere.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="transformcomponent.h" />
   </ItemGroup>
@@ -190,6 +191,7 @@
     <ClCompile Include="CollisionManger.cpp" />
     <ClCompile Include="component.cpp" />
     <ClCompile Include="DirectionalLightComponent.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="level.cpp" />
@@ -207,7 +209,7 @@
     <ClCompile Include="SkeletonAnimData.cpp" />
     <ClCompile Include="SkinMeshComponent.cpp" />
     <ClCompile Include="SkinMeshDataList.cpp" />
-    <ClCompile Include="SkySphire.cpp" />
+    <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="transformcomponent.cpp" />
   </ItemGroup>

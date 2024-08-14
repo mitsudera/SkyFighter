@@ -4,6 +4,9 @@ class Main;
 class GameObject;
 class ShadowMapping;
 class Camera;
+class CollisionManger;
+
+
 class Level
 {
 public:
@@ -21,6 +24,7 @@ public:
 
 	Main* GetMain(void);
 	
+	CollisionManger* GetCollisionManager(void);
 	
 
 protected:
@@ -33,7 +37,8 @@ protected:
 
 	
 	Camera* mainCamera;
+	CollisionManger* collisionManager;
 
-
+	
 };
 

@@ -7,12 +7,18 @@
 #include "ShadowMapping.h"
 #include "BlueField.h"
 #include "camera.h"
+#include "enemy.h"
+#include "CollisionManger.h"
 
 Title::Title(Main* main)
 {
 	this->pMain = main;
 
 	this->shdowMap = new ShadowMapping(this);
+
+	this->collisionManager = new CollisionManger(this);
+
+
 
 	this->mainCamera = new Camera(this);
 	this->gameObject.push_back(mainCamera);
@@ -21,6 +27,10 @@ Title::Title(Main* main)
 	Player* player = new Player(this);
 	gameObject.push_back(player);
 	shadowObject.push_back(player);
+
+	Enemy* enemy = new Enemy(this);
+	gameObject.push_back(enemy);
+	shadowObject.push_back(enemy);
 
 	SkySphere* sky = new SkySphere(this);
 	gameObject.push_back(sky);
@@ -43,6 +53,7 @@ Title::~Title()
 void Title::Init(void)
 {
 	this->shdowMap->Init();
+	this->collisionManager->Init();
 	this->GetMain()->GetRenderer()->SetLightEnable(TRUE);
 	for (int i = 0; i < gameObject.size(); i++)
 	{
@@ -63,6 +74,7 @@ void Title::Uninit(void)
 {
 	this->shdowMap->Uninit();
 
+	this->collisionManager->Uninit();
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Uninit();
@@ -78,6 +90,7 @@ void Title::Update(void)
 		XMFLOAT3(0.0f, 1.0f, 0.0f));
 	this->shdowMap->Update();
 
+	this->collisionManager->Update();
 
 	for (int i = 0; i < gameObject.size(); i++)
 	{
