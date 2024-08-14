@@ -50,6 +50,10 @@ public:
 	void SetTarget(GameObject* gameObject);
 	void SetDirection(XMFLOAT3 dir);
 	void SetLen(float len);
+
+	void SetNear(float f);
+	void SetFar(float f);
+
 private:
 
 	GameObject* ShadowTarget;
@@ -65,6 +69,9 @@ private:
 	float quarity;
 	float quarityblur;
 	float hw;
+
+	float vNear;
+	float vFar;
 
 	ID3D11VertexShader* m_VertexShaderShadow;
 	ID3D11PixelShader* m_PixelShaderShadow;

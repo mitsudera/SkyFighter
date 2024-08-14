@@ -14,11 +14,6 @@ Title::Title(Main* main)
 {
 	this->pMain = main;
 
-	this->shdowMap = new ShadowMapping(this);
-
-	this->collisionManager = new CollisionManger(this);
-
-
 
 	this->mainCamera = new Camera(this);
 	this->gameObject.push_back(mainCamera);
@@ -63,7 +58,10 @@ void Title::Init(void)
 
 
 	this->shdowMap->SetDirection(XMFLOAT3(0.5f, 1.0f, 0.5f));
-	this->shdowMap->SetLen(200.0f);
+	this->shdowMap->SetLen(1000.0f);
+	this->shdowMap->SetNear(100.0f);
+	this->shdowMap->SetFar(3000.0f);
+
 
 	this->mainCamera->SetLookObject(gameObject[1]);
 	

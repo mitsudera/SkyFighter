@@ -2,8 +2,16 @@
 #include "gameobject.h"
 #include "Main.h"
 #include "camera.h"
+#include "CollisionManger.h"
+#include "ShadowMapping.h"
 Level::Level()
 {
+	this->shdowMap = new ShadowMapping(this);
+
+	this->collisionManager = new CollisionManger(this);
+
+
+
 }
 
 Level::Level(Main*main)

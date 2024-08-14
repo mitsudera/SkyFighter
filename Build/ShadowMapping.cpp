@@ -9,7 +9,7 @@ ShadowMapping::ShadowMapping(Level* level)
 	this->pLevel = level;
 	this->quarity = 1024.0f*4.0f;
 	this->quarityblur = 1024.0f*4.0f;
-	this->hw = 32.0f;
+	this->hw = 128.0f;
 
 	pos = XMFLOAT3(100.0f, 100.0f, 100.0f);
 	at = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -27,6 +27,8 @@ ShadowMapping::ShadowMapping(Level* level)
 
 	this->dir=XMFLOAT3(0.0f, 1.0f, 0.0f);
 	this->len = 100.0f;
+	this->vNear = 10.0f;
+	this->vFar = 1000.0f;
 }
 
 ShadowMapping::~ShadowMapping()
@@ -144,22 +146,11 @@ void ShadowMapping::Init(void)
 
 
 
-	// レンダーターゲットビューの設定
-	
-	//memset(&rtvDesc, 0, sizeof(rtvDesc));
-	//rtvDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
-	//rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-
 	// レンダーターゲットビューの生成
 
 
 	hr = renderer->GetDevice()->CreateRenderTargetView(ShadowMapingTextureX, &rtvDesc, &RenderTargetShadowX);
 
-	//// シェーダ リソース ビューの作成
-	//srDesc.Format = DXGI_FORMAT_R32G32_FLOAT; // フォーマット
-	//srDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;  // 2Dテクスチャ
-	//srDesc.Texture2D.MostDetailedMip = 0;   // 最初のミップマップ レベル
-	//srDesc.Texture2D.MipLevels = -1;  // すべてのミップマップ レベル
 
 	// シェーダ リソース ビューの作成
 	hr = renderer->GetDevice()->CreateShaderResourceView(
@@ -182,22 +173,12 @@ void ShadowMapping::Init(void)
 
 
 
-	// レンダーターゲットビューの設定
 	
-	//memset(&rtvDesc, 0, sizeof(rtvDesc));
-	//rtvDesc.Format = DYGI_FORMAT_R32G32_FLOAT;
-	//rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEYTURE2D;
 
 	// レンダーターゲットビューの生成
 
 
 	hr = renderer->GetDevice()->CreateRenderTargetView(ShadowMapingTextureY, &rtvDesc, &RenderTargetShadowY);
-
-	//// シェーダ リソース ビューの作成
-	//srDesc.Format = DYGI_FORMAT_R32G32_FLOAT; // フォーマット
-	//srDesc.ViewDimension = D3D_SRV_DIMENSION_TEYTURE2D;  // 2Dテクスチャ
-	//srDesc.Texture2D.MostDetailedMip = 0;   // 最初のミップマップ レベル
-	//srDesc.Texture2D.MipLevels = -1;  // すべてのミップマップ レベル
 
 	// シェーダ リソース ビューの作成
 	hr = renderer->GetDevice()->CreateShaderResourceView(
@@ -324,7 +305,7 @@ void ShadowMapping::Draw(void)
 
 	XMMATRIX mtxShadowMapView = XMMatrixLookAtLH(XMLoadFloat3(&this->pos), XMLoadFloat3(&this->at), XMLoadFloat3(&this->up));
 	renderer->SetViewMatrix(&mtxShadowMapView);
-	XMMATRIX mtxShadowMapProj = XMMatrixOrthographicLH(hw, hw, 100.0f, 500.0f);
+	XMMATRIX mtxShadowMapProj = XMMatrixOrthographicLH(hw, hw, vNear, vFar);
 	renderer->SetProjectionMatrix(&mtxShadowMapProj);
 
 	XMMATRIX smwvp = XMMatrixTranspose(XMMatrixIdentity() * mtxShadowMapView * mtxShadowMapProj);
@@ -513,4 +494,15 @@ void ShadowMapping::SetDirection(XMFLOAT3 dir)
 void ShadowMapping::SetLen(float len)
 {
 	this->len = len;
+}
+
+void ShadowMapping::SetNear(float f)
+{
+	this->vNear = f;
+}
+
+void ShadowMapping::SetFar(float f)
+{
+	this->vFar = f;
+
 }
