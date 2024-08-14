@@ -1,7 +1,7 @@
 #pragma once
 #include "Title.h"
 #include "player.h"
-#include "SkySphire.h"
+#include "SkySphere.h"
 #include "Renderer.h"
 #include "Light.h"
 #include "ShadowMapping.h"
@@ -22,7 +22,7 @@ Title::Title(Main* main)
 	gameObject.push_back(player);
 	shadowObject.push_back(player);
 
-	SkySphire* sky = new SkySphire(this);
+	SkySphere* sky = new SkySphere(this);
 	gameObject.push_back(sky);
 
 	BlueField* blueField = new BlueField(this);

@@ -1,10 +1,10 @@
 #pragma once
 #include "gameobject.h"
-class SkySphire :public GameObject
+class SkySphere :public GameObject
 {
 public:
-	SkySphire(Level* level);
-	~SkySphire();
+	SkySphere(Level* level);
+	~SkySphere();
 
 
 	// GameObject ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½

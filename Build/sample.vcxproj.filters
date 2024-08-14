@@ -43,9 +43,6 @@
     <Filter Include="ModelAnimation">
       <UniqueIdentifier>{068f0cf0-e300-4e51-9f3d-ce27d8a92a2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manger">
-      <UniqueIdentifier>{050ddd03-4604-4d07-a199-659043612c60}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{71882956-d0f8-44de-b497-d9d029decca4}</UniqueIdentifier>
     </Filter>
@@ -141,6 +138,12 @@
     <ClInclude Include="input.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManger.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -223,6 +226,12 @@
     </ClCompile>
     <ClCompile Include="input.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManger.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

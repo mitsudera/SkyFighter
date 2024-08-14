@@ -7,426 +7,6 @@
 #include "main.h"
 #include "collision.h"
 
-//*****************************************************************************
-// マクロ定義
-//*****************************************************************************
-
-
-//*****************************************************************************
-// 構造体定義
-//*****************************************************************************
-
-
-//*****************************************************************************
-// プロトタイプ宣言
-//*****************************************************************************
-
-
-//*****************************************************************************
-// グローバル変数
-//*****************************************************************************
-
-
-//=============================================================================
-// BBによる当たり判定処理
-// 回転は考慮しない
-// 戻り値：当たってたらtrue
-//=============================================================================
-BOOL CollisionBB(XMFLOAT3 mpos, float mw, float mh,
-	XMFLOAT3 ypos, float yw, float yh)
-{
-	BOOL ans = FALSE;	// 外れをセットしておく
-
-	// 座標が中心点なので計算しやすく半分にしている
-	mw /= 2;
-	mh /= 2;
-	yw /= 2;
-	yh /= 2;
-
-	// バウンディングボックス(BB)の処理
-	if ((mpos.x + mw > ypos.x - yw) &&
-		(mpos.x - mw < ypos.x + yw) &&
-		(mpos.y + mh > ypos.y - yh) &&
-		(mpos.y - mh < ypos.y + yh))
-	{
-		// 当たった時の処理
-		ans = TRUE;
-	}
-
-	return ans;
-}
-
-//=============================================================================
-// BCによる当たり判定処理
-// サイズは半径
-// 戻り値：当たってたらTRUE
-//=============================================================================
-BOOL CollisionBC(XMFLOAT3 pos1, XMFLOAT3 pos2, float r1, float r2)
-{
-	BOOL ans = FALSE;						// 外れをセットしておく
-
-	float len = (r1 + r2) * (r1 + r2);		// 半径を2乗した物
-	XMVECTOR temp = XMLoadFloat3(&pos1) - XMLoadFloat3(&pos2);
-	temp = XMVector3LengthSq(temp);			// 2点間の距離（2乗した物）
-	float lenSq = 0.0f;
-	XMStoreFloat(&lenSq, temp);
-
-	// 半径を2乗した物より距離が短い？
-	if (len > lenSq)
-	{
-		ans = TRUE;	// 当たっている
-	}
-
-	return ans;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//ひし形と一点の当たり判定
-//引数はひし形の中心点と幅と高さと点の座標
-BOOL CollisionDiaDot(XMFLOAT3 mpos, float mw, float mh,XMFLOAT3 ypos)
-{
-	BOOL ans = FALSE;	// 外れをセットしておく
-		// 座標が中心点なので計算しやすく半分にしている
-	mw /= 2;
-	mh /= 2;
-	
-
-
-	
-
-
-
-	XMFLOAT3 A;
-	XMFLOAT3 B;
-	XMFLOAT3 C;
-	XMFLOAT3 D;
-	
-	XMFLOAT3 AB;
-	XMFLOAT3 BC;
-	XMFLOAT3 CD;
-	XMFLOAT3 DA;
-
-
-
-	
-	A.x = (mpos.x);
-	A.y = (mpos.y - mh);
-	
-	B.x = (mpos.x-mw);
-	B.y = (mpos.y);
-	
-	C.x = (mpos.x);
-	C.y = (mpos.y + mh);
-	
-	D.x = (mpos.x+mw);
-	D.y = (mpos.y);
-	
-
-	AB.x = B.x - A.x;
-	AB.y = B.y - A.y;
-	BC.x = C.x - B.x;
-	BC.y = C.y - B.y;
-	CD.x = D.x - C.x;
-	CD.y = D.y - C.y;
-	DA.x = A.x - D.x;
-	DA.y = A.y - D.y;
-
-	XMFLOAT3 AO;
-	XMFLOAT3 BO;
-	XMFLOAT3 CO;
-	XMFLOAT3 DO;
-
-	AO.x = ypos.x - A.x;
-	AO.y = ypos.y - A.y;
-	BO.x = ypos.x - B.x;
-	BO.y = ypos.y - B.y;
-	CO.x = ypos.x - C.x;
-	CO.y = ypos.y - C.y;
-	DO.x = ypos.x - D.x;
-	DO.y = ypos.y - D.y;
-
-	//z軸成分を求める
-	float Az, Bz, Cz, Dz;
-	Az = AB.x * AO.y - AO.x * AB.y;
-	Bz = BC.x * BO.y - BO.x * BC.y;
-	Cz = CD.x * CO.y - CO.x * CD.y;
-	Dz = DA.x * DO.y - DO.x * DA.y;
-
-
-
-
-	//全てプラスか全てマイナスなら中にいる
-	if (Az<0&&Bz<0&&Cz<0&&Dz<0)
-	{
-		ans = TRUE;
-
-	}
-	if (Az>0&&Bz>0&&Cz>0&&Dz>0)
-	{
-		ans = TRUE;
-
-	}
-
-	return ans;
-}
-
-
-//四角形(全ての頂点の座標が180度以内)と点の当たり判定
-//引数は四角形の四つの頂点と点の座標
-BOOL CollisionFreeBox(XMFLOAT3 A,XMFLOAT3 B,XMFLOAT3 C,XMFLOAT3 D, XMFLOAT3 ypos)
-{
-	BOOL ans = FALSE;	// 外れをセットしておく
-	
-
-
-	
-
-
-
-	
-	XMFLOAT3 AB;
-	XMFLOAT3 BC;
-	XMFLOAT3 CD;
-	XMFLOAT3 DA;
-
-
-
-	
-	
-
-	AB.x = B.x - A.x;
-	AB.y = B.y - A.y;
-	BC.x = C.x - B.x;
-	BC.y = C.y - B.y;
-	CD.x = D.x - C.x;
-	CD.y = D.y - C.y;
-	DA.x = A.x - D.x;
-	DA.y = A.y - D.y;
-
-	XMFLOAT3 AO;
-	XMFLOAT3 BO;
-	XMFLOAT3 CO;
-	XMFLOAT3 DO;
-
-	AO.x = ypos.x - A.x;
-	AO.y = ypos.y - A.y;
-	BO.x = ypos.x - B.x;
-	BO.y = ypos.y - B.y;
-	CO.x = ypos.x - C.x;
-	CO.y = ypos.y - C.y;
-	DO.x = ypos.x - D.x;
-	DO.y = ypos.y - D.y;
-
-	//z軸成分を求める
-	float Az, Bz, Cz, Dz;
-	Az = AB.x * AO.y - AO.x * AB.y;
-	Bz = BC.x * BO.y - BO.x * BC.y;
-	Cz = CD.x * CO.y - CO.x * CD.y;
-	Dz = DA.x * DO.y - DO.x * DA.y;
-
-
-
-
-	//全てプラスか全てマイナスなら中にいる
-	if (Az<0&&Bz<0&&Cz<0&&Dz<0)
-	{
-		ans = TRUE;
-
-	}
-	if (Az>0&&Bz>0&&Cz>0&&Dz>0)
-	{
-		ans = TRUE;
-
-	}
-
-	return ans;
-}
-//四角形(全ての頂点の座標が180度以内)同士の当たり判定
-//引数は四角形1と2の四つの頂点座標
-BOOL CollisionFreeBox(XMFLOAT3 A1,XMFLOAT3 B1,XMFLOAT3 C1,XMFLOAT3 D1,XMFLOAT3 A2,XMFLOAT3 B2,XMFLOAT3 C2,XMFLOAT3 D2)
-{
-	BOOL ans = FALSE;	// 外れをセットしておく
-	
-	//頂点のどれかが当たっていれば当たり
-
-	XMFLOAT3 AB;
-	XMFLOAT3 BC;
-	XMFLOAT3 CD;
-	XMFLOAT3 DA;
-	float Az, Bz, Cz, Dz;
-
-	XMFLOAT3 AO;
-	XMFLOAT3 BO;
-	XMFLOAT3 CO;
-	XMFLOAT3 DO;
-
-	AB.x = B1.x - A1.x;
-	AB.y = B1.y - A1.y;
-	BC.x = C1.x - B1.x;
-	BC.y = C1.y - B1.y;
-	CD.x = D1.x - C1.x;
-	CD.y = D1.y - C1.y;
-	DA.x = A1.x - D1.x;
-	DA.y = A1.y - D1.y;
-
-
-	//頂点A
-
-	AO.x = A2.x - A1.x;
-	AO.y = A2.y - A1.y;
-	BO.x = A2.x - B1.x;
-	BO.y = A2.y - B1.y;
-	CO.x = A2.x - C1.x;
-	CO.y = A2.y - C1.y;
-	DO.x = A2.x - D1.x;
-	DO.y = A2.y - D1.y;
-
-	//z軸成分を求める
-	Az = AB.x * AO.y - AO.x * AB.y;
-	Bz = BC.x * BO.y - BO.x * BC.y;
-	Cz = CD.x * CO.y - CO.x * CD.y;
-	Dz = DA.x * DO.y - DO.x * DA.y;
-	//全てプラスか全てマイナスなら中にいる
-	if (Az<0&&Bz<0&&Cz<0&&Dz<0)
-	{
-		ans = TRUE;
-
-	}
-	if (Az>0&&Bz>0&&Cz>0&&Dz>0)
-	{
-		ans = TRUE;
-
-	}
-
-
-	//頂点B
-	AB.x = B1.x - A1.x;
-	AB.y = B1.y - A1.y;
-	BC.x = C1.x - B1.x;
-	BC.y = C1.y - B1.y;
-	CD.x = D1.x - C1.x;
-	CD.y = D1.y - C1.y;
-	DA.x = A1.x - D1.x;
-	DA.y = A1.y - D1.y;
-
-	AO.x = B2.x - A1.x;
-	AO.y = B2.y - A1.y;
-	BO.x = B2.x - B1.x;
-	BO.y = B2.y - B1.y;
-	CO.x = B2.x - C1.x;
-	CO.y = B2.y - C1.y;
-	DO.x = B2.x - D1.x;
-	DO.y = B2.y - D1.y;
-
-	//z軸成分を求める
-	Az = AB.x * AO.y - AO.x * AB.y;
-	Bz = BC.x * BO.y - BO.x * BC.y;
-	Cz = CD.x * CO.y - CO.x * CD.y;
-	Dz = DA.x * DO.y - DO.x * DA.y;
-
-	//全てプラスか全てマイナスなら中にいる
-	if (Az<0&&Bz<0&&Cz<0&&Dz<0)
-	{
-		ans = TRUE;
-
-	}
-	if (Az>0&&Bz>0&&Cz>0&&Dz>0)
-	{
-		ans = TRUE;
-
-	}
-	//頂点C
-	AB.x = B1.x - A1.x;
-	AB.y = B1.y - A1.y;
-	BC.x = C1.x - B1.x;
-	BC.y = C1.y - B1.y;
-	CD.x = D1.x - C1.x;
-	CD.y = D1.y - C1.y;
-	DA.x = A1.x - D1.x;
-	DA.y = A1.y - D1.y;
-
-
-	AO.x = C2.x - A1.x;
-	AO.y = C2.y - A1.y;
-	BO.x = C2.x - B1.x;
-	BO.y = C2.y - B1.y;
-	CO.x = C2.x - C1.x;
-	CO.y = C2.y - C1.y;
-	DO.x = C2.x - D1.x;
-	DO.y = C2.y - D1.y;
-
-	//z軸成分を求める
-	Az = AB.x * AO.y - AO.x * AB.y;
-	Bz = BC.x * BO.y - BO.x * BC.y;
-	Cz = CD.x * CO.y - CO.x * CD.y;
-	Dz = DA.x * DO.y - DO.x * DA.y;
-
-	//全てプラスか全てマイナスなら中にいる
-	if (Az<0&&Bz<0&&Cz<0&&Dz<0)
-	{
-		ans = TRUE;
-
-	}
-	if (Az>0&&Bz>0&&Cz>0&&Dz>0)
-	{
-		ans = TRUE;
-
-	}
-	//頂点D
-	AB.x = B1.x - A1.x;
-	AB.y = B1.y - A1.y;
-	BC.x = C1.x - B1.x;
-	BC.y = C1.y - B1.y;
-	CD.x = D1.x - C1.x;
-	CD.y = D1.y - C1.y;
-	DA.x = A1.x - D1.x;
-	DA.y = A1.y - D1.y;
-
-
-	AO.x = D2.x - A1.x;
-	AO.y = D2.y - A1.y;
-	BO.x = D2.x - B1.x;
-	BO.y = D2.y - B1.y;
-	CO.x = D2.x - C1.x;
-	CO.y = D2.y - C1.y;
-	DO.x = D2.x - D1.x;
-	DO.y = D2.y - D1.y;
-
-	//z軸成分を求める
-	Az = AB.x * AO.y - AO.x * AB.y;
-	Bz = BC.x * BO.y - BO.x * BC.y;
-	Cz = CD.x * CO.y - CO.x * CD.y;
-	Dz = DA.x * DO.y - DO.x * DA.y;
-
-	//全てプラスか全てマイナスなら中にいる
-	if (Az<0&&Bz<0&&Cz<0&&Dz<0)
-	{
-		ans = TRUE;
-
-	}
-	if (Az>0&&Bz>0&&Cz>0&&Dz>0)
-	{
-		ans = TRUE;
-
-	}
-
-	return ans;
-}
-
 //=============================================================================
 // 内積(dot)
 //=============================================================================
@@ -544,12 +124,68 @@ BOOL RayCast(XMFLOAT3 xp0, XMFLOAT3 xp1, XMFLOAT3 xp2, XMFLOAT3 xpos0, XMFLOAT3 
 	return(TRUE);	// 当たっている！(hitには当たっている交点が入っている。normalには法線が入っている)
 }
 
-BOOL CollisionRaySphire(XMFLOAT3 pos1, XMFLOAT3 pos2, XMFLOAT3 center ,float r)
+BOOL CollisionPointSphere(XMFLOAT3 point, XMFLOAT3 center, float r)
 {
+	BOOL ans = FALSE;
+
+	XMVECTOR p = XMLoadFloat3(&point);
+	XMVECTOR cp = XMLoadFloat3(&center);
+	XMVECTOR lv = p - cp;
+
+	float len;
+	XMStoreFloat(&len, XMVector3Length(lv));
+
+	if (len<r)
+	{
+		ans = TRUE;
+	}
+	return ans;
+}
+BOOL CollisionPointBox(XMFLOAT3 point, XMMATRIX boxMatrix)
+{
+}
+
+BOOL CollisionPointCapsule(XMFLOAT3 point, XMFLOAT3 pos1, XMFLOAT3 pos2,float r)
+{
+	BOOL ans = FALSE;
+
+	XMVECTOR p = XMLoadFloat3(&point);
+
+	XMVECTOR p1 = XMLoadFloat3(&pos1);
+	XMVECTOR p2 = XMLoadFloat3(&pos2);
+
+	XMVECTOR p1c = p - p1;
+	XMVECTOR p2c = p - p2;
+	float p1l;
+	float p2l;
+	XMStoreFloat(&p1l, XMVector3Length(p1c));
+	XMStoreFloat(&p2l, XMVector3Length(p2c));
+
+
+	//線分の両端をまずは見る
+	if (p1l < r || p2l < r)
+	{
+		return TRUE;
+	}
+
+	XMVECTOR lv = XMVector3LinePointDistance(p1, p2, p);
+	float length;
+	XMStoreFloat(&length, lv);
+	if (length < r)
+	{
+		return TRUE;
+	}
+
+	return ans;
+}
 
 
 
 
+
+//線分と球の当たり判定
+BOOL CollisionLineSphere(XMFLOAT3 pos1, XMFLOAT3 pos2, XMFLOAT3 center ,float r)
+{
 	BOOL ans = FALSE;
 	XMVECTOR p1 = XMLoadFloat3(&pos1);
 	XMVECTOR p2 = XMLoadFloat3(&pos2);
@@ -562,6 +198,8 @@ BOOL CollisionRaySphire(XMFLOAT3 pos1, XMFLOAT3 pos2, XMFLOAT3 center ,float r)
 	XMStoreFloat(&p1l, XMVector3Length(p1c));
 	XMStoreFloat(&p2l, XMVector3Length(p2c));
 
+
+	//線分の両端をまずは見る
 	if (p1l < r || p2l < r)
 	{
 		return TRUE;
@@ -575,10 +213,177 @@ BOOL CollisionRaySphire(XMFLOAT3 pos1, XMFLOAT3 pos2, XMFLOAT3 center ,float r)
 		return TRUE;
 	}
 
-	return FALSE;
+	return ans;
 
 }
 
+BOOL CollisionLineCapsule(XMFLOAT3 lp1, XMFLOAT3 lp2, XMFLOAT3 cp1, XMFLOAT3 cp2, float r)
+{
+	XMVECTOR lp1vec = XMLoadFloat3(&lp1);
+	XMVECTOR lp2vec = XMLoadFloat3(&lp2);
+
+	XMVECTOR cp1vec = XMLoadFloat3(&cp1);
+	XMVECTOR cp2vec = XMLoadFloat3(&cp2);
+
+	// 線分の方向ベクトル
+	XMVECTOR lineDir = XMVectorSubtract(lp2vec, lp1vec);
+	XMVECTOR capsuleDir = XMVectorSubtract(cp2vec, cp1vec);
+
+	// 線分とカプセルの最近接点を求める
+	float t1, t2;
+	XMVECTOR closestLinePoint, closestCapsulePoint;
+	ClosestPtSegmentSegment(lp1vec, lineDir, cp1vec, capsuleDir, t1, t2, closestLinePoint, closestCapsulePoint);
+
+	// 最近接点間の距離を計算
+	XMVECTOR distVec = XMVectorSubtract(closestLinePoint, closestCapsulePoint);
+	float distSq = XMVectorGetX(XMVector3LengthSq(distVec));
+
+	// カプセルの半径を考慮して衝突判定
+	return distSq <= (r * r);
+}
+
+
+
+
+BOOL CollisionSphereSphere(XMFLOAT3 center1, float r1, XMFLOAT3 center2, float r2)
+{
+	BOOL ans = FALSE;
+	XMVECTOR p1 = XMLoadFloat3(&center1);
+	XMVECTOR p2 = XMLoadFloat3(&center2);
+
+	XMVECTOR dist = p1 - p2;
+
+	float len;
+
+	XMStoreFloat(&len, XMVector3Length(dist));
+
+	if (len<r1+r2)
+	{
+		ans = TRUE;
+	}
+
+	return ans;
+}
+
+BOOL CollisionSphereCapsule(XMFLOAT3 center1, float r1, XMFLOAT3 cp1, XMFLOAT3 cp2, float r2)
+{
+	BOOL ans = FALSE;
+
+	XMVECTOR p = XMLoadFloat3(&center1);
+
+	XMVECTOR p1 = XMLoadFloat3(&cp1);
+	XMVECTOR p2 = XMLoadFloat3(&cp2);
+
+	XMVECTOR p1c = p - p1;
+	XMVECTOR p2c = p - p2;
+	float p1l;
+	float p2l;
+	XMStoreFloat(&p1l, XMVector3Length(p1c));
+	XMStoreFloat(&p2l, XMVector3Length(p2c));
+
+
+	//線分の両端をまずは見る
+	if (p1l < r1+r2 || p2l < r1+r2)
+	{
+		return TRUE;
+	}
+
+	XMVECTOR lv = XMVector3LinePointDistance(p1, p2, p);
+	float length;
+	XMStoreFloat(&length, lv);
+	if (length < r1+r2)
+	{
+		return TRUE;
+	}
+
+	return ans;
+}
+
+BOOL CollisionCapsuleCapsule(XMFLOAT3 cp1_1, XMFLOAT3 cp1_2, float r1, XMFLOAT3 cp2_1, XMFLOAT3 cp2_2, float r2)
+{
+	XMVECTOR p1_1 = XMLoadFloat3(&cp1_1);
+	XMVECTOR p1_2 = XMLoadFloat3(&cp1_2);
+	XMVECTOR p2_1 = XMLoadFloat3(&cp2_1);
+	XMVECTOR p2_2 = XMLoadFloat3(&cp2_2);
+
+	XMVECTOR d1 = XMVectorSubtract(p1_2, p1_1);
+	XMVECTOR d2 = XMVectorSubtract(p2_2, p2_1);
+
+	float t1, t2;
+	XMVECTOR c1, c2;
+
+	// 最近接点を求める
+	ClosestPtSegmentSegment(p1_1, d1, p2_1, d2, t1, t2, c1, c2);
+
+	// カプセルの半径を考慮して衝突判定
+	XMVECTOR distVec = XMVectorSubtract(c1, c2);
+	float distSq = XMVectorGetX(XMVector3LengthSq(distVec));
+	float radiusSum = r1 + r2;
+
+	return distSq <= (radiusSum * radiusSum);
+}
+
+void ClosestPtSegmentSegment(XMVECTOR p1, XMVECTOR d1, XMVECTOR p2, XMVECTOR d2, float& t1, float& t2, XMVECTOR& c1, XMVECTOR& c2)
+{
+	XMVECTOR r = XMVectorSubtract(p1, p2);
+	float a = XMVectorGetX(XMVector3Dot(d1, d1));
+	float e = XMVectorGetX(XMVector3Dot(d2, d2));
+	float f = XMVectorGetX(XMVector3Dot(d2, r));
+
+	// どちらかの線分が点の場合
+	if (a <= FLT_EPSILON && e <= FLT_EPSILON)
+	{
+		t1 = t2 = 0.0f;
+		c1 = p1;
+		c2 = p2;
+		return;
+	}
+	if (a <= FLT_EPSILON)
+	{
+		t1 = 0.0f;
+		t2 = f / e;
+		t2 = std::clamp(t2, 0.0f, 1.0f);
+	}
+	else
+	{
+		float c = XMVectorGetX(XMVector3Dot(d1, r));
+		if (e <= FLT_EPSILON)
+		{
+			t2 = 0.0f;
+			t1 = std::clamp(-c / a, 0.0f, 1.0f);
+		}
+		else
+		{
+			float b = XMVectorGetX(XMVector3Dot(d1, d2));
+			float denom = a * e - b * b;
+
+			if (denom != 0.0f)
+			{
+				t1 = std::clamp((b * f - c * e) / denom, 0.0f, 1.0f);
+			}
+			else
+			{
+				t1 = 0.0f;
+			}
+
+			t2 = (b * t1 + f) / e;
+
+			if (t2 < 0.0f)
+			{
+				t2 = 0.0f;
+				t1 = std::clamp(-c / a, 0.0f, 1.0f);
+			}
+			else if (t2 > 1.0f)
+			{
+				t2 = 1.0f;
+				t1 = std::clamp((b - c) / a, 0.0f, 1.0f);
+			}
+		}
+	}
+
+	c1 = XMVectorAdd(p1, XMVectorScale(d1, t1));
+	c2 = XMVectorAdd(p2, XMVectorScale(d2, t2));
+}
 
 
 

@@ -1,18 +1,18 @@
-#include "SkySphire.h"
+#include "SkySphere.h"
 #include "meshcomponent.h"
 
-SkySphire::SkySphire(Level* level)
+SkySphere::SkySphere(Level* level)
 {
 	this->pLevel = level;
 	this->meshComponent = new MeshComponent(this);
 }
 
-SkySphire::~SkySphire()
+SkySphere::~SkySphere()
 {
 
 }
 
-void SkySphire::Init(void)
+void SkySphere::Init(void)
 {
 	this->transformComponent->Init();
 	this->meshComponent->Init();
@@ -27,13 +27,13 @@ void SkySphire::Init(void)
 
 }
 
-void SkySphire::Uninit(void)
+void SkySphere::Uninit(void)
 {
 	meshComponent->Uninit();
 	transformComponent->Uninit();
 }
 
-void SkySphire::Update(void)
+void SkySphere::Update(void)
 {
 	transformComponent->Update();
 	meshComponent->SetWorldMtx(this->transformComponent->GetWorldMtx());
@@ -43,7 +43,7 @@ void SkySphire::Update(void)
 
 }
 
-void SkySphire::Draw(void)
+void SkySphere::Draw(void)
 {
 	meshComponent->Draw();
 

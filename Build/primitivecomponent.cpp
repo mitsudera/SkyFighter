@@ -15,6 +15,7 @@ PrimitiveComponent::~PrimitiveComponent()
 
 void PrimitiveComponent::Init(void)
 {
+	TransformComponent::Init();
 }
 
 void PrimitiveComponent::Uninit(void)

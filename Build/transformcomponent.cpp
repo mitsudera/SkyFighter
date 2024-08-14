@@ -60,6 +60,27 @@ TransformComponent::~TransformComponent()
 }
 void TransformComponent::Init(void)
 {
+	this->pos = { 0.0f,0.0f,0.0f };
+	this->oldPos = { 0.0f, 0.0f, 0.0f };
+	this->rot = { 0.0f,0.0f,0.0f };
+	this->oldRot = { 0.0f,0.0f,0.0f };
+	this->scl = { 1.0f,1.0f,1.0f };
+	this->forward = { 0.0f,0.0f,-1.0f };
+	this->axisX = xonevec();
+	this->axisY = yonevec();
+	this->axisZ = zonevec();
+	this->qtonX = XMQuaternionRotationAxis(axisX, 0.0f);
+	this->qtonY = XMQuaternionRotationAxis(axisY, XM_PI);
+	this->qtonZ = XMQuaternionRotationAxis(axisZ, XM_PI);
+
+	this->mtxpos = XMMatrixIdentity();
+	this->mtxscl = XMMatrixIdentity();
+	this->mtxrot = XMMatrixIdentity();
+	this->mtxrotx = XMMatrixRotationQuaternion(qtonX);
+	this->mtxroty = XMMatrixRotationQuaternion(qtonY);
+	this->mtxrotz = XMMatrixRotationQuaternion(qtonZ);
+	this->mtxWorld = XMMatrixIdentity();
+
 }
 
 void TransformComponent::Uninit(void)
