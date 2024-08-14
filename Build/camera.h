@@ -16,6 +16,7 @@ public:
 	virtual void Draw(void) override;
 
 	void SetLookObject(GameObject* object);
+	void SetUp(XMFLOAT3 up);
 
 private:
 	CameraComponent* cameraComponent;

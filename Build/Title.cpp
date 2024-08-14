@@ -97,6 +97,11 @@ void Title::Update(void)
 		gameObject[i]->Update();
 	}
 
+	XMFLOAT3 up;
+	XMStoreFloat3(&up, gameObject[1]->GetTransFormComponent()->GetAxizY());
+	this->mainCamera->SetUp(up);
+
+
 }
 
 void Title::Draw(void)

@@ -71,6 +71,10 @@ public:
 
 	void SetForwardDiection(XMFLOAT3 dir);
 
+	void RotRoll(float f);
+	void RotPitch(float f);
+	void RotYaw(float f);
+	
 protected:
 
 	

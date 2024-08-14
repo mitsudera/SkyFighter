@@ -37,3 +37,8 @@ void Camera::SetLookObject(GameObject* object)
 {
 	this->cameraComponent->SetLookObject(object);
 }
+
+void Camera::SetUp(XMFLOAT3 up)
+{
+	this->cameraComponent->SetCameraUp(up);
+}

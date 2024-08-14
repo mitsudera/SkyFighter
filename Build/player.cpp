@@ -54,9 +54,31 @@ void Player::Update(void)
 
 	//if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_DOWN))
 	//this->transformComponent->SetPosition(XMFLOAT3(pos.x, pos.y - 0.01f, pos.z));
-	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_UP))
+	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_W))
 	{
 		this->transformComponent->MoveForward(1.0f);
+
+	}
+
+	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_RIGHT))
+	{
+		this->transformComponent->RotRoll(0.1f);
+
+	}
+	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_LEFT))
+	{
+		this->transformComponent->RotRoll(-0.1f);
+
+	}
+
+	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_UP))
+	{
+		this->transformComponent->RotPitch(0.1f);
+
+	}
+	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_DOWN))
+	{
+		this->transformComponent->RotPitch(-0.1f);
 
 	}
 

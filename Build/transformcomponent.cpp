@@ -358,6 +358,34 @@ void TransformComponent::SetForwardDiection(XMFLOAT3 dir)
 	this->fDirection = XMFLOAT3Normalize(dir);
 }
 
+void TransformComponent::RotRoll(float f)
+{
+	XMVECTOR qton = XMQuaternionRotationAxis(this->axisZ, f);
+	this->mtxrot = XMMatrixMultiply(this->mtxrot, XMMatrixRotationQuaternion(qton));
+	this->axisY = XMVector3Rotate(this->axisY, qton);
+	this->axisX = XMVector3Rotate(this->axisX, qton);
+	
+
+}
+
+void TransformComponent::RotPitch(float f)
+{
+	XMVECTOR qton = XMQuaternionRotationAxis(this->axisX, f);
+	this->mtxrot = XMMatrixMultiply(this->mtxrot, XMMatrixRotationQuaternion(qton));
+	this->axisY = XMVector3Rotate(this->axisY, qton);
+	this->axisZ = XMVector3Rotate(this->axisZ, qton);
+
+}
+
+void TransformComponent::RotYaw(float f)
+{
+	XMVECTOR qton = XMQuaternionRotationAxis(this->axisY, f);
+	this->mtxrot = XMMatrixMultiply(this->mtxrot, XMMatrixRotationQuaternion(qton));
+	this->axisX = XMVector3Rotate(this->axisX, qton);
+	this->axisZ = XMVector3Rotate(this->axisZ, qton);
+
+}
+
 
 
 
