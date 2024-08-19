@@ -125,6 +125,9 @@ void CameraComponent::SetCamera(void)
 
 	XMFLOAT3 pos = {.0f,.0f,.0f};
 
+	XMStoreFloat3(&this->up, lookObject->GetTransFormComponent()->GetAxisY());
+
+
 	XMFLOAT3 At = this->at;
 	XMFLOAT3 Up = this->up;
 
@@ -141,7 +144,6 @@ void CameraComponent::SetCamera(void)
 		break;
 	case MODE::TRACKING_SKY:
 
-		XMStoreFloat3(&this->up, lookObject->GetTransFormComponent()->GetAxisY());
 		
 		
 

@@ -75,12 +75,12 @@ void Player::Update(void)
 
 	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_RIGHT))
 	{
-		this->transformComponent->RotRoll(0.1f);
+		this->transformComponent->RotRoll(-0.1f);
 
 	}
 	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_LEFT))
 	{
-		this->transformComponent->RotRoll(-0.1f);
+		this->transformComponent->RotRoll(0.1f);
 
 	}
 
