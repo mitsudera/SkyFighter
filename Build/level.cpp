@@ -33,3 +33,8 @@ CollisionManger* Level::GetCollisionManager(void)
 {
 	return this->collisionManager;
 }
+
+GameObject* Level::GetGameObject(int n)
+{
+	return gameObject[n];
+}

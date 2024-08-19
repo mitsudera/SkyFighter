@@ -152,12 +152,12 @@ XMVECTOR TransformComponent::GetAxisX(void)
 	return this->axisX;
 }
 
-XMVECTOR TransformComponent::GetAxizY(void)
+XMVECTOR TransformComponent::GetAxisY(void)
 {
 	return this->axisY;
 }
 
-XMVECTOR TransformComponent::GetAxizZ(void)
+XMVECTOR TransformComponent::GetAxisZ(void)
 {
 	return this->axisZ;
 }

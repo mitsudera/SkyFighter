@@ -4,6 +4,7 @@
 #include "meshcomponent.h"
 #include "CameraComponent.h"
 #include "ColliderComponent.h"
+#include "JetEngineComponent.h"
 
 Player::Player(Level* level)
 {
@@ -12,6 +13,8 @@ Player::Player(Level* level)
 	this->meshComponent = new MeshComponent(this);
 
 	this->collider = new ColliderComponent(this);
+
+	this->jetEngine = new JetEngineComponent(this);
 }
 
 Player::~Player()
@@ -23,7 +26,7 @@ void Player::Init(void)
 	this->transformComponent->Init();
 	this->meshComponent->Init();
 	this->collider->Init();
-
+	this->jetEngine->Init();
 
 	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
 	transformComponent->SetForwardDiection(XMFLOAT3(0.0f, 0.0f, 1.0f));
@@ -37,6 +40,11 @@ void Player::Init(void)
 
 	meshComponent->SetMeshDataList();
 
+	jetEngine->SetSpeed(0.0f);
+	jetEngine->SetSpeedMax(160.0f);
+	jetEngine->SetBrake(0.99f);
+	jetEngine->SetSpeedUpValue(0.002f);
+	jetEngine->SetSpeedUpMax(1.0f);
 
 }
 
@@ -45,6 +53,8 @@ void Player::Uninit(void)
 	transformComponent->Uninit();
 	meshComponent->Uninit();
 	collider->Uninit();
+	this->jetEngine->Uninit();
+
 
 }
 
@@ -56,8 +66,11 @@ void Player::Update(void)
 	//this->transformComponent->SetPosition(XMFLOAT3(pos.x, pos.y - 0.01f, pos.z));
 	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_W))
 	{
-		this->transformComponent->MoveForward(1.0f);
-
+		jetEngine->Accel();
+	}
+	else if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_S))
+	{
+		jetEngine->Brake();
 	}
 
 	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_RIGHT))
@@ -82,13 +95,16 @@ void Player::Update(void)
 
 	}
 
+	this->jetEngine->Update();
+
+
 	transformComponent->Update();
-	meshComponent->SetWorldMtx(this->transformComponent->GetWorldMtx());
 
 	meshComponent->Update();
 
 	collider->Update();
-	
+
+
 	BOOL hit = collider->GetHitTag(TagEnemy);
 
 

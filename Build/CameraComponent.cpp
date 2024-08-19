@@ -68,6 +68,8 @@ void CameraComponent::Init(void)
 	this->nearZ = VIEW_NEAR_Z;
 	this->farZ = VIEW_FAR_Z;
 
+	this->len = 50.0f;
+
 	this->mode = MODE::WORLD;
 
 	// ビューポートタイプの初期化
@@ -86,8 +88,8 @@ void CameraComponent::Draw(void)
 {
 	PrimitiveComponent::Draw();
 
-	SetCamera();
 	SetViewPort(g_ViewPortType);
+	SetCamera();
 
 
 	//SetCameraAT(XMFLOAT3(0, 0, 1));
@@ -114,7 +116,7 @@ void CameraComponent::SetMode(MODE mode)
 void CameraComponent::SetCamera(void)
 {
 	Renderer* renderer = GetGameObject()->GetLevel()->GetMain()->GetRenderer();
-	// ビューマトリックス設定@
+	// ビューマトリックス設定
 	XMMATRIX mtxView;
 
 
@@ -136,6 +138,34 @@ void CameraComponent::SetCamera(void)
 		wPos = XMVector3Transform(wPos, pMtx);
 		XMStoreFloat3(&lPos, wPos);
 		pos = lPos;
+		break;
+	case MODE::TRACKING_SKY:
+
+		XMStoreFloat3(&this->up, lookObject->GetTransFormComponent()->GetAxisY());
+		
+		
+
+		XMFLOAT3 pPos = lookObject->GetTransFormComponent()->GetPosition();
+
+		XMVECTOR pPosVec = XMLoadFloat3(&pPos);
+		this->at = pPos;
+		
+
+		XMVECTOR lxVec = lookObject->GetTransFormComponent()->GetAxisX();
+		XMVECTOR lyVec = lookObject->GetTransFormComponent()->GetAxisY();
+		XMVECTOR lzVec = lookObject->GetTransFormComponent()->GetAxisZ();
+
+
+		lxVec *= this->pos.x;
+		lyVec *= this->pos.y;
+		lzVec *= this->pos.z;
+
+		XMVECTOR v = (lxVec+lyVec+lzVec);
+
+		v = v + pPosVec;
+
+		XMStoreFloat3(&pos, v);
+
 		break;
 	case MODE::WORLD:
 		

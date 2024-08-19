@@ -36,7 +36,6 @@ void SkySphere::Uninit(void)
 void SkySphere::Update(void)
 {
 	transformComponent->Update();
-	meshComponent->SetWorldMtx(this->transformComponent->GetWorldMtx());
 
 	meshComponent->Update();	
 

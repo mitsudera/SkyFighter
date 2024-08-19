@@ -4,6 +4,7 @@
 class Level;
 class MeshComponent;
 class ColliderComponent;
+class JetEngineComponent;
 
 class Player:public GameObject
 {
@@ -27,7 +28,7 @@ private:
 	
 	MeshComponent* meshComponent;
 	ColliderComponent* collider;
-	
+	JetEngineComponent* jetEngine;
 
 };
 

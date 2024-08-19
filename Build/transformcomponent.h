@@ -23,8 +23,8 @@ public:
 	XMFLOAT3 GetScale(void);
 	XMFLOAT3 GetDirection(void);
 	XMVECTOR GetAxisX(void);
-	XMVECTOR GetAxizY(void);
-	XMVECTOR GetAxizZ(void);
+	XMVECTOR GetAxisY(void);
+	XMVECTOR GetAxisZ(void);
 	XMVECTOR GetQtonX(void);
 	XMVECTOR GetQtonY(void);
 	XMVECTOR GetQtonZ(void);

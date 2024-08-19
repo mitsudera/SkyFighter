@@ -162,6 +162,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="JetEngineComponent.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightComponent.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="JetEngineComponent.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightComponent.cpp" />

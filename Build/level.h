@@ -26,6 +26,7 @@ public:
 	
 	CollisionManger* GetCollisionManager(void);
 	
+	GameObject* GetGameObject(int n);
 
 protected:
 

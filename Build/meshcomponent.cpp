@@ -143,7 +143,7 @@ void MeshComponent::DrawMesh(int n)
 
 	XMMATRIX world = XMMatrixIdentity();
 	world = XMMatrixMultiply(world, this->MeshMtxArray[n]);
-	world = XMMatrixMultiply(world, this->GetWorldMtx());
+	world = XMMatrixMultiply(world, this->GetWorldMtxWithParent());
 	this->GetGameObject()->GetLevel()->GetMain()->GetRenderer()->SetWorldMatrix(&world);
 
 

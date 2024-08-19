@@ -15,13 +15,14 @@ Title::Title(Main* main)
 	this->pMain = main;
 
 
-	this->mainCamera = new Camera(this);
-	this->gameObject.push_back(mainCamera);
+	mainCamera = new Camera(this);
+
 
 
 	Player* player = new Player(this);
 	gameObject.push_back(player);
 	shadowObject.push_back(player);
+
 
 	Enemy* enemy = new Enemy(this);
 	gameObject.push_back(enemy);
@@ -50,11 +51,14 @@ void Title::Init(void)
 	this->shdowMap->Init();
 	this->collisionManager->Init();
 	this->GetMain()->GetRenderer()->SetLightEnable(TRUE);
+
+	this->mainCamera->Init();
+
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Init();
 	}
-	this->shdowMap->SetTarget(gameObject[1]);
+	this->shdowMap->SetTarget(gameObject[0]);
 
 
 	this->shdowMap->SetDirection(XMFLOAT3(0.5f, 1.0f, 0.5f));
@@ -63,7 +67,7 @@ void Title::Init(void)
 	this->shdowMap->SetFar(3000.0f);
 
 
-	this->mainCamera->SetLookObject(gameObject[1]);
+	this->mainCamera->SetLookObject(gameObject[0]);
 	
 
 }
@@ -73,6 +77,8 @@ void Title::Uninit(void)
 	this->shdowMap->Uninit();
 
 	this->collisionManager->Uninit();
+
+	this->mainCamera->Uninit();
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Uninit();
@@ -90,14 +96,18 @@ void Title::Update(void)
 
 	this->collisionManager->Update();
 
+	this->mainCamera->Update();
+
+
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Update();
 	}
 
-	XMFLOAT3 up;
-	XMStoreFloat3(&up, gameObject[1]->GetTransFormComponent()->GetAxizY());
-	this->mainCamera->SetUp(up);
+
+	//XMFLOAT3 up;
+	//XMStoreFloat3(&up, gameObject[1]->GetTransFormComponent()->GetAxisY());
+	//this->mainCamera->SetUp(up);
 
 
 }
@@ -105,7 +115,11 @@ void Title::Update(void)
 void Title::Draw(void)
 {
 	this->shdowMap->Draw();
+
+	this->mainCamera->Draw();
 	this->DrawGameObject();
+
+
 
 }
 

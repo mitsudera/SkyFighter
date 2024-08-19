@@ -55,6 +55,8 @@ public:
 	enum class MODE
 	{
 		TRACKING,
+		TRACKING_SKY,
+		
 		WORLD,
 	};
 
@@ -76,6 +78,7 @@ private:
 	float				len;			// カメラの視点と注視点の距離
 	float				nearZ;			// カメラのクリッピング最小値Z
 	float				farZ;			// カメラのクリッピング最大値Z
+
 
 	GameObject*			lookObject;
 

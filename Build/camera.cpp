@@ -14,7 +14,7 @@ void Camera::Init(void)
 {
 	this->cameraComponent->Init();
 	cameraComponent->SetPosition(XMFLOAT3(0.0f, 3.0f, -30.0f));
-	cameraComponent->SetMode(CameraComponent::MODE::TRACKING);
+	cameraComponent->SetMode(CameraComponent::MODE::TRACKING_SKY);
 	
 }
 
