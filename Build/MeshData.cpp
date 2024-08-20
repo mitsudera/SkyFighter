@@ -634,14 +634,14 @@ void MeshData::LoadFbxMesh(FbxMesh* mesh,AssetsManager* ap)
 
 		unsigned int* pIdx = (unsigned int*)msr.pData;
 
-		memcpy(pIdx, IndexAry, sizeof(unsigned int) * indexnum);
+		memcpy(pIdx, IndexArry, sizeof(unsigned int) * indexnum);
 
-		int n;
-		for (unsigned int i = 0; i < indexnum; i++)
-		{
-			pIdx[i] = IndexArry[i];
-			n = i;
-		}
+		//int n;
+		//for (unsigned int i = 0; i < indexnum; i++)
+		//{
+		//	pIdx[i] = IndexArry[i];
+		//	n = i;
+		//}
 
 		this->GetpAssetsManager()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->GetIndexBuffer(), 0);
 	}

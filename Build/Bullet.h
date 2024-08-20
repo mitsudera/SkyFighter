@@ -15,5 +15,11 @@ public:
 
 private:
 
+	XMFLOAT3 direction;
+	float speed;
+
+
+
+
 };
 

@@ -182,6 +182,7 @@
     <ClInclude Include="SkinMeshComponent.h" />
     <ClInclude Include="SkinMeshDataList.h" />
     <ClInclude Include="SkySphere.h" />
+    <ClInclude Include="SquareParticle.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="transformcomponent.h" />
   </ItemGroup>
@@ -218,6 +219,7 @@
     <ClCompile Include="SkinMeshComponent.cpp" />
     <ClCompile Include="SkinMeshDataList.cpp" />
     <ClCompile Include="SkySphere.cpp" />
+    <ClCompile Include="SquareParticle.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="transformcomponent.cpp" />
   </ItemGroup>
