@@ -151,6 +151,7 @@
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="BlueField.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="ColliderComponent.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="DirectionalLightComponent.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="gameobject.h" />
+    <ClInclude Include="GunComponent.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="JetEngineComponent.h" />
     <ClInclude Include="level.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="MeshAnimData.h" />
     <ClInclude Include="meshcomponent.h" />
     <ClInclude Include="MeshData.h" />
+    <ClInclude Include="MissileLauncherComponent.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="primitivecomponent.h" />
     <ClInclude Include="Renderer.h" />
@@ -185,6 +188,7 @@
   <ItemGroup>
     <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="BlueField.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
@@ -194,6 +198,7 @@
     <ClCompile Include="DirectionalLightComponent.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="gameobject.cpp" />
+    <ClCompile Include="GunComponent.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="JetEngineComponent.cpp" />
     <ClCompile Include="level.cpp" />
@@ -204,6 +209,7 @@
     <ClCompile Include="MeshAnimData.cpp" />
     <ClCompile Include="meshcomponent.cpp" />
     <ClCompile Include="MeshData.cpp" />
+    <ClCompile Include="MissileLauncherComponent.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="primitivecomponent.cpp" />
     <ClCompile Include="Renderer.cpp" />

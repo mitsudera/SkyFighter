@@ -125,11 +125,8 @@ void CameraComponent::SetCamera(void)
 
 	XMFLOAT3 pos = {.0f,.0f,.0f};
 
-	XMStoreFloat3(&this->up, lookObject->GetTransFormComponent()->GetAxisY());
 
 
-	XMFLOAT3 At = this->at;
-	XMFLOAT3 Up = this->up;
 
 	switch (this->mode)
 	{
@@ -145,7 +142,8 @@ void CameraComponent::SetCamera(void)
 	case MODE::TRACKING_SKY:
 
 		
-		
+		XMStoreFloat3(&this->up, lookObject->GetTransFormComponent()->GetAxisY());
+
 
 		XMFLOAT3 pPos = lookObject->GetTransFormComponent()->GetPosition();
 
@@ -178,6 +176,8 @@ void CameraComponent::SetCamera(void)
 		break;
 	}
 
+	XMFLOAT3 At = this->at;
+	XMFLOAT3 Up = this->up;
 
 
 	//mtxView = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&this->at), XMLoadFloat3(&this->up));

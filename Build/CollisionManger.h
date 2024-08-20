@@ -24,7 +24,11 @@ public:
 
 	void AddCollider(ColliderComponent* collider);
 
+	void DeleteCllider(ColliderComponent* collider);
+
+
 	BOOL CheckCillision(ColliderPair pair);
+
 
 private:
 	Level* level;

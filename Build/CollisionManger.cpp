@@ -69,6 +69,29 @@ void CollisionManger::AddCollider(ColliderComponent* collider)
 
 }
 
+void CollisionManger::DeleteCllider(ColliderComponent* collider)
+{
+	for (int i = 0; i < pairList.size(); i++)
+	{
+		if (pairList[i].collider1 == collider || pairList[i].collider2 == collider)
+		{
+			pairList.erase(pairList.begin()+i);
+		}
+
+	}
+
+	for (int i = 0; i < colliderList.size(); i++)
+	{
+		if (colliderList[i] == collider)
+		{
+			colliderList.erase(colliderList.begin()+i);
+		}
+
+	}
+
+
+}
+
 BOOL CollisionManger::CheckCillision(ColliderPair pair)
 {
 	XMFLOAT3 pos1 = pair.collider1->GetWorldPos();
