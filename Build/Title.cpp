@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "enemy.h"
 #include "CollisionManger.h"
+#include "SquareParticle.h"
 
 Title::Title(Main* main)
 {
@@ -17,6 +18,7 @@ Title::Title(Main* main)
 
 	mainCamera = new Camera(this);
 
+	squarePart = new SquareParticle(this);
 
 
 	Player* player = new Player(this);
@@ -54,6 +56,8 @@ void Title::Init(void)
 
 	this->mainCamera->Init();
 
+	this->squarePart->Init();
+
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Init();
@@ -75,6 +79,7 @@ void Title::Init(void)
 void Title::Uninit(void)
 {
 	this->shdowMap->Uninit();
+	squarePart->Uninit();
 
 	this->collisionManager->Uninit();
 
@@ -104,6 +109,7 @@ void Title::Update(void)
 		gameObject[i]->Update();
 	}
 
+	squarePart->Update();
 
 	//XMFLOAT3 up;
 	//XMStoreFloat3(&up, gameObject[1]->GetTransFormComponent()->GetAxisY());
@@ -118,6 +124,7 @@ void Title::Draw(void)
 
 	this->mainCamera->Draw();
 	this->DrawGameObject();
+	squarePart->Draw();
 
 
 

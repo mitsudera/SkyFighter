@@ -10,6 +10,7 @@ struct SquareInfo
 	XMFLOAT3 pos;
 	float size;
 
+	BOOL use;
 };
 
 class SquareParticle :public GameObject
@@ -28,15 +29,23 @@ public:
 
 	virtual void Draw(void) override;
 
+	int AddParticle(XMFLOAT3 pos, float size);
+
 private:
 
 	unsigned int maxPart;
 	unsigned int vertNum;
 	unsigned int indexNum;
 	unsigned int *indexArray;
+	VERTEX_3D* vertexArray;
+
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
 	SquareInfo* squareInfoArray;
+
+	ID3D11ShaderResourceView* texture;
+
+
 
 };
 

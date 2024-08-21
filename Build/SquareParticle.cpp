@@ -1,7 +1,10 @@
 #include "SquareParticle.h"
+#include "CameraComponent.h"
+#include "camera.h"
 
 #define PART_MAX (1024)
 
+#define TEXTUE_PATH "data/PARTICLE/partical.png"
 
 SquareParticle::SquareParticle(Level* level)
 {
@@ -14,16 +17,57 @@ SquareParticle::SquareParticle(Level* level)
 	indexBuffer = nullptr;
 	squareInfoArray = new SquareInfo[maxPart];
 	indexArray = new unsigned int[indexNum];
-
+	vertexArray = new VERTEX_3D[vertNum];
+	texture = nullptr;
 }
 
 SquareParticle::~SquareParticle()
 {
 	delete[] squareInfoArray;
+	delete[] indexArray;
+	delete[] vertexArray;
 }
 
 void SquareParticle::Init(void)
 {
+	D3DX11CreateShaderResourceViewFromFile(GetLevel()->GetMain()->GetRenderer()->GetDevice(),
+		TEXTUE_PATH,
+		NULL,
+		NULL,
+		&texture,
+		NULL);
+
+
+	for (unsigned int i = 0; i < maxPart; i++)
+	{
+		squareInfoArray[i].pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		squareInfoArray[i].size = 0.0f;
+		squareInfoArray[i].use = FALSE;
+
+		squareInfoArray[i].vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
+		squareInfoArray[i].vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
+		squareInfoArray[i].vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
+		squareInfoArray[i].vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
+
+
+		for (int j = 0; j < 4; j++)
+		{
+			squareInfoArray[i].vertex[j].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			squareInfoArray[i].vertex[j].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+			squareInfoArray[i].vertex[j].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+			
+
+			vertexArray[i * 4 + j] = squareInfoArray[i].vertex[j];
+
+
+		}
+
+	}
+
+
+
+
 	// 頂点バッファ生成
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
@@ -33,6 +77,20 @@ void SquareParticle::Init(void)
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	this->GetLevel()->GetMain()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->vertexBuffer);
+
+
+	D3D11_MAPPED_SUBRESOURCE msrV;
+	this->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msrV);
+
+	VERTEX_3D* pvtx = (VERTEX_3D*)msrV.pData;
+
+	memcpy(pvtx, vertexArray, sizeof(VERTEX_3D) * vertNum);
+
+
+	this->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->vertexBuffer, 0);
+
+
+
 
 	// インデックスバッファ生成
 	
@@ -45,7 +103,7 @@ void SquareParticle::Init(void)
 	this->GetLevel()->GetMain()->GetRenderer()->GetDevice()->CreateBuffer(&bd, NULL, &this->indexBuffer);
 
 
-	for (int i = 0; i < maxPart; i++)
+	for (unsigned int i = 0; i < maxPart; i++)
 	{
 		indexArray[i * 6] = i * 4;
 		indexArray[i * 6 + 1] = i * 4 + 1;
@@ -56,10 +114,10 @@ void SquareParticle::Init(void)
 	}
 
 
-	D3D11_MAPPED_SUBRESOURCE msr;
-	this->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	D3D11_MAPPED_SUBRESOURCE msrI;
+	this->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msrI);
 
-	unsigned int* pIdx = (unsigned int*)msr.pData;
+	unsigned int* pIdx = (unsigned int*)msrI.pData;
 
 	memcpy(pIdx, indexArray, sizeof(unsigned int) * indexNum);
 
@@ -69,19 +127,6 @@ void SquareParticle::Init(void)
 
 
 
-	for (int i = 0; i < maxPart; i++)
-	{
-		squareInfoArray[i].pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		squareInfoArray[i].size = 0.0f;
-		for (int j = 0; j < 4; j++)
-		{
-			squareInfoArray[i].vertex[j].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-			squareInfoArray[i].vertex[j].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-			squareInfoArray[i].vertex[j].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-			squareInfoArray[i].vertex[j].TexCoord = XMFLOAT2(0.0f, 0.0f);
-		}
-
-	}
 }
 
 void SquareParticle::Uninit(void)
@@ -94,9 +139,157 @@ void SquareParticle::Uninit(void)
 
 void SquareParticle::Update(void)
 {
+	
+
+	XMFLOAT4X4 view;
+	XMStoreFloat4x4(&view,GetLevel()->GetCamera()->GetView());
+
+	XMFLOAT3 vx = XMFLOAT3(view._11, view._21, view._31);
+	XMVECTOR axx = XMLoadFloat3(&vx);
+	XMFLOAT3 vy = XMFLOAT3(view._12, view._22, view._32);
+	XMVECTOR axy = XMLoadFloat3(&vy);
+	
+
+	for (unsigned int i = 0; i < maxPart; i++)
+	{
+		float size = squareInfoArray[i].size;
+		XMVECTOR vvec[4];
+		XMVECTOR posv = XMLoadFloat3(&squareInfoArray[i].pos);
+
+
+		for (int j = 0; j < 4; j++)
+		{
+			vvec[j] = XMVector3Normalize(vvec[j]);
+			
+		}
+
+
+
+		vvec[0] = axy * size;
+		vvec[1] = axx * size;
+		vvec[2] = -axx * size;
+		vvec[3] = -axy * size;
+		
+		XMFLOAT3 vpos[4];
+
+
+		for (int j = 0; j < 4; j++)
+		{
+			vvec[j] += posv;
+			XMStoreFloat3(&vpos[j], vvec[j]);
+
+		}
+
+
+
+
+
+		for (int j = 0; j < 4; j++)
+		{
+			squareInfoArray[i].vertex[j].Position = vpos[j];
+		}
+
+
+	}
+
+
+	for (unsigned int i = 0; i < maxPart; i++)
+	{
+		for (unsigned int j = 0; j < 4; j++)
+		{
+			int n = i * 4 + j;
+			vertexArray[i * 4 + j] = squareInfoArray[i].vertex[j];
+		}
+	}
+
+	D3D11_MAPPED_SUBRESOURCE msrV;
+	this->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Map(this->vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msrV);
+
+	VERTEX_3D* pvtx = (VERTEX_3D*)msrV.pData;
+
+	memcpy(pvtx, vertexArray, sizeof(VERTEX_3D) * vertNum);
+
+
+	this->GetLevel()->GetMain()->GetRenderer()->GetDeviceContext()->Unmap(this->vertexBuffer, 0);
+
+
 }
 
 void SquareParticle::Draw(void)
 {
+	Renderer* rederer = GetLevel()->GetMain()->GetRenderer();
+
+	rederer->SetCullingMode(CULL_MODE_NONE);
+
+	// ライティングを無効に
+	rederer->SetLightEnable(FALSE);
+
+	// 加算合成に設定
+	rederer->SetBlendState(BLEND_MODE_ADD);
+
+	// Z比較無し
+	rederer->SetDepthEnable(FALSE);
+
+	// 頂点バッファ設定
+	UINT stride = sizeof(VERTEX_3D);
+	UINT offset = 0;
+	rederer->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+
+	// プリミティブトポロジ設定
+	rederer->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	rederer->GetDeviceContext()->IASetIndexBuffer(this->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+	// マテリアル設定
+	MATERIAL material;
+	ZeroMemory(&material, sizeof(material));
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	rederer->SetMaterial(material);
+
+	// テクスチャ設定
+	rederer->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
+
+
+
+
+	// ワールドマトリックスの初期化
+	XMMATRIX mtxWorld = XMMatrixIdentity();
+
+
+
+
+	// ワールドマトリックスの設定
+	rederer->SetWorldMatrix(&mtxWorld);
+
+
+
+	// ポリゴン描画
+	rederer->GetDeviceContext()->DrawIndexed(indexNum, 0, 0);		// cnt頂点分を0番目の頂点番号から描画
+
+
+		// ライティングを有効に
+	rederer->SetLightEnable(TRUE);
+
+	// 通常ブレンドに戻す
+	rederer->SetBlendState(BLEND_MODE_ALPHABLEND);
+
+	// Z比較有効
+	rederer->SetDepthEnable(TRUE);
+
+}
+
+int SquareParticle::AddParticle(XMFLOAT3 pos, float size)
+{
+	for (unsigned int i = 0; i < maxPart; i++)
+	{
+		if (squareInfoArray[i].use == FALSE)
+		{
+			squareInfoArray[i].pos = pos;
+			squareInfoArray[i].size = size;
+			squareInfoArray[i].use = TRUE;
+			return i;
+		}
+	}
+	return -1;
 }
 

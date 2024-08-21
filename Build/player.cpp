@@ -5,6 +5,7 @@
 #include "CameraComponent.h"
 #include "ColliderComponent.h"
 #include "JetEngineComponent.h"
+#include "SquareParticle.h"
 
 Player::Player(Level* level)
 {
@@ -93,6 +94,11 @@ void Player::Update(void)
 	{
 		this->transformComponent->RotPitch(-0.1f);
 
+	}
+
+	if (pLevel->GetMain()->GetInput()->GetKeyboardTrigger(DIK_RETURN))
+	{
+		int n= pLevel->GetSquareParticle()->AddParticle(this->GetTransFormComponent()->GetPosition(), 10.0f);
 	}
 
 	this->jetEngine->Update();

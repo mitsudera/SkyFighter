@@ -38,3 +38,18 @@ GameObject* Level::GetGameObject(int n)
 {
 	return gameObject[n];
 }
+
+Camera* Level::GetCamera(void)
+{
+	return this->mainCamera;
+}
+
+XMMATRIX Level::GetCameraView(void)
+{
+	return this->mainCamera->GetView();
+}
+
+SquareParticle* Level::GetSquareParticle(void)
+{
+	return this->squarePart;
+}

@@ -17,6 +17,7 @@ public:
 
 	void SetLookObject(GameObject* object);
 	void SetUp(XMFLOAT3 up);
+	XMMATRIX GetView(void);
 
 private:
 	CameraComponent* cameraComponent;

@@ -42,3 +42,8 @@ void Camera::SetUp(XMFLOAT3 up)
 {
 	this->cameraComponent->SetCameraUp(up);
 }
+
+XMMATRIX Camera::GetView(void)
+{
+	return this->cameraComponent->GetView();
+}

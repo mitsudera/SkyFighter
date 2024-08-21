@@ -17,7 +17,7 @@
 #define	VIEW_ANGLE		(XMConvertToRadians(45.0f))						// ビュー平面の視野角
 #define	VIEW_ASPECT		((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比	
 #define	VIEW_NEAR_Z		(10.0f)											// ビュー平面のNearZ値
-#define	VIEW_FAR_Z		(1000.0f)										// ビュー平面のFarZ値
+#define	VIEW_FAR_Z		(100000.0f)										// ビュー平面のFarZ値
 
 #define	VALUE_MOVE_CAMERA	(2.0f)										// カメラの移動量
 #define	VALUE_ROTATE_CAMERA	(XM_PI * 0.01f)								// カメラの回転量
@@ -110,6 +110,11 @@ void CameraComponent::SetMode(MODE mode)
 
 }
 
+XMMATRIX CameraComponent::GetView(void)
+{
+	return this->mtxView;
+}
+
 //=============================================================================
 // カメラの更新
 //=============================================================================
@@ -186,11 +191,10 @@ void CameraComponent::SetCamera(void)
 
 	mtxView = XMMatrixLookAtLH(posv, XMLoadFloat3(&At), XMLoadFloat3(&Up));
 	renderer->SetViewMatrix(&mtxView);
-	XMStoreFloat4x4(&this->mtxView, mtxView);
+	this->mtxView = mtxView;
 
 	XMMATRIX mtxInvView;
 	mtxInvView = XMMatrixInverse(nullptr, mtxView);
-	XMStoreFloat4x4(&this->mtxInvView, mtxInvView);
 
 
 	// プロジェクションマトリックス設定
@@ -198,7 +202,6 @@ void CameraComponent::SetCamera(void)
 	mtxProjection = XMMatrixPerspectiveFovLH(VIEW_ANGLE, VIEW_ASPECT, VIEW_NEAR_Z, VIEW_FAR_Z);
 
 	renderer->SetProjectionMatrix(&mtxProjection);
-	XMStoreFloat4x4(&this->mtxProjection, mtxProjection);
 
 	renderer->SetShaderCamera(GetWorldPos());
 }
@@ -302,10 +305,3 @@ void CameraComponent::SetLookObject(GameObject* gameObject)
 	this->lookObject = gameObject;
 }
 
-XMFLOAT4X4 CameraComponent::CameraInverseViewMatrix(void) const {
-	return this->mtxInvView;
-}
-
-XMFLOAT4X4 CameraComponent::CameraViewMatrix(void) const {
-	return this->mtxView;
-}

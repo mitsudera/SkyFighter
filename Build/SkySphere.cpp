@@ -18,7 +18,7 @@ void SkySphere::Init(void)
 	this->meshComponent->Init();
 	this->meshComponent->SetCullMode(CULL_MODE_BACK);
 
-	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(100.0f, 100.0f, 100.0f));
+	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(10000.0f, 10000.0f, 10000.0f));
 
 	meshComponent->SetMeshComponent(
 		"data/MODEL/mesh/skysphire.fbx");

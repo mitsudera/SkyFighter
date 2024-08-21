@@ -40,9 +40,6 @@ public:
 	void SetCameraUp(XMFLOAT3 up);
 	void SetLookObject(GameObject* gameObject);
 
-	XMFLOAT4X4 CameraInverseViewMatrix(void) const;
-	XMFLOAT4X4 CameraViewMatrix(void) const;
-
 
 	void SetViewPort(int m_type);
 	int GetViewPortType(void);
@@ -62,13 +59,13 @@ public:
 
 	void SetMode(MODE mode);
 
+	XMMATRIX GetView(void);
+
+
 private:
 	void SetCamera(void);
 
-	XMFLOAT4X4			mtxView;		// ビューマトリックス
-	XMFLOAT4X4			mtxInvView;		// ビューマトリックス
-	XMFLOAT4X4			mtxProjection;	// プロジェクションマトリックス
-
+	XMMATRIX mtxView;
 
 	XMFLOAT3			at;				// カメラの注視点
 	XMFLOAT3			up;				// カメラの上方向ベクトル

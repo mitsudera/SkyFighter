@@ -5,7 +5,7 @@ class GameObject;
 class ShadowMapping;
 class Camera;
 class CollisionManger;
-
+class SquareParticle;
 
 class Level
 {
@@ -28,6 +28,10 @@ public:
 	
 	GameObject* GetGameObject(int n);
 
+	Camera* GetCamera(void);
+	XMMATRIX GetCameraView(void);
+	SquareParticle* GetSquareParticle(void);
+
 protected:
 
 	Main* pMain;
@@ -39,7 +43,7 @@ protected:
 	
 	Camera* mainCamera;
 	CollisionManger* collisionManager;
-
+	SquareParticle* squarePart;
 	
 };
 
