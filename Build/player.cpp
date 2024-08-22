@@ -5,7 +5,7 @@
 #include "CameraComponent.h"
 #include "ColliderComponent.h"
 #include "JetEngineComponent.h"
-#include "SquareParticle.h"
+#include "GunComponent.h"
 
 Player::Player(Level* level)
 {
@@ -16,6 +16,8 @@ Player::Player(Level* level)
 	this->collider = new ColliderComponent(this);
 
 	this->jetEngine = new JetEngineComponent(this);
+
+	this->gun = new GunComponent(this);
 }
 
 Player::~Player()
@@ -28,6 +30,7 @@ void Player::Init(void)
 	this->meshComponent->Init();
 	this->collider->Init();
 	this->jetEngine->Init();
+	this->gun->Init();
 
 	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
 	transformComponent->SetForwardDiection(XMFLOAT3(0.0f, 0.0f, 1.0f));
@@ -54,8 +57,8 @@ void Player::Uninit(void)
 	transformComponent->Uninit();
 	meshComponent->Uninit();
 	collider->Uninit();
-	this->jetEngine->Uninit();
-
+	jetEngine->Uninit();
+	gun->Uninit();
 
 }
 
@@ -96,10 +99,12 @@ void Player::Update(void)
 
 	}
 
-	if (pLevel->GetMain()->GetInput()->GetKeyboardTrigger(DIK_RETURN))
+
+	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_SPACE))
 	{
-		int n= pLevel->GetSquareParticle()->AddParticle(this->GetTransFormComponent()->GetPosition(), 10.0f);
+		gun->Fire(this->transformComponent->GetPosition(),this->transformComponent->GetDirection(),this->jetEngine->GetSpeed());
 	}
+
 
 	this->jetEngine->Update();
 
@@ -110,6 +115,7 @@ void Player::Update(void)
 
 	collider->Update();
 
+	gun->Update();
 
 	BOOL hit = collider->GetHitTag(TagEnemy);
 
@@ -118,7 +124,5 @@ void Player::Update(void)
 
 void Player::Draw(void)
 {
-
-	
 	meshComponent->Draw();
 }

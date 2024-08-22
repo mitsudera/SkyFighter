@@ -31,6 +31,11 @@ public:
 
 	int AddParticle(XMFLOAT3 pos, float size);
 
+	void DeleteParticle(int n);
+
+	void UodatePositon(int n, XMFLOAT3 pos);
+	void UodateSize(int n, float size);
+
 private:
 
 	unsigned int maxPart;

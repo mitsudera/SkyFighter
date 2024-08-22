@@ -129,9 +129,6 @@
     <ClInclude Include="BlueField.h">
       <Filter>gameobject</Filter>
     </ClInclude>
-    <ClInclude Include="Buffer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>gameobject</Filter>
     </ClInclude>
@@ -156,11 +153,11 @@
     <ClInclude Include="GunComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SquareParticle.h">
       <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -261,9 +258,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GunComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SquareParticle.cpp">

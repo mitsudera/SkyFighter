@@ -157,11 +157,6 @@ void SquareParticle::Update(void)
 		XMVECTOR posv = XMLoadFloat3(&squareInfoArray[i].pos);
 
 
-		for (int j = 0; j < 4; j++)
-		{
-			vvec[j] = XMVector3Normalize(vvec[j]);
-			
-		}
 
 
 
@@ -170,6 +165,13 @@ void SquareParticle::Update(void)
 		vvec[2] = -axx * size;
 		vvec[3] = -axy * size;
 		
+		for (int j = 0; j < 4; j++)
+		{
+			vvec[j] = XMVector3Normalize(vvec[j]);
+
+		}
+
+
 		XMFLOAT3 vpos[4];
 
 
@@ -217,37 +219,39 @@ void SquareParticle::Update(void)
 
 void SquareParticle::Draw(void)
 {
-	Renderer* rederer = GetLevel()->GetMain()->GetRenderer();
+	Renderer* renderer = GetLevel()->GetMain()->GetRenderer();
 
-	rederer->SetCullingMode(CULL_MODE_NONE);
+	renderer->SetCullingMode(CULL_MODE_NONE);
 
 	// ライティングを無効に
-	rederer->SetLightEnable(FALSE);
+	renderer->SetLightEnable(FALSE);
 
 	// 加算合成に設定
-	rederer->SetBlendState(BLEND_MODE_ADD);
+	renderer->SetBlendState(BLEND_MODE_ADD);
+
+	renderer->SetAlphaTestEnable(FALSE);
 
 	// Z比較無し
-	rederer->SetDepthEnable(FALSE);
+	renderer->SetDepthEnable(FALSE);
 
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3D);
 	UINT offset = 0;
-	rederer->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	renderer->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 
 	// プリミティブトポロジ設定
-	rederer->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	renderer->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	rederer->GetDeviceContext()->IASetIndexBuffer(this->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	renderer->GetDeviceContext()->IASetIndexBuffer(this->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	rederer->SetMaterial(material);
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0, 0.2f);
+	renderer->SetMaterial(material);
 
 	// テクスチャ設定
-	rederer->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
+	renderer->GetDeviceContext()->PSSetShaderResources(0, 1, &texture);
 
 
 
@@ -259,22 +263,22 @@ void SquareParticle::Draw(void)
 
 
 	// ワールドマトリックスの設定
-	rederer->SetWorldMatrix(&mtxWorld);
+	renderer->SetWorldMatrix(&mtxWorld);
 
 
 
 	// ポリゴン描画
-	rederer->GetDeviceContext()->DrawIndexed(indexNum, 0, 0);		// cnt頂点分を0番目の頂点番号から描画
+	renderer->GetDeviceContext()->DrawIndexed(indexNum, 0, 0);		// cnt頂点分を0番目の頂点番号から描画
 
 
 		// ライティングを有効に
-	rederer->SetLightEnable(TRUE);
+	renderer->SetLightEnable(TRUE);
 
 	// 通常ブレンドに戻す
-	rederer->SetBlendState(BLEND_MODE_ALPHABLEND);
+	renderer->SetBlendState(BLEND_MODE_ALPHABLEND);
 
 	// Z比較有効
-	rederer->SetDepthEnable(TRUE);
+	renderer->SetDepthEnable(TRUE);
 
 }
 
@@ -293,3 +297,19 @@ int SquareParticle::AddParticle(XMFLOAT3 pos, float size)
 	return -1;
 }
 
+void SquareParticle::DeleteParticle(int n)
+{
+	squareInfoArray[n].pos =XMFLOAT3(0.0f,0.0f,0.0f);
+	squareInfoArray[n].size = 0.0f;
+	squareInfoArray[n].use = FALSE;
+}
+
+void SquareParticle::UodatePositon(int n, XMFLOAT3 pos)
+{
+	squareInfoArray[n].pos = pos;
+}
+
+void SquareParticle::UodateSize(int n, float size)
+{
+	squareInfoArray[n].size = size;
+}

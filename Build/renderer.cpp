@@ -545,7 +545,7 @@ HRESULT Renderer::InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &DepthStateEnable );//深度有効ステート
 
-	//depthStencilDesc.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ZERO;
+	depthStencilDesc.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &DepthStateDisable );//深度無効ステート
 
 	// 深度ステンシルステート設定
