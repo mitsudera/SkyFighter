@@ -3,22 +3,6 @@
 #include "Coreminimal.h"
 
 
-class SquareParticle;
-class ColliderComponent;
-
-struct Bullet
-{
-	XMFLOAT3 pos;
-	XMFLOAT3 direction;
-	float speed;
-	int life;
-	BOOL use;
-
-	int partIndex;
-
-
-};
-
 class GunComponent :public Component
 {
 public:
@@ -31,7 +15,7 @@ public:
 
 	void Fire(XMFLOAT3 pos, XMFLOAT3 dir, float spd);
 
-	void DeleteBullet(int n);
+
 
 	void SetCoolTimeMax(int ct);
 
@@ -52,11 +36,8 @@ private:
 
 	BOOL isEnable;
 
-	Bullet* bullets;
-
 	Parent parent;
 
-	SquareParticle* particle;
 
 };
 

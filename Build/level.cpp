@@ -53,3 +53,8 @@ SquareParticle* Level::GetSquareParticle(void)
 {
 	return this->squarePart;
 }
+
+BulletList* Level::GetBulletList(void)
+{
+	return this->bulletList;
+}

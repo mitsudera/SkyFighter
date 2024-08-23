@@ -32,6 +32,8 @@ void Player::Init(void)
 	this->jetEngine->Init();
 	this->gun->Init();
 
+	collider->onCollider();
+
 	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
 	transformComponent->SetForwardDiection(XMFLOAT3(0.0f, 0.0f, 1.0f));
 
@@ -106,12 +108,17 @@ void Player::Update(void)
 	}
 
 
+
+
+
 	this->jetEngine->Update();
 
 
 	transformComponent->Update();
 
 	meshComponent->Update();
+
+
 
 	collider->Update();
 

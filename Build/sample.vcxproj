@@ -151,6 +151,8 @@
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="BlueField.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="BulletComponent.h" />
+    <ClInclude Include="BulletList.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="ColliderComponent.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="MissileLauncherComponent.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="primitivecomponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ShadowMapping.h" />
@@ -188,6 +191,8 @@
   <ItemGroup>
     <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="BlueField.cpp" />
+    <ClCompile Include="BulletComponent.cpp" />
+    <ClCompile Include="BulletList.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
@@ -210,6 +215,7 @@
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MissileLauncherComponent.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="primitivecomponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ShadowMapping.cpp" />

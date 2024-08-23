@@ -10,6 +10,7 @@
 #include "enemy.h"
 #include "CollisionManger.h"
 #include "SquareParticle.h"
+#include "BulletList.h"
 
 Title::Title(Main* main)
 {
@@ -20,6 +21,8 @@ Title::Title(Main* main)
 
 	squarePart = new SquareParticle(this);
 
+	bulletList = new BulletList(this);
+	
 
 	Player* player = new Player(this);
 	gameObject.push_back(player);
@@ -29,6 +32,9 @@ Title::Title(Main* main)
 	Enemy* enemy = new Enemy(this);
 	gameObject.push_back(enemy);
 	shadowObject.push_back(enemy);
+
+
+
 
 	SkySphere* sky = new SkySphere(this);
 	gameObject.push_back(sky);
@@ -58,6 +64,8 @@ void Title::Init(void)
 
 	this->squarePart->Init();
 
+	this->bulletList->Init();
+
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Init();
@@ -80,6 +88,8 @@ void Title::Uninit(void)
 {
 	this->shdowMap->Uninit();
 	squarePart->Uninit();
+
+	bulletList->Uninit();
 
 	this->collisionManager->Uninit();
 
@@ -109,7 +119,11 @@ void Title::Update(void)
 		gameObject[i]->Update();
 	}
 
+	bulletList->Update();
+
 	squarePart->Update();
+
+
 
 	//XMFLOAT3 up;
 	//XMStoreFloat3(&up, gameObject[1]->GetTransFormComponent()->GetAxisY());

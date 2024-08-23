@@ -28,7 +28,6 @@ private:
 	
 	
 	MeshComponent* meshComponent;
-	ColliderComponent* collider;
 	JetEngineComponent* jetEngine;
 	GunComponent* gun;
 };

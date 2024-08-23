@@ -6,7 +6,6 @@ ColliderComponent::ColliderComponent(GameObject* gameObject)
 {
 	this->pGameObject = gameObject;
 
-	this->GetGameObject()->GetLevel()->GetCollisionManager()->AddCollider(this);
 	
 }
 
@@ -18,18 +17,21 @@ ColliderComponent::~ColliderComponent()
 void ColliderComponent::Init(void)
 {
 	TransformComponent::Init();
-	
+
 
 }
 
 void ColliderComponent::Uninit(void)
 {
 
+	this->GetGameObject()->GetLevel()->GetCollisionManager()->DeleteCllider(this);
+
 }
 
 void ColliderComponent::Update(void)
 {
 	TransformComponent::Update();
+
 
 
 }
@@ -104,16 +106,26 @@ void ColliderComponent::SetStart(XMFLOAT3 p)
 
 XMFLOAT3 ColliderComponent::GetStart(void)
 {
-	XMVECTOR v = XMLoadFloat3(&sPos);
-
-	XMMATRIX trans = GetGameObject()->GetTransFormComponent()->GetWorldMtx();
-
-	v = XMVector3Transform(v, trans);
-
 	XMFLOAT3 ans;
 
-	XMStoreFloat3(&ans, v);
 
+	if (useOldPos)
+	{
+		ans = GetGameObject()->GetTransFormComponent()->GetPosition();
+	}
+	else
+	{
+		XMVECTOR v = XMLoadFloat3(&sPos);
+
+		XMMATRIX trans = GetGameObject()->GetTransFormComponent()->GetWorldMtx();
+
+		v = XMVector3Transform(v, trans);
+
+
+		XMStoreFloat3(&ans, v);
+
+
+	}
 	return ans;
 }
 
@@ -124,17 +136,26 @@ void ColliderComponent::SetEnd(XMFLOAT3 p)
 
 XMFLOAT3 ColliderComponent::GetEnd(void)
 {
-	
-
-	XMVECTOR v = XMLoadFloat3(&ePos);
-
-	XMMATRIX trans = GetGameObject()->GetTransFormComponent()->GetWorldMtx();
-
-	v = XMVector3Transform(v, trans);
-
 	XMFLOAT3 ans;
 
-	XMStoreFloat3(&ans, v);
+	
+	if (useOldPos)
+	{
+		ans = GetGameObject()->GetTransFormComponent()->GetOldPosition();
+	}
+	else
+	{
+		XMVECTOR v = XMLoadFloat3(&ePos);
+
+		XMMATRIX trans = GetGameObject()->GetTransFormComponent()->GetWorldMtx();
+
+		v = XMVector3Transform(v, trans);
+
+
+		XMStoreFloat3(&ans, v);
+
+
+	}
 
 	return ans;
 }
@@ -143,7 +164,7 @@ void ColliderComponent::Clear(void)
 {
 	this->result.hitObject.clear();
 
-	for (int i = 0; i < ObjectTag::MAX; i++)
+	for (int i = 0; i < ObjectTag::ObjectTagMax; i++)
 	{
 		this->result.isHit[i] = FALSE;
 	}
@@ -176,6 +197,18 @@ void ColliderComponent::SetLineCollider(XMFLOAT3 pos, XMFLOAT3 spos, XMFLOAT3 ep
 	this->sPos = spos;
 	this->ePos = epos;
 	this->shape = Shape::Line;
+
+	useOldPos = FALSE;
+}
+
+void ColliderComponent::SetLineCollider(float maxSpeed)
+{
+
+	this->check = maxSpeed;
+
+	this->shape = Shape::Line;
+
+	useOldPos = TRUE;
 }
 
 void ColliderComponent::SetSphereCollider(XMFLOAT3 pos, float r)
@@ -206,6 +239,7 @@ void ColliderComponent::SetCapsuleCollider(XMFLOAT3 pos, XMFLOAT3 spos, XMFLOAT3
 
 float ColliderComponent::GetCheckRadius(void)
 {
+
 	return this->check;
 }
 
@@ -223,3 +257,19 @@ XMFLOAT3 ColliderComponent::GetPosition(void)
 
 	return ans;
 }
+
+void ColliderComponent::onCollider(void)
+{
+
+	this->GetGameObject()->GetLevel()->GetCollisionManager()->AddCollider(this);
+
+
+}
+
+void ColliderComponent::offCollider(void)
+{
+
+	this->GetGameObject()->GetLevel()->GetCollisionManager()->DeleteCllider(this);
+
+}
+

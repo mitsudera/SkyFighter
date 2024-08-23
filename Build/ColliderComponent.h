@@ -9,13 +9,14 @@ typedef enum
 	TagPlayer,
 	TagEnemy,
 	TagField,
+	TagPlayerBullet,
 
-	MAX,
+	ObjectTagMax,
 }ObjectTag;
 
 struct HitResult
 {
-	BOOL isHit[ObjectTag::MAX];
+	BOOL isHit[ObjectTag::ObjectTagMax];
 	vector<GameObject*> hitObject;
 
 };
@@ -81,11 +82,16 @@ public:
 
 	void SetPointCollider(XMFLOAT3 pos);
 	void SetLineCollider(XMFLOAT3 pos, XMFLOAT3 spos, XMFLOAT3 epos);
+	void SetLineCollider(float maxSpeed);
 	void SetSphereCollider(XMFLOAT3 pos, float r);
 	void SetCapsuleCollider(XMFLOAT3 pos, XMFLOAT3 spos, XMFLOAT3 epos, float r);
 	float GetCheckRadius(void);
 
 	virtual XMFLOAT3 GetPosition(void) override;
+
+	void onCollider(void);
+	void offCollider(void);
+
 
 private:
 	HitResult result;
@@ -96,6 +102,7 @@ private:
 	XMFLOAT3 ePos;
 	float check;
 
+	BOOL useOldPos;
 
 };
 

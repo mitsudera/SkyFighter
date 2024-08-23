@@ -159,6 +159,15 @@
     <ClInclude Include="Buffer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletComponent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletList.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp">
@@ -262,6 +271,15 @@
     </ClCompile>
     <ClCompile Include="SquareParticle.cpp">
       <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBullet.cpp">
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletComponent.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletList.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

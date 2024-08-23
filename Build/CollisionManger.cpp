@@ -116,6 +116,8 @@ BOOL CollisionManger::CheckCillision(ColliderPair pair)
 	float r1 = pair.collider1->GetRadius();
 	float r2 = pair.collider2->GetRadius();
 
+
+
 	XMFLOAT3 sPoint1 = pair.collider1->GetStart();
 	XMFLOAT3 sPoint2 = pair.collider2->GetStart();
 

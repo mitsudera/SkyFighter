@@ -268,7 +268,7 @@ void SquareParticle::Draw(void)
 
 
 	// ポリゴン描画
-	renderer->GetDeviceContext()->DrawIndexed(indexNum, 0, 0);		// cnt頂点分を0番目の頂点番号から描画
+	renderer->GetDeviceContext()->DrawIndexed(indexNum, 0, 0);	
 
 
 		// ライティングを有効に

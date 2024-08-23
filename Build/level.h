@@ -6,6 +6,7 @@ class ShadowMapping;
 class Camera;
 class CollisionManger;
 class SquareParticle;
+class BulletList;
 
 class Level
 {
@@ -31,6 +32,7 @@ public:
 	Camera* GetCamera(void);
 	XMMATRIX GetCameraView(void);
 	SquareParticle* GetSquareParticle(void);
+	BulletList* GetBulletList(void);
 
 protected:
 
@@ -44,6 +46,8 @@ protected:
 	Camera* mainCamera;
 	CollisionManger* collisionManager;
 	SquareParticle* squarePart;
+
+	BulletList* bulletList;
 	
 };
 

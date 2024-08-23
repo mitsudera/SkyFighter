@@ -4,7 +4,7 @@
 
 
 class MeshComponent;
-
+class ColliderComponent;
 
 class GameObject
 {
@@ -20,11 +20,13 @@ public:
 
 	Level* GetLevel(void);
 	TransformComponent* GetTransFormComponent(void);
+	ColliderComponent* GetCollider(void);
 
 protected:
 	Level* pLevel;
 	TransformComponent* transformComponent;
-	
+	ColliderComponent* collider;
+
 	
 
 };

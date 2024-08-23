@@ -25,7 +25,6 @@ private:
 
 
 	MeshComponent* meshComponent;
-	ColliderComponent* collider;
 
 
 };

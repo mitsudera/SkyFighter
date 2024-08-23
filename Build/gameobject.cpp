@@ -44,3 +44,8 @@ TransformComponent* GameObject::GetTransFormComponent(void)
 {
 	return this->transformComponent;
 }
+
+ColliderComponent* GameObject::GetCollider(void)
+{
+	return this->collider;
+}
