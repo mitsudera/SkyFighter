@@ -257,6 +257,22 @@ void ShadowMapping::Uninit(void)
 
 	if (m_VertexShaderShadow)			m_VertexShaderShadow->Release();
 	if (m_PixelShaderShadow)			m_PixelShaderShadow->Release();
+	if (m_VertexShaderShadow2D)			m_VertexShaderShadow2D->Release();
+	if (m_PixelShaderShadowX)			m_PixelShaderShadowX->Release();
+	if (m_PixelShaderShadowY)			m_PixelShaderShadowY->Release();
+	if (ShadowMapDS) ShadowMapDS->Release();
+	if (ShadowMapDSView) ShadowMapDSView->Release();
+	if (ShadowMapDSSRView) ShadowMapDSSRView->Release();
+	if (ShadowMapingTexture) ShadowMapingTexture->Release();
+	if (RenderTargetShadow) RenderTargetShadow->Release();
+	if (ShadowMapSRView) ShadowMapSRView->Release();
+	if (ShadowMapingTextureX) ShadowMapingTextureX->Release();
+	if (RenderTargetShadowX) RenderTargetShadowX->Release();
+	if (ShadowMapSRViewX) ShadowMapSRViewX->Release();
+	if (ShadowMapingTextureY) ShadowMapingTextureY->Release();
+	if (RenderTargetShadowY) RenderTargetShadowY->Release();
+	if (ShadowMapSRViewY) ShadowMapSRViewY->Release();
+	if (VertexBuffer) VertexBuffer->Release();
 
 }
 

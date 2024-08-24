@@ -93,7 +93,7 @@ DX11_SUBSET::~DX11_SUBSET()
 {
 	for (int i = 0; i < this->texnum; i++)
 	{
-		this->Texture[i].~DX11_TEXTURE();
+		delete[] Texture;
 	}
 }
 
@@ -137,6 +137,7 @@ MATERIAL DX11_SUBSET::GetMaterial(void)
 void DX11_SUBSET::CreateTextureArray(int n)
 {
 	this->Texture = new DX11_TEXTURE[n];
+	this->texnum = n;
 	for (int i = 0; i < n; i++)
 	{
 		this->Texture[i].SetpSubset(this);

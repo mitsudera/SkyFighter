@@ -52,6 +52,16 @@ Title::Title(Main* main)
 
 Title::~Title()
 {
+	delete mainCamera;
+	delete squarePart;
+	delete bulletList;
+
+	for (int i = 0; i < gameObject.size(); i++)
+	{
+		delete gameObject[i];
+	}
+
+	gameObject.clear();
 }
 
 void Title::Init(void)

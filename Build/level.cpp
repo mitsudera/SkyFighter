@@ -21,6 +21,8 @@ Level::Level(Main*main)
 
 Level::~Level()
 {
+	delete shdowMap;
+	delete collisionManager;
 }
 
 

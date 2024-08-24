@@ -3,7 +3,7 @@
 #include "level.h"
 #include "meshcomponent.h"
 #include "ColliderComponent.h"
-
+#include "EnemyStatusComponent.h"
 
 Enemy::Enemy(Level* level)
 {
@@ -12,6 +12,8 @@ Enemy::Enemy(Level* level)
 	this->meshComponent = new MeshComponent(this);
 
 	this->collider = new ColliderComponent(this);
+
+	this->status = new EnemyStatusComponent(this);
 }
 
 Enemy::~Enemy()
@@ -23,7 +25,10 @@ void Enemy::Init(void)
 	this->transformComponent->Init();
 	this->meshComponent->Init();
 	this->collider->Init();
+	this->status->Init();
+
 	
+
 	collider->onCollider();
 
 	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
@@ -38,7 +43,7 @@ void Enemy::Init(void)
 
 
 	meshComponent->SetMeshComponent(
-		"data/MODEL/mesh/robot.fbx");
+		"data/MODEL/mesh/EnemySentouki.fbx");
 
 	meshComponent->SetMeshDataList();
 
@@ -50,10 +55,17 @@ void Enemy::Uninit(void)
 	transformComponent->Uninit();
 	meshComponent->Uninit();
 	collider->Uninit();
+	status->Uninit();
 }
 
 void Enemy::Update(void)
 {
+
+	if (collider->GetHitTag(ObjectTag::TagPlayerBullet))
+	{
+		status->SubHp(1);
+	}
+
 
 	transformComponent->Update();
 	meshComponent->SetWorldMtx(this->transformComponent->GetWorldMtx());
@@ -62,10 +74,18 @@ void Enemy::Update(void)
 
 	collider->Update();
 
+	status->Update();
+
+
 }
 
 void Enemy::Draw(void)
 {
-	meshComponent->Draw();
+	if (status->GetUse())
+	{
+		meshComponent->Draw();
+
+	}
+
 
 }

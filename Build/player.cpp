@@ -22,6 +22,10 @@ Player::Player(Level* level)
 
 Player::~Player()
 {
+	delete meshComponent;
+	delete collider;
+	delete jetEngine;
+	delete gun;
 }
 
 void Player::Init(void)

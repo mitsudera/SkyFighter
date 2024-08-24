@@ -279,8 +279,14 @@ void Main::Uninit(void)
 {
 	this->input->Uninit();
 	this->title->Uninit();
+	this->assetsManager->Uninit();
 	this->renderer->UninitRenderer();
-	delete this->renderer;
+
+
+	delete input;
+	delete assetsManager;
+	delete title;
+	delete renderer;
 
 }
 

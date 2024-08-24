@@ -144,13 +144,7 @@
     <ClInclude Include="Enemy.h">
       <Filter>gameobject</Filter>
     </ClInclude>
-    <ClInclude Include="JetEngineComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="MissileLauncherComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GunComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SquareParticle.h">
@@ -162,11 +156,20 @@
     <ClInclude Include="PlayerBullet.h">
       <Filter>gameobject</Filter>
     </ClInclude>
+    <ClInclude Include="GunComponent.h">
+      <Filter>component</Filter>
+    </ClInclude>
     <ClInclude Include="BulletComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>component</Filter>
+    </ClInclude>
+    <ClInclude Include="JetEngineComponent.h">
+      <Filter>component</Filter>
     </ClInclude>
     <ClInclude Include="BulletList.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>gameobject</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStatusComponent.h">
+      <Filter>component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -260,13 +263,7 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>gameobject</Filter>
     </ClCompile>
-    <ClCompile Include="JetEngineComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="MissileLauncherComponent.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GunComponent.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SquareParticle.cpp">
@@ -275,11 +272,20 @@
     <ClCompile Include="PlayerBullet.cpp">
       <Filter>gameobject</Filter>
     </ClCompile>
+    <ClCompile Include="GunComponent.cpp">
+      <Filter>component</Filter>
+    </ClCompile>
     <ClCompile Include="BulletComponent.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>component</Filter>
+    </ClCompile>
+    <ClCompile Include="JetEngineComponent.cpp">
+      <Filter>component</Filter>
     </ClCompile>
     <ClCompile Include="BulletList.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStatusComponent.cpp">
+      <Filter>component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

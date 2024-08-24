@@ -3,7 +3,7 @@
 
 class Level;
 class MeshComponent;
-class ColliderComponent;
+class EnemyStatusComponent;
 
 class Enemy :public GameObject
 {
@@ -25,6 +25,6 @@ private:
 
 
 	MeshComponent* meshComponent;
-
+	EnemyStatusComponent* status;
 
 };

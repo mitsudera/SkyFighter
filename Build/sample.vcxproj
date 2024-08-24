@@ -162,6 +162,7 @@
     <ClInclude Include="Coreminimal.h" />
     <ClInclude Include="DirectionalLightComponent.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyStatusComponent.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="GunComponent.h" />
     <ClInclude Include="input.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="component.cpp" />
     <ClCompile Include="DirectionalLightComponent.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyStatusComponent.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="GunComponent.cpp" />
     <ClCompile Include="input.cpp" />
