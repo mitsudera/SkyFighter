@@ -48,7 +48,7 @@ public:
 	void SetWorldViewProjection2D(void);
 	void SetShadowMode(SHADOW_MODE mode);
 	void SetTarget(GameObject* gameObject);
-	void SetDirection(XMFLOAT3 dir);
+	void SetForward(XMFLOAT3 dir);
 	void SetLen(float len);
 
 	void SetNear(float f);

@@ -230,9 +230,43 @@ void TransformComponent::SetScale(XMFLOAT3 scl)
 	this->mtxscl = XMMatrixScaling(scl.x, scl.y, scl.z);
 }
 
-void TransformComponent::SetDirection(XMFLOAT3 forward)
+void TransformComponent::SetForward(XMFLOAT3 forward)
 {
-	this->forward = forward;
+
+	XMVECTOR f = XMVector3Normalize(XMLoadFloat3(&forward));
+	XMVECTOR d = XMVector3Normalize(XMLoadFloat3(&this->forward));
+
+	float dot;
+	XMStoreFloat(&dot, XMVector3Dot(f, d));
+
+	if (dot == -1.0f)
+	{
+
+		XMVECTOR qton = XMQuaternionRotationAxis(axisX,XM_PI);
+		this->RotAxis(qton);
+		mtxrot = XMMatrixRotationQuaternion(qton);
+		return;
+	}
+	if (XMVector3Equal(f,d))
+	{
+		return;
+	}
+
+	XMVECTOR c = XMVector3Cross(f, d);
+
+	XMVECTOR a = XMVector3AngleBetweenNormals(f, d);
+	float angle;
+	XMStoreFloat(&angle, a);
+
+
+
+	XMVECTOR q = XMQuaternionRotationAxis(c, angle);
+	XMMATRIX mtx = XMMatrixRotationQuaternion(q);
+
+	this->RotAxis(q);
+
+	this->mtxrot = XMMatrixMultiply(mtxrot,mtx);
+
 }
 
 void TransformComponent::SetAxisX(XMVECTOR axis)
@@ -384,6 +418,22 @@ void TransformComponent::RotYaw(float f)
 	this->axisX = XMVector3Rotate(this->axisX, qton);
 	this->axisZ = XMVector3Rotate(this->axisZ, qton);
 
+}
+
+void TransformComponent::RotAxis(XMVECTOR qton)
+{
+	this->axisX = XMVector3Rotate(this->axisX, qton);
+	this->axisY = XMVector3Rotate(this->axisY, qton);
+	this->axisZ = XMVector3Rotate(this->axisZ, qton);
+
+}
+
+void TransformComponent::RotAxisAngle(XMVECTOR axis, float angle)
+{
+	XMVECTOR qton = XMQuaternionRotationAxis(axis, angle);
+	RotAxis(qton);
+
+	mtxrot = XMMatrixMultiply(mtxrot, XMMatrixRotationQuaternion(qton));
 }
 
 

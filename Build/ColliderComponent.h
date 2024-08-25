@@ -10,6 +10,7 @@ typedef enum
 	TagEnemy,
 	TagField,
 	TagPlayerBullet,
+	TagPlayerMissile,
 
 	ObjectTagMax,
 }ObjectTag;

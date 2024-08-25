@@ -32,8 +32,9 @@ void Enemy::Init(void)
 	collider->onCollider();
 
 	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
+	
 	transformComponent->SetForwardDiection(XMFLOAT3(0.0f, 0.0f, 1.0f));
-
+	transformComponent->SetForward(XMFLOAT3(0.0f, 0.0f, -1.0f));
 	
 	//collider->SetSphereCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), 10.0f);
 	
@@ -68,7 +69,6 @@ void Enemy::Update(void)
 
 
 	transformComponent->Update();
-	meshComponent->SetWorldMtx(this->transformComponent->GetWorldMtx());
 
 	meshComponent->Update();
 

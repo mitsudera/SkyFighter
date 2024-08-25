@@ -27,6 +27,7 @@ void PlayerBullet::Init(void)
 {
 
 	collider->Init();
+	collider->offCollider();
 	collider->SetTag(ObjectTag::TagPlayerBullet);
 
 	bulletComponent->Init();

@@ -2,17 +2,15 @@
 #include "gameobject.h"
 
 class MeshComponent;
-class JetEngineComponent;
-class GunComponent;
+class MissileComponent;
 
-class Player:public GameObject
+class Missile : public GameObject
 {
-
-
 public:
-	Player(Level* level);
-	~Player();
+	Missile(Level* level);
+	~Missile();
 
+	// GameObject ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 	virtual void Init(void) override;
 
 	virtual void Uninit(void) override;
@@ -22,11 +20,11 @@ public:
 	virtual void Draw(void) override;
 
 
+
 private:
-	
-	
-	MeshComponent* meshComponent;
-	JetEngineComponent* jetEngine;
-	GunComponent* gun;
+
+	MeshComponent* mesh;
+	MissileComponent* missileComponent;
+
 };
 

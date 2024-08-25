@@ -17,7 +17,7 @@ ColliderComponent::~ColliderComponent()
 void ColliderComponent::Init(void)
 {
 	TransformComponent::Init();
-
+	
 
 }
 

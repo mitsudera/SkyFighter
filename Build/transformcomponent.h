@@ -40,7 +40,7 @@ public:
 	void SetPosition(XMFLOAT3 pos);
 	void SetRotation(XMFLOAT3 rot);
 	void SetScale(XMFLOAT3 scl);
-	void SetDirection(XMFLOAT3 forward);
+	void SetForward(XMFLOAT3 forward);
 	void SetAxisX(XMVECTOR axis);
 	void SetAxizY(XMVECTOR axis);
 	void SetAxizZ(XMVECTOR axis);
@@ -74,6 +74,10 @@ public:
 	void RotRoll(float f);
 	void RotPitch(float f);
 	void RotYaw(float f);
+
+	void RotAxis(XMVECTOR qton);
+
+	void RotAxisAngle(XMVECTOR axis, float angle);
 	
 protected:
 

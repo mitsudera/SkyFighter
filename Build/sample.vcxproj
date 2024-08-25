@@ -175,6 +175,8 @@
     <ClInclude Include="MeshAnimData.h" />
     <ClInclude Include="meshcomponent.h" />
     <ClInclude Include="MeshData.h" />
+    <ClInclude Include="Missile.h" />
+    <ClInclude Include="MissileComponent.h" />
     <ClInclude Include="MissileLauncherComponent.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="PlayerBullet.h" />
@@ -215,6 +217,8 @@
     <ClCompile Include="MeshAnimData.cpp" />
     <ClCompile Include="meshcomponent.cpp" />
     <ClCompile Include="MeshData.cpp" />
+    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MissileComponent.cpp" />
     <ClCompile Include="MissileLauncherComponent.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="PlayerBullet.cpp" />

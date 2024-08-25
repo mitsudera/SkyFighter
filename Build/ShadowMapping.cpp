@@ -499,7 +499,7 @@ void ShadowMapping::SetTarget(GameObject* gameObject)
 	this->ShadowTarget = gameObject;
 }
 
-void ShadowMapping::SetDirection(XMFLOAT3 dir)
+void ShadowMapping::SetForward(XMFLOAT3 dir)
 {
 
 	this->dir = XMFLOAT3Normalize(dir);
