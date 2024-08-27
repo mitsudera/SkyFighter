@@ -8,6 +8,7 @@ class CollisionManger;
 class SquareParticle;
 class BulletList;
 class MissleList;
+class EffectList;
 
 class Level
 {
@@ -32,11 +33,14 @@ public:
 
 	Camera* GetCamera(void);
 	XMMATRIX GetCameraView(void);
-	SquareParticle* GetSquareParticle(void);
+	SquareParticle* GetSquareParticleAdd(void);
+	SquareParticle* GetSquareParticleSub(void);
 	BulletList* GetBulletList(void);
 	MissleList* GetMissileList(void);
 
 	vector<GameObject*> GetGameObjectList(void);
+
+	EffectList* GetEffect(void);
 
 protected:
 
@@ -49,9 +53,18 @@ protected:
 	
 	Camera* mainCamera;
 	CollisionManger* collisionManager;
-	SquareParticle* squarePart;
+	SquareParticle* squarePartAdd;
+	SquareParticle* squarePartSub;
 
 	BulletList* bulletList;
 	MissleList* missileList;
+
+	EffectList* effectList;
+
+
+	vector<GameObject*> enemyList;
+	vector<GameObject*> cloudList;
+
+
 };
 

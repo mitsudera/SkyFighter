@@ -2,7 +2,7 @@
 #include "CameraComponent.h"
 #include "camera.h"
 
-#define PART_MAX (1024)
+#define PART_MAX (8192)
 
 #define TEXTUE_PATH "data/PARTICLE/partical.png"
 
@@ -167,11 +167,11 @@ void SquareParticle::Update(void)
 		vvec[2] = -axx * size;
 		vvec[3] = -axy * size;
 		
-		for (int j = 0; j < 4; j++)
-		{
-			vvec[j] = XMVector3Normalize(vvec[j]);
+		//for (int j = 0; j < 4; j++)
+		//{
+		//	vvec[j] = XMVector3Normalize(vvec[j]);
 
-		}
+		//}
 
 
 		XMFLOAT3 vpos[4];
@@ -284,7 +284,7 @@ void SquareParticle::Draw(void)
 
 }
 
-int SquareParticle::AddParticle(XMFLOAT3 pos, float size)
+int SquareParticle::AddParticle(XMFLOAT3 pos, float size,float alpha)
 {
 	for (unsigned int i = 0; i < maxPart; i++)
 	{
@@ -292,6 +292,10 @@ int SquareParticle::AddParticle(XMFLOAT3 pos, float size)
 		{
 			squareInfoArray[i].pos = pos;
 			squareInfoArray[i].size = size;
+			squareInfoArray[i].vertex[0].Diffuse.w = alpha;
+			squareInfoArray[i].vertex[1].Diffuse.w = alpha;
+			squareInfoArray[i].vertex[2].Diffuse.w = alpha;
+			squareInfoArray[i].vertex[3].Diffuse.w = alpha;
 			squareInfoArray[i].use = TRUE;
 			return i;
 		}
@@ -306,7 +310,7 @@ void SquareParticle::DeleteParticle(int n)
 	squareInfoArray[n].use = FALSE;
 }
 
-void SquareParticle::UodatePositon(int n, XMFLOAT3 pos)
+void SquareParticle::UpdatePositon(int n, XMFLOAT3 pos)
 {
 	squareInfoArray[n].pos = pos;
 }

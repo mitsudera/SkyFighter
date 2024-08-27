@@ -2,6 +2,7 @@
 #include "gameobject.h"
 #include "transformcomponent.h"
 #include "ColliderComponent.h"
+#include "EffectList.h"
 
 #define LIFE (300)
 
@@ -35,6 +36,7 @@ void MissileComponent::Update(void)
 {
 
 	life -= 1;
+	TransformComponent* transform = pGameObject->GetTransFormComponent();
 
 	if (life<=0)
 	{
@@ -43,9 +45,16 @@ void MissileComponent::Update(void)
 
 	}
 
+	if (pGameObject->GetCollider()->GetHitObject(target))
+	{
+ 		pGameObject->SetUse(FALSE);
+		pGameObject->GetCollider()->offCollider();
+		pGameObject->GetLevel()->GetEffect()->SetBomb(transform->GetPosition());
+
+	}
 
 
-	TransformComponent* transform = pGameObject->GetTransFormComponent();
+
 
 
 
@@ -56,6 +65,7 @@ void MissileComponent::Update(void)
 	}
 	spd += spdup;
 	transform->MoveForward(spd);
+
 
 
 	if (target != nullptr)
@@ -95,7 +105,7 @@ void MissileComponent::Update(void)
 
 	}
 
-
+	pGameObject->GetLevel()->GetEffect()->SetContrail(transform->GetPosition(), transform->GetOldPosition());
 
 }
 

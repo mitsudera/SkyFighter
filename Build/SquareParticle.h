@@ -29,11 +29,11 @@ public:
 
 	virtual void Draw(void) override;
 
-	int AddParticle(XMFLOAT3 pos, float size);
+	int AddParticle(XMFLOAT3 pos, float size, float alpha);
 
 	void DeleteParticle(int n);
 
-	void UodatePositon(int n, XMFLOAT3 pos);
+	void UpdatePositon(int n, XMFLOAT3 pos);
 	void UodateSize(int n, float size);
 
 	void SetBlend(BLEND_MODE blend);

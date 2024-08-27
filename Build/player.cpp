@@ -139,6 +139,12 @@ void Player::Update(void)
 	}
 
 
+	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_E))
+	{
+		gun->Launch(this->transformComponent->GetPosition(),this->transformComponent->GetDirection(),this->jetEngine->GetSpeed());
+	}
+
+
 
 
 

@@ -17,7 +17,12 @@ ColliderComponent::~ColliderComponent()
 void ColliderComponent::Init(void)
 {
 	TransformComponent::Init();
-	
+	result.hitObject.clear();
+	for (int i = 0; i < ObjectTag::ObjectTagMax; i++)
+	{
+		result.isHit[i] = FALSE;
+
+	}
 
 }
 
@@ -261,7 +266,7 @@ XMFLOAT3 ColliderComponent::GetPosition(void)
 
 void ColliderComponent::onCollider(void)
 {
-
+	this->Init();
 	this->GetGameObject()->GetLevel()->GetCollisionManager()->AddCollider(this);
 
 

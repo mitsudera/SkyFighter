@@ -215,6 +215,8 @@ void Main::Init(void)
 	//マウス位置の初期化
 	GetCursorPos(&this->mousePos);
 
+	srand((unsigned)time(NULL));
+
 
 	//Renderer生成
 	this->renderer = new Renderer(this);

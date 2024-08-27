@@ -22,7 +22,7 @@ BulletComponent::~BulletComponent()
 void BulletComponent::Init(void)
 {
 	pGameObject->SetUse(TRUE);
-	particle = pGameObject->GetLevel()->GetSquareParticle();
+	particle = pGameObject->GetLevel()->GetSquareParticleAdd();
 
 
 }
@@ -45,7 +45,7 @@ void BulletComponent::Update(void)
 		pos.z += direction.z * speed;
 		life -= 1;
 
-		particle->UodatePositon(partIndex,pos);
+		particle->UpdatePositon(partIndex,pos);
 
 	}
 
@@ -64,7 +64,7 @@ void BulletComponent::FireBullet(XMFLOAT3 pos, XMFLOAT3 dir, float spd)
 
 	life = BULLET_LIFE;
 
-	partIndex = particle->AddParticle(pos, BULLET_SIZE);
+	partIndex = particle->AddParticle(pos, BULLET_SIZE,0.8f);
 
 
 }

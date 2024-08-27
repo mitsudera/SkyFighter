@@ -12,6 +12,7 @@
 #include "SquareParticle.h"
 #include "BulletList.h"
 #include "MIssleList.h"
+#include "EffectList.h"
 
 Title::Title(Main* main)
 {
@@ -20,7 +21,10 @@ Title::Title(Main* main)
 
 	mainCamera = new Camera(this);
 
-	squarePart = new SquareParticle(this);
+	squarePartAdd = new SquareParticle(this);
+	squarePartSub = new SquareParticle(this);
+
+	effectList = new EffectList(this);
 
 	bulletList = new BulletList(this);
 
@@ -59,8 +63,10 @@ Title::Title(Main* main)
 Title::~Title()
 {
 	delete mainCamera;
-	delete squarePart;
+	delete squarePartAdd;
+	delete squarePartSub;
 	delete bulletList;
+	delete effectList;
 
 	for (int i = 0; i < gameObject.size(); i++)
 	{
@@ -78,9 +84,12 @@ void Title::Init(void)
 
 	this->mainCamera->Init();
 
-	this->squarePart->Init();
-	this->squarePart->SetBlend(BLEND_MODE::BLEND_MODE_ADD);
+	this->squarePartAdd->Init();
+	this->squarePartAdd->SetBlend(BLEND_MODE::BLEND_MODE_ADD);
+	this->squarePartSub->Init();
+	this->squarePartSub->SetBlend(BLEND_MODE::BLEND_MODE_SUBTRACT);
 
+	effectList->Init();
 
 	this->bulletList->Init();
 
@@ -106,7 +115,10 @@ void Title::Init(void)
 void Title::Uninit(void)
 {
 	this->shdowMap->Uninit();
-	squarePart->Uninit();
+	squarePartAdd->Uninit();
+	squarePartSub->Uninit();
+
+	effectList->Uninit();
 
 	bulletList->Uninit();
 
@@ -142,7 +154,10 @@ void Title::Update(void)
 
 	bulletList->Update();
 
-	squarePart->Update();
+	effectList->Update();
+
+	squarePartAdd->Update();
+	squarePartSub->Update();
 
 
 
@@ -159,7 +174,8 @@ void Title::Draw(void)
 
 	this->mainCamera->Draw();
 	this->DrawGameObject();
-	squarePart->Draw();
+	squarePartAdd->Draw();
+	squarePartSub->Draw();
 
 
 

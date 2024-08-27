@@ -42,6 +42,7 @@ public:
 	BOOL GetUse(void);
 	void SetUse(BOOL use);
 
+
 protected:
 	Level* pLevel;
 	TransformComponent* transformComponent;
@@ -50,6 +51,7 @@ protected:
 	ObjectTag tag;
 
 	BOOL use;
+
 
 };
 

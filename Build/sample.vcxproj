@@ -150,6 +150,9 @@
   <ItemGroup>
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="BlueField.h" />
+    <ClInclude Include="Cloud.h" />
+    <ClInclude Include="CloudComponent.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="BulletComponent.h" />
     <ClInclude Include="BulletList.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="component.h" />
     <ClInclude Include="Coreminimal.h" />
     <ClInclude Include="DirectionalLightComponent.h" />
+    <ClInclude Include="EffectList.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyStatusComponent.h" />
     <ClInclude Include="gameobject.h" />
@@ -195,6 +199,9 @@
   <ItemGroup>
     <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="BlueField.cpp" />
+    <ClCompile Include="Cloud.cpp" />
+    <ClCompile Include="CloudComponent.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="BulletComponent.cpp" />
     <ClCompile Include="BulletList.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -204,6 +211,7 @@
     <ClCompile Include="CollisionManger.cpp" />
     <ClCompile Include="component.cpp" />
     <ClCompile Include="DirectionalLightComponent.cpp" />
+    <ClCompile Include="EffectList.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyStatusComponent.cpp" />
     <ClCompile Include="gameobject.cpp" />

@@ -49,9 +49,14 @@ XMMATRIX Level::GetCameraView(void)
 	return this->mainCamera->GetView();
 }
 
-SquareParticle* Level::GetSquareParticle(void)
+SquareParticle* Level::GetSquareParticleAdd(void)
 {
-	return this->squarePart;
+	return this->squarePartAdd;
+}
+
+SquareParticle* Level::GetSquareParticleSub(void)
+{
+	return this->squarePartSub;
 }
 
 BulletList* Level::GetBulletList(void)
@@ -67,4 +72,9 @@ MissleList* Level::GetMissileList(void)
 vector<GameObject*> Level::GetGameObjectList(void)
 {
 	return gameObject;
+}
+
+EffectList* Level::GetEffect(void)
+{
+	return effectList;
 }
