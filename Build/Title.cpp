@@ -11,6 +11,7 @@
 #include "CollisionManger.h"
 #include "SquareParticle.h"
 #include "BulletList.h"
+#include "MIssleList.h"
 
 Title::Title(Main* main)
 {
@@ -22,7 +23,7 @@ Title::Title(Main* main)
 	squarePart = new SquareParticle(this);
 
 	bulletList = new BulletList(this);
-	
+
 
 	Player* player = new Player(this);
 	gameObject.push_back(player);
@@ -32,6 +33,11 @@ Title::Title(Main* main)
 	Enemy* enemy = new Enemy(this);
 	gameObject.push_back(enemy);
 	shadowObject.push_back(enemy);
+
+
+	missileList = new MissleList(this);
+	gameObject.push_back(missileList);
+	shadowObject.push_back(missileList);
 
 
 
@@ -76,6 +82,7 @@ void Title::Init(void)
 
 	this->bulletList->Init();
 
+
 	for (int i = 0; i < gameObject.size(); i++)
 	{
 		gameObject[i]->Init();
@@ -100,6 +107,7 @@ void Title::Uninit(void)
 	squarePart->Uninit();
 
 	bulletList->Uninit();
+
 
 	this->collisionManager->Uninit();
 
@@ -128,6 +136,7 @@ void Title::Update(void)
 	{
 		gameObject[i]->Update();
 	}
+
 
 	bulletList->Update();
 

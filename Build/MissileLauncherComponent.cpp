@@ -1,6 +1,7 @@
 #include "MissileLauncherComponent.h"
 #include "gameobject.h"
 #include "transformcomponent.h"
+#include "MissleList.h"
 
 MissileLauncherComponent::MissileLauncherComponent(GameObject* gameObject)
 {
@@ -37,6 +38,8 @@ void MissileLauncherComponent::Update(void)
 
 	}
 
+	lockOnObject = nullptr;
+
 	float lastangle = XM_PI;
 
 	for (int i = 0; i < TargetObjectList.size(); i++)
@@ -45,11 +48,13 @@ void MissileLauncherComponent::Update(void)
 		XMVECTOR dirv = XMLoadFloat3(&pGameObject->GetTransFormComponent()->GetDirection());
 		XMVECTOR tarv = XMLoadFloat3(&TargetObjectList[i]->GetTransFormComponent()->GetPosition());
 
-		XMVECTOR pt = posv - tarv;
+		XMVECTOR pt =  tarv -posv ;
 		XMVECTOR lenv = XMVector3Length(pt);
 
 		float len;
 		XMStoreFloat(&len, lenv);
+
+		
 
 		pt = XMVector3Normalize(pt);
 
@@ -69,17 +74,30 @@ void MissileLauncherComponent::Update(void)
 
 }
 
-void MissileLauncherComponent::Fire(XMFLOAT3 pos, XMFLOAT3 dir, float spd)
+void MissileLauncherComponent::Launch(XMFLOAT3 pos, XMMATRIX rot, float spd)
 {
 	if (isEnable)
 	{
+		TransformComponent* transform = pGameObject->GetTransFormComponent();
 
 		isEnable = FALSE;
 
 		coolTimeCount = coolTimeMax;
 
 		//‚±‚±‚É”­ŽËˆ—
+		switch (parent)
+		{
+		case Parent::Player:
+			pGameObject->GetLevel()->GetMissileList()->Launch(pos, rot, spd, lockOnObject, ObjectTag::TagPlayerMissile);
+			break;
 
+		case Parent::Enemy:
+			pGameObject->GetLevel()->GetMissileList()->Launch(pos, rot, spd, lockOnObject, ObjectTag::TagEnemyMissile);
+			break;
+
+		default:
+			break;
+		}
 
 	}
 

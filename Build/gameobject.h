@@ -3,6 +3,21 @@
 #include"main.h"
 
 
+
+typedef enum
+{
+	TagNone,
+	TagPlayer,
+	TagEnemy,
+	TagField,
+	TagPlayerBullet,
+	TagPlayerMissile,
+	TagEnemyMissile,
+
+	ObjectTagMax,
+}ObjectTag;
+
+
 class MeshComponent;
 class ColliderComponent;
 
@@ -22,12 +37,19 @@ public:
 	TransformComponent* GetTransFormComponent(void);
 	ColliderComponent* GetCollider(void);
 
+	ObjectTag GetTag(void);
+
+	BOOL GetUse(void);
+	void SetUse(BOOL use);
+
 protected:
 	Level* pLevel;
 	TransformComponent* transformComponent;
 	ColliderComponent* collider;
 
-	
+	ObjectTag tag;
+
+	BOOL use;
 
 };
 

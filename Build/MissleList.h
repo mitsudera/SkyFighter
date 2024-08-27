@@ -1,15 +1,15 @@
 #pragma once
 #include "gameobject.h"
 
-class MeshComponent;
-class MissileComponent;
-class MissleList;
+class Missile;
 
-class Missile : public GameObject
+class MissleList :public GameObject
 {
 public:
-	Missile(Level* level);
-	~Missile();
+
+	MissleList(Level* level);
+	~MissleList();
+
 
 	// GameObject ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 	virtual void Init(void) override;
@@ -22,11 +22,9 @@ public:
 
 	void Launch(XMFLOAT3 pos, XMMATRIX rot, float spd, GameObject* target, ObjectTag tag);
 
-	MissileComponent* GetMissileComponent(void);
-
 private:
 
-	MeshComponent* mesh;
-	MissileComponent* missileComponent;
+	vector<Missile*> missileArray;
+
 };
 

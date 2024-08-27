@@ -31,7 +31,7 @@ private:
 	XMFLOAT3 direction;
 	float speed;
 	int life;
-	BOOL use;
+	//BOOL use;
 
 	int partIndex;
 

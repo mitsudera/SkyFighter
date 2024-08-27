@@ -13,7 +13,7 @@ public:
 	virtual void Uninit(void) override;
 	virtual void Update(void) override;
 
-	void Fire(XMFLOAT3 pos, XMFLOAT3 dir, float spd);
+	void Launch(XMFLOAT3 pos, XMFLOAT3 dir, float spd);
 
 
 

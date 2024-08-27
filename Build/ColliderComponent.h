@@ -1,19 +1,9 @@
 #pragma once
 #include "transformcomponent.h"
 #include "Coreminimal.h"
+#include "gameobject.h"
 
 
-
-typedef enum
-{
-	TagPlayer,
-	TagEnemy,
-	TagField,
-	TagPlayerBullet,
-	TagPlayerMissile,
-
-	ObjectTagMax,
-}ObjectTag;
 
 struct HitResult
 {
@@ -64,9 +54,8 @@ public:
 	void SetShape(Shape shape);
 
 	ObjectTag GetTag(void);
-	void SetTag(ObjectTag tag);
 
-	
+
 	void SetHitObject(GameObject* gameObject);
 	BOOL GetHitObject(GameObject* gameObject);
 
@@ -96,7 +85,6 @@ public:
 
 private:
 	HitResult result;
-	ObjectTag tag;
 	Shape shape;
 	float radius;
 	XMFLOAT3 sPos;

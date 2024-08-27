@@ -41,6 +41,7 @@ public:
 	void SetRotation(XMFLOAT3 rot);
 	void SetScale(XMFLOAT3 scl);
 	void SetForward(XMFLOAT3 forward);
+	void RotForward(XMFLOAT3 forward);
 	void SetAxisX(XMVECTOR axis);
 	void SetAxizY(XMVECTOR axis);
 	void SetAxizZ(XMVECTOR axis);

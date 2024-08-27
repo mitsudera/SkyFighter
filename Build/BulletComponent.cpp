@@ -21,7 +21,7 @@ BulletComponent::~BulletComponent()
 
 void BulletComponent::Init(void)
 {
-	use = FALSE;
+	pGameObject->SetUse(TRUE);
 	particle = pGameObject->GetLevel()->GetSquareParticle();
 
 
@@ -34,7 +34,7 @@ void BulletComponent::Uninit(void)
 void BulletComponent::Update(void)
 {
 
-	if (use == TRUE)
+	if (pGameObject->GetUse() == TRUE)
 	{
 		if (life <= 0)
 		{
@@ -54,7 +54,7 @@ void BulletComponent::Update(void)
 
 void BulletComponent::FireBullet(XMFLOAT3 pos, XMFLOAT3 dir, float spd)
 {
-	use = TRUE;
+	pGameObject->SetUse(TRUE);
 
 	direction = XMFLOAT3Normalize(dir);
 
@@ -72,12 +72,12 @@ void BulletComponent::FireBullet(XMFLOAT3 pos, XMFLOAT3 dir, float spd)
 
 void BulletComponent::DeleteBullet(void)
 {
-	use = FALSE;
+	pGameObject->SetUse(FALSE);
 	particle->DeleteParticle(partIndex);
 	pGameObject->GetCollider()->offCollider();
 }
 
 BOOL BulletComponent::GetUse(void)
 {
-	return use;
+	return pGameObject->GetUse();
 }

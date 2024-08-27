@@ -59,13 +59,9 @@ void ColliderComponent::SetShape(Shape shape)
 
 ObjectTag ColliderComponent::GetTag(void)
 {
-	return this->tag;
+	return pGameObject->GetTag();
 }
 
-void ColliderComponent::SetTag(ObjectTag tag)
-{
-	this->tag = tag;
-}
 
 void ColliderComponent::SetHitObject(GameObject* gameObject)
 {
@@ -76,6 +72,11 @@ void ColliderComponent::SetHitObject(GameObject* gameObject)
 BOOL ColliderComponent::GetHitObject(GameObject* gameObject)
 {
 	BOOL ans = FALSE;
+
+	if (gameObject==nullptr)
+	{
+		return FALSE;
+	}
 
 	for (int i = 0; i < result.hitObject.size(); i++)
 	{

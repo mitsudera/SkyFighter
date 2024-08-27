@@ -60,3 +60,13 @@ BulletList* Level::GetBulletList(void)
 {
 	return this->bulletList;
 }
+
+MissleList* Level::GetMissileList(void)
+{
+	return missileList;
+}
+
+vector<GameObject*> Level::GetGameObjectList(void)
+{
+	return gameObject;
+}

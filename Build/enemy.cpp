@@ -26,21 +26,19 @@ void Enemy::Init(void)
 	this->meshComponent->Init();
 	this->collider->Init();
 	this->status->Init();
-
+	SetUse(TRUE);
 	
 
 	collider->onCollider();
 
-	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
+	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.5f, 0.5f, 0.5f));
 	
 	transformComponent->SetForwardDiection(XMFLOAT3(0.0f, 0.0f, 1.0f));
-	transformComponent->SetForward(XMFLOAT3(0.0f, 0.0f, -1.0f));
 	
 	//collider->SetSphereCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), 10.0f);
 	
 	collider->SetCapsuleCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 10.0f, 0.0f), 5.0f);
-	collider->SetTag(ObjectTag::TagEnemy);
-
+	tag = ObjectTag::TagEnemy;
 
 
 	meshComponent->SetMeshComponent(

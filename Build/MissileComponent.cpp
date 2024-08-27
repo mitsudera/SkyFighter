@@ -1,6 +1,7 @@
 #include "MissileComponent.h"
 #include "gameobject.h"
 #include "transformcomponent.h"
+#include "ColliderComponent.h"
 
 #define LIFE (300)
 
@@ -18,11 +19,11 @@ void MissileComponent::Init(void)
 	target = nullptr;
 	spd = 0.0f;
 	spdmax = 300.0f;
-	spdup = 0.0f;
-	spdupmax = 1.0f;
+	spdup = 1.0f;
+	spdupmax = 3.0f;
 	spdupvalue = 0.002f;
 	rotValue = (XM_PI / 180) * 1.0f;
-	use = FALSE;
+	pGameObject->SetUse(FALSE);
 	life = 0;
 }
 
@@ -37,8 +38,12 @@ void MissileComponent::Update(void)
 
 	if (life<=0)
 	{
-		use = FALSE;
+		pGameObject->SetUse(FALSE);
+		pGameObject->GetCollider()->offCollider();
+
 	}
+
+
 
 	TransformComponent* transform = pGameObject->GetTransFormComponent();
 
@@ -58,22 +63,35 @@ void MissileComponent::Update(void)
 		XMFLOAT3 pos = transform->GetPosition();
 		XMFLOAT3 tpos = target->GetTransFormComponent()->GetPosition();
 
-		XMVECTOR ptv = XMLoadFloat3(&tpos) - XMLoadFloat3(&pos);
-		XMVECTOR dv = XMLoadFloat3(&transform->GetDirection());
+		XMVECTOR ptv = -XMLoadFloat3(&tpos) +XMLoadFloat3(&pos);
 
-		ptv = XMVector3Normalize(ptv);
-		dv = XMVector3Normalize(dv);
-
-		XMVECTOR axis =XMVector3Cross(ptv,dv);
-		float angle;
-		XMStoreFloat(&angle, XMVector3AngleBetweenNormals(ptv, dv));
-
-		if (angle>rotValue)
+		if (!XMVector3Equal(ptv,XMVectorZero()))
 		{
-			angle = rotValue;
+			XMVECTOR dv = XMLoadFloat3(&transform->GetDirection());
+
+			ptv = XMVector3Normalize(ptv);
+			dv = XMVector3Normalize(dv);
+			float dot;
+			XMStoreFloat(&dot,XMVector3Dot(ptv, dv));
+
+			if (!XMVector3Equal(ptv, dv)&&dot!=-1.0f)
+			{
+				XMVECTOR axis = XMVector3Cross(ptv, dv);
+				float angle;
+				XMStoreFloat(&angle, XMVector3AngleBetweenNormals(ptv, dv));
+
+				if (angle > rotValue)
+				{
+					angle = rotValue;
+				}
+
+				transform->RotAxisAngle(axis, angle);
+
+			}
+
 		}
 
-		transform->RotAxisAngle(axis, angle);
+
 
 	}
 
@@ -111,13 +129,19 @@ void MissileComponent::SetRotValue(float f)
 	rotValue = f;
 }
 
-void MissileComponent::Launch(XMFLOAT3 pos, XMFLOAT3 dir, float spd, GameObject* target)
+void MissileComponent::Launch(XMFLOAT3 pos, XMMATRIX rot, float spd, GameObject* target)
 {
+
+	this->Init();
 	this->pGameObject->GetTransFormComponent()->SetPosition(pos);
-	this->pGameObject->GetTransFormComponent()->SetForward(dir);
+
+	this->pGameObject->GetTransFormComponent()->SetMtxRot(rot);
+
 	this->spd = spd;
-	use = TRUE;
+	pGameObject->SetUse(TRUE);
 	life = LIFE;
+
+	pGameObject->GetCollider()->onCollider();
 
 	this->target = target;
 
@@ -125,6 +149,6 @@ void MissileComponent::Launch(XMFLOAT3 pos, XMFLOAT3 dir, float spd, GameObject*
 
 BOOL MissileComponent::GetUse(void)
 {
-	return use;
+	return pGameObject->GetUse();
 }
 

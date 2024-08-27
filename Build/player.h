@@ -4,6 +4,7 @@
 class MeshComponent;
 class JetEngineComponent;
 class GunComponent;
+class MissileLauncherComponent;
 
 class Player:public GameObject
 {
@@ -28,5 +29,6 @@ private:
 	MeshComponent* meshComponent;
 	JetEngineComponent* jetEngine;
 	GunComponent* gun;
+	MissileLauncherComponent* missileLauncher;
 };
 

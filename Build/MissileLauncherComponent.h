@@ -18,7 +18,7 @@ public:
 
 	virtual void Update(void) override;
 
-	void Fire(XMFLOAT3 pos, XMFLOAT3 dir, float spd);
+	void Launch(XMFLOAT3 pos, XMMATRIX rot, float spd);
 
 
 

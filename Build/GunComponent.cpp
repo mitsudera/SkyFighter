@@ -46,7 +46,7 @@ void GunComponent::Update(void)
 
 }
 
-void GunComponent::Fire(XMFLOAT3 pos, XMFLOAT3 dir, float spd)
+void GunComponent::Launch(XMFLOAT3 pos, XMFLOAT3 dir, float spd)
 {
 	if (isEnable)
 	{

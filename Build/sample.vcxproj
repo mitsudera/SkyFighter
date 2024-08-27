@@ -178,6 +178,7 @@
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MissileComponent.h" />
     <ClInclude Include="MissileLauncherComponent.h" />
+    <ClInclude Include="MissleList.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="primitivecomponent.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MissileComponent.cpp" />
     <ClCompile Include="MissileLauncherComponent.cpp" />
+    <ClCompile Include="MissleList.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="primitivecomponent.cpp" />

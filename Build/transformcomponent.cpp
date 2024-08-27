@@ -57,6 +57,8 @@ TransformComponent::TransformComponent(GameObject* gameObject)
 
 TransformComponent::~TransformComponent()
 {
+
+
 }
 void TransformComponent::Init(void)
 {
@@ -233,6 +235,11 @@ void TransformComponent::SetScale(XMFLOAT3 scl)
 void TransformComponent::SetForward(XMFLOAT3 forward)
 {
 
+
+}
+
+void TransformComponent::RotForward(XMFLOAT3 forward)
+{
 	XMVECTOR f = XMVector3Normalize(XMLoadFloat3(&forward));
 	XMVECTOR d = XMVector3Normalize(XMLoadFloat3(&this->forward));
 
@@ -242,12 +249,12 @@ void TransformComponent::SetForward(XMFLOAT3 forward)
 	if (dot == -1.0f)
 	{
 
-		XMVECTOR qton = XMQuaternionRotationAxis(axisX,XM_PI);
+		XMVECTOR qton = XMQuaternionRotationAxis(axisX, XM_PI);
 		this->RotAxis(qton);
 		mtxrot = XMMatrixRotationQuaternion(qton);
 		return;
 	}
-	if (XMVector3Equal(f,d))
+	if (XMVector3Equal(f, d))
 	{
 		return;
 	}
@@ -265,7 +272,7 @@ void TransformComponent::SetForward(XMFLOAT3 forward)
 
 	this->RotAxis(q);
 
-	this->mtxrot = XMMatrixMultiply(mtxrot,mtx);
+	this->mtxrot = mtx;
 
 }
 
@@ -390,6 +397,7 @@ void TransformComponent::PosUpdate(void)
 void TransformComponent::SetForwardDiection(XMFLOAT3 dir)
 {
 	this->fDirection = XMFLOAT3Normalize(dir);
+	this->forward = XMFLOAT3Normalize(dir);
 }
 
 void TransformComponent::RotRoll(float f)

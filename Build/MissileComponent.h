@@ -23,7 +23,7 @@ public:
 	void SetSpeedUpValue(float f);
 	void SetRotValue(float f);
 
-	void Launch(XMFLOAT3 pos, XMFLOAT3 dir, float spd, GameObject* target);
+	void Launch(XMFLOAT3 pos, XMMATRIX rot, float spd, GameObject* target);
 	BOOL GetUse(void);
 
 private:
@@ -35,7 +35,7 @@ private:
 	float			spdupmax;		//加速度マックス
 	float			spdupvalue;		//加速度
 	float			rotValue;
-	BOOL use;
+	//BOOL use;
 	int life;
 
 

@@ -26,6 +26,13 @@ Missile::~Missile()
 void Missile::Init(void)
 {
 	transformComponent->Init();
+
+	transformComponent->SetTransForm(XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f));
+
+	transformComponent->SetForwardDiection(XMFLOAT3(0.0f, 0.0f, 1.0f));
+
+	
+
 	missileComponent->Init();
 	collider->Init();
 	collider->offCollider();
@@ -68,4 +75,15 @@ void Missile::Draw(void)
 	{
 		mesh->Draw();
 	}
+}
+
+void Missile::Launch(XMFLOAT3 pos, XMMATRIX rot, float spd, GameObject* target, ObjectTag tag)
+{
+	this->tag = tag;
+	missileComponent->Launch(pos, rot, spd, target);
+}
+
+MissileComponent* Missile::GetMissileComponent(void)
+{
+	return this->missileComponent;
 }

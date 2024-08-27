@@ -6,6 +6,7 @@
 #include "ColliderComponent.h"
 #include "JetEngineComponent.h"
 #include "GunComponent.h"
+#include "MissileLauncherComponent.h"
 
 Player::Player(Level* level)
 {
@@ -18,6 +19,8 @@ Player::Player(Level* level)
 	this->jetEngine = new JetEngineComponent(this);
 
 	this->gun = new GunComponent(this);
+	
+	this->missileLauncher = new MissileLauncherComponent(this);
 }
 
 Player::~Player()
@@ -26,6 +29,7 @@ Player::~Player()
 	delete collider;
 	delete jetEngine;
 	delete gun;
+	delete missileLauncher;
 }
 
 void Player::Init(void)
@@ -35,6 +39,10 @@ void Player::Init(void)
 	this->collider->Init();
 	this->jetEngine->Init();
 	this->gun->Init();
+	missileLauncher->Init();
+	missileLauncher->SetParent(MissileLauncherComponent::Parent::Player);
+
+
 
 	collider->onCollider();
 
@@ -43,7 +51,7 @@ void Player::Init(void)
 
 	collider->SetSphereCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), 10.0f);
 
-	collider->SetTag(ObjectTag::TagPlayer);
+	tag = ObjectTag::TagPlayer;
 
 	meshComponent->SetMeshComponent(
 		"data/MODEL/mesh/sentouki.fbx");
@@ -65,6 +73,7 @@ void Player::Uninit(void)
 	collider->Uninit();
 	jetEngine->Uninit();
 	gun->Uninit();
+	missileLauncher->Uninit();
 
 }
 
@@ -96,29 +105,42 @@ void Player::Update(void)
 
 	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_UP))
 	{
-		this->transformComponent->RotPitch(0.1f);
+		this->transformComponent->RotPitch(0.01f);
 
 	}
 	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_DOWN))
 	{
-		this->transformComponent->RotPitch(-0.1f);
+		this->transformComponent->RotPitch(-0.01f);
 
 	}
+	this->jetEngine->Update();
+
+	transformComponent->Update();
+
+
+	vector<GameObject*> target;
+
+	for (int i = 0; i < pLevel->GetGameObjectList().size(); i++)
+	{
+		if (pLevel->GetGameObjectList()[i]->GetTag() == ObjectTag::TagEnemy&& pLevel->GetGameObjectList()[i]->GetUse())
+		{
+			target.push_back(pLevel->GetGameObjectList()[i]);
+		}
+	}
+
+	missileLauncher->SetTargetObjectList(target);
+
+
 
 
 	if (pLevel->GetMain()->GetInput()->GetKeyboardPress(DIK_SPACE))
 	{
-		gun->Fire(this->transformComponent->GetPosition(),this->transformComponent->GetDirection(),this->jetEngine->GetSpeed());
+		missileLauncher->Launch(this->transformComponent->GetPosition(),this->transformComponent->GetMtxRot(),this->jetEngine->GetSpeed());
 	}
 
 
 
 
-
-	this->jetEngine->Update();
-
-
-	transformComponent->Update();
 
 	meshComponent->Update();
 
@@ -127,6 +149,8 @@ void Player::Update(void)
 	collider->Update();
 
 	gun->Update();
+
+	missileLauncher->Update();
 
 	BOOL hit = collider->GetHitTag(TagEnemy);
 
