@@ -36,6 +36,8 @@ public:
 	void UodatePositon(int n, XMFLOAT3 pos);
 	void UodateSize(int n, float size);
 
+	void SetBlend(BLEND_MODE blend);
+
 private:
 
 	unsigned int maxPart;
@@ -50,6 +52,7 @@ private:
 
 	ID3D11ShaderResourceView* texture;
 
+	BLEND_MODE blend;
 
 
 };

@@ -10,8 +10,6 @@ Level::Level()
 
 	this->collisionManager = new CollisionManger(this);
 
-
-
 }
 
 Level::Level(Main*main)

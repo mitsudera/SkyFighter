@@ -79,6 +79,8 @@ void Title::Init(void)
 	this->mainCamera->Init();
 
 	this->squarePart->Init();
+	this->squarePart->SetBlend(BLEND_MODE::BLEND_MODE_ADD);
+
 
 	this->bulletList->Init();
 

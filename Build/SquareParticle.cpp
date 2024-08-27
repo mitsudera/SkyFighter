@@ -30,6 +30,8 @@ SquareParticle::~SquareParticle()
 
 void SquareParticle::Init(void)
 {
+	blend = BLEND_MODE::BLEND_MODE_ADD;
+
 	D3DX11CreateShaderResourceViewFromFile(GetLevel()->GetMain()->GetRenderer()->GetDevice(),
 		TEXTUE_PATH,
 		NULL,
@@ -227,7 +229,7 @@ void SquareParticle::Draw(void)
 	renderer->SetLightEnable(FALSE);
 
 	// ‰ÁZ‡¬‚Éİ’è
-	renderer->SetBlendState(BLEND_MODE_ADD);
+	renderer->SetBlendState(this->blend);
 
 	renderer->SetAlphaTestEnable(FALSE);
 
@@ -312,4 +314,9 @@ void SquareParticle::UodatePositon(int n, XMFLOAT3 pos)
 void SquareParticle::UodateSize(int n, float size)
 {
 	squareInfoArray[n].size = size;
+}
+
+void SquareParticle::SetBlend(BLEND_MODE blend)
+{
+	this->blend = blend;
 }
