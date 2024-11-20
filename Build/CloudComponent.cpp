@@ -1,6 +1,12 @@
 #include "CloudComponent.h"
+#include "level.h"
+#include "SquareParticle.h"
 
-#define CLOUD_HIGHT			(3500)
+#define CLOUD_HIGHT			(35)
+#define CLOUD_PART_DIST		(200.0f)
+#define	CLOUD_PART_SIZE		(200.0f)		// 頂点サイズ
+#define CLOUD_ALPHA			(1.0f)
+#define MPOINT_SPLIT		(5)
 
 
 CloudComponent::CloudComponent(GameObject* gameObject)
@@ -20,8 +26,39 @@ void CloudComponent::Init(void)
 	int z1 = 0;
 	int z2 = CLOUD_MPOINT;
 
+	pGameObject->GetTransFormComponent()->SetPosition(XMFLOAT3(0.0f, 0.0f, 50.0f));
 
 	SetCloudHightTop(x1, x2, z1, z2, 0, 0.0f, 0.0f, 0.0f, 0.0f);
+	for (int x = 0; x < CLOUD_MPOINT+1; x++)
+	{
+		for (int z = 0; z < CLOUD_MPOINT + 1; z++)
+		{
+			hightTop[x][z] -= 5.0f;
+			int yleng = (int)(hightTop[x][z]);
+
+			for (int y = 0; y < yleng; y++)
+			{
+
+				XMFLOAT3 ppos;
+				XMFLOAT3 pos = pGameObject->GetTransFormComponent()->GetPosition();
+				ppos.x = x * CLOUD_PART_DIST + pos.x + (float)(rand() % 10 - 5) * 0.1f * CLOUD_PART_DIST;
+				ppos.z = z * CLOUD_PART_DIST + pos.z + (float)(rand() % 10 - 5) * 0.1f * CLOUD_PART_DIST;
+				ppos.y = pos.y + (hightTop[x][z] - hightTop[x][z] / 2) + ((hightTop[x][z] * CLOUD_PART_DIST) / yleng) * y - hightTop[x][z] / 2 + (float)(rand() % 10 - 5) * 0.1f * CLOUD_PART_DIST - yleng * CLOUD_HIGHT;
+			
+				partPosArray.push_back(ppos);
+			
+			}
+		}
+
+	}
+
+
+	//for (int i = 0; i < partPosArray.size(); i++)
+	//{
+	//	pGameObject->GetLevel()->GetSquareParticleAdd()->AddParticle(partPosArray[i], CLOUD_PART_SIZE, CLOUD_ALPHA);
+	//}
+
+	pGameObject->GetLevel()->GetSquareParticleAdd()->AddParticle(pGameObject->GetTransFormComponent()->GetPosition(), CLOUD_PART_SIZE, CLOUD_ALPHA);
 
 }
 
@@ -35,7 +72,7 @@ void CloudComponent::Update(void)
 
 void CloudComponent::SetCloudHightTop(int xl, int xr, int zd, int zu, int n, float tl, float tr, float bl, float br)
 {
-	if (n == CLOUD_MPOINT)
+	if (n == MPOINT_SPLIT)
 	{
 		return;
 	}
@@ -73,6 +110,7 @@ void CloudComponent::SetCloudHightBottom(int xl, int xr, int zd, int zu, int n, 
 float GetRandomHightPM(int n)
 {
 	float h = 0.0f;
+	float f = powf(2, n);
 	h = (rand() % (int)(CLOUD_HIGHT / powf(2, n))) * 0.01f;
 
 	return h;

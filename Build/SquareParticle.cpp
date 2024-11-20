@@ -167,11 +167,6 @@ void SquareParticle::Update(void)
 		vvec[2] = -axx * size;
 		vvec[3] = -axy * size;
 		
-		//for (int j = 0; j < 4; j++)
-		//{
-		//	vvec[j] = XMVector3Normalize(vvec[j]);
-
-		//}
 
 
 		XMFLOAT3 vpos[4];
@@ -249,7 +244,7 @@ void SquareParticle::Draw(void)
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0, 0.2f);
+	material.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.2f);
 	renderer->SetMaterial(material);
 
 	// テクスチャ設定
@@ -315,7 +310,7 @@ void SquareParticle::UpdatePositon(int n, XMFLOAT3 pos)
 	squareInfoArray[n].pos = pos;
 }
 
-void SquareParticle::UodateSize(int n, float size)
+void SquareParticle::UpdateSize(int n, float size)
 {
 	squareInfoArray[n].size = size;
 }

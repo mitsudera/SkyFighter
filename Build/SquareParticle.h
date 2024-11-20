@@ -34,7 +34,7 @@ public:
 	void DeleteParticle(int n);
 
 	void UpdatePositon(int n, XMFLOAT3 pos);
-	void UodateSize(int n, float size);
+	void UpdateSize(int n, float size);
 
 	void SetBlend(BLEND_MODE blend);
 

@@ -13,6 +13,7 @@
 #include "BulletList.h"
 #include "MIssleList.h"
 #include "EffectList.h"
+#include "cloud.h"
 
 Title::Title(Main* main)
 {
@@ -33,11 +34,14 @@ Title::Title(Main* main)
 	gameObject.push_back(player);
 	shadowObject.push_back(player);
 
+	Cloud* cloud = new Cloud(this);
+	gameObject.push_back(cloud);
+	cloudList.push_back(cloud);
 
 	Enemy* enemy = new Enemy(this);
 	gameObject.push_back(enemy);
 	shadowObject.push_back(enemy);
-
+	enemyList.push_back(enemy);
 
 	missileList = new MissleList(this);
 	gameObject.push_back(missileList);
@@ -98,6 +102,8 @@ void Title::Init(void)
 	{
 		gameObject[i]->Init();
 	}
+
+
 	this->shdowMap->SetTarget(gameObject[0]);
 
 

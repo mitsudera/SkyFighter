@@ -7,6 +7,7 @@
 #pragma once
 #include "gameobject.h"
 
+class CloudComponent;
 
 class Cloud :public GameObject
 {
@@ -25,6 +26,6 @@ public:
 
 private:
 
-
+	CloudComponent* cloudComponent;
 };
 

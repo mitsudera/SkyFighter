@@ -19,7 +19,7 @@ Light::~Light()
 
 void Light::Init(void)
 {
-	dirLight->SetLight(0,XMFLOAT3(1.0f, -10.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT4(.1f, .1f, .1f, .5f));
+	dirLight->SetLight(0,XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), XMFLOAT4(.1f, .1f, .1f, 1.0f));
 	dirLight->Init();
 }
 

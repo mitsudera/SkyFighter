@@ -23,5 +23,9 @@ private:
 	float hightTop[CLOUD_MPOINT + 1][CLOUD_MPOINT + 1];
 	float hightBottom[CLOUD_MPOINT + 1][CLOUD_MPOINT + 1];
 
+	vector<XMFLOAT3> partPosArray;
+	 
+	int* partindexArray;
 };
 
+float GetRandomHightPM(int n);

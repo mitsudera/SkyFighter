@@ -223,8 +223,11 @@ void PSmain(in float4 inPosition : SV_POSITION,
     if (Shadow.enable == 1)
     {
 
-        
-        if (Shadow.mode == 0)
+        if (inPosSM.z > 1.0)
+        {
+            sma = 1.0;
+        }
+        else if (Shadow.mode == 0)
         {
             float sm0 = ShadowMap.Sample(smpBorder, inPosSM.xy);
 
@@ -252,36 +255,6 @@ void PSmain(in float4 inPosition : SV_POSITION,
             }
 
         }
-				//		// シャドウマップ
-
-						
-
- 
-        
-        
-  
- 
-
-        //sma = VSM_Filter(inPosSM.xy, inPosSM.z);
-        
-            //sma = sma + (0.5 - (sm.g * 0.5));
-						
-        
-        //float4 sa = ShadowMapTex.Sample(smpBorder, inPosSM.xy);
-        //                //float sm = sa.r;
-
-						
-
-						
-
-        //if (sm == 1.0)
-        //{
-        //    sma = 1.0;
-        //}
-        
-        
- 
-
     }
     else
     {
@@ -392,7 +365,7 @@ void PSmain(in float4 inPosition : SV_POSITION,
                         if (light < -0.1)
                         {
 
-                            light = (0.5 - 0.5 * light) * sma;
+                            light = (0.5 - 0.5 * light);
                             tempColor = color * Material.Diffuse * light * Light.Diffuse[i];
                         }
                         else
@@ -409,7 +382,7 @@ void PSmain(in float4 inPosition : SV_POSITION,
 
                         float3 v = normalize(Camera.xyz - inWorldPos.xyz);
                         
-                        iA = Material.Ambient.xyz * Material.Ambient.w * Light.Ambient[i].xyz;
+                        iA = Material.Ambient.xyz*Light.Ambient[i].xyz;
                         iD = color * Material.Diffuse * light * Light.Diffuse[i];
 
                         iS = pow(saturate(dot(r, v)), Material.Shininess) * Material.Specular.xyz;
